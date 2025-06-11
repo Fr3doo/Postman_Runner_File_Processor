@@ -62,3 +62,15 @@ The project validates and sanitises files before parsing but operates entirely i
 - Sanitisation of downloaded file names
 
 Despite these defences, all checks are client‑side and cannot fully protect against malicious input. Do **not** use the tool with untrusted or sensitive data. Its validation rules are tailored for Postman Runner output and may reject other formats or miss edge cases.
+
+## Customising the error fallback
+
+The application is wrapped with an `ErrorBoundary` component. By default it displays a simple screen when an unhandled error occurs. You can extend this behaviour by passing a custom React element to the `fallback` prop:
+
+```tsx
+<ErrorBoundary fallback={<MyErrorScreen />}>
+  <App />
+</ErrorBoundary>
+```
+
+Use this to add additional actions such as error reporting or navigation links.
