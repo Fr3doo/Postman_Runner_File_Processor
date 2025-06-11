@@ -19,6 +19,5 @@ jobs:
       - run: npm run lint
       - run: npm test
       - name: Security audit
-        run: npm audit --audit-level=high
-        continue-on-error: true
+        run: npm audit --audit-level=high || true
 
