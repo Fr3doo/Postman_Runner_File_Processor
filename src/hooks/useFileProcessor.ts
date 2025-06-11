@@ -3,6 +3,8 @@ import { ProcessedFile, ProcessingStats } from '../types';
 import { FileParserService } from '../services/FileParserService';
 import { FileValidationService } from '../services/FileValidationService';
 import { CONCURRENCY_LIMIT, FILE_READ_TIMEOUT } from '../config/app';
+import { ValidationError, RateLimitError, ParsingError } from '../utils/errors';
+import { ValidationResult } from '../utils/securityValidator';
 
 export const useFileProcessor = (
   parserService: FileParserService = new FileParserService(),
@@ -14,31 +16,38 @@ export const useFileProcessor = (
   const processFiles = useCallback(
     async (files: FileList) => {
     // Validate rate limiting first
-    const rateLimitValidation = validationService.validateRateLimit();
-    if (!rateLimitValidation.isValid) {
-      // Show rate limit error
-      const errorFile: ProcessedFile = {
-        id: crypto.randomUUID(),
-        filename: 'Rate Limit Error',
-        status: 'error',
-        error: rateLimitValidation.errors.join(', '),
-      };
-      setProcessedFiles(prev => [errorFile, ...prev]);
-      return;
+    try {
+      validationService.validateRateLimit();
+    } catch (error) {
+      if (error instanceof RateLimitError) {
+        const errorFile: ProcessedFile = {
+          id: crypto.randomUUID(),
+          filename: 'Rate Limit Error',
+          status: 'error',
+          error: error.message,
+        };
+        setProcessedFiles(prev => [errorFile, ...prev]);
+        return;
+      }
+      throw error;
     }
 
     // Validate files before processing
-    const validation = validationService.validateFiles(files);
-    if (!validation.isValid) {
-      // Create error entries for validation failures
-      const errorFile: ProcessedFile = {
-        id: crypto.randomUUID(),
-        filename: 'Validation Error',
-        status: 'error',
-        error: validation.errors.join(', '),
-      };
-      setProcessedFiles(prev => [errorFile, ...prev]);
-      return;
+    let validation: ValidationResult;
+    try {
+      validation = validationService.validateFiles(files);
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        const errorFile: ProcessedFile = {
+          id: crypto.randomUUID(),
+          filename: 'Validation Error',
+          status: 'error',
+          error: error.message,
+        };
+        setProcessedFiles(prev => [errorFile, ...prev]);
+        return;
+      }
+      throw error;
     }
 
     // Show warnings if any
@@ -81,7 +90,13 @@ export const useFileProcessor = (
       } catch (error) {
         let errorMessage = 'Unknown error occurred';
 
-        if (error instanceof Error) {
+        if (
+          error instanceof ParsingError ||
+          error instanceof ValidationError ||
+          error instanceof RateLimitError
+        ) {
+          errorMessage = error.message;
+        } else if (error instanceof Error) {
           errorMessage = error.message;
         } else if (typeof error === 'string') {
           errorMessage = error;

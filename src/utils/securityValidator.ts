@@ -1,5 +1,6 @@
 import { SECURITY_CONFIG } from '../config/security';
 import { formatFileSize } from './format';
+import { ValidationError, RateLimitError } from './errors';
 
 export interface ValidationResult {
   isValid: boolean;
@@ -51,11 +52,17 @@ export const validateFile = (file: File): ValidationResult => {
     errors.push('File name contains suspicious characters or patterns.');
   }
 
-  return {
+  const result = {
     isValid: errors.length === 0,
     errors,
     warnings,
   };
+
+  if (!result.isValid) {
+    throw new ValidationError(result.errors.join(', '));
+  }
+
+  return result;
 };
 
 /**
@@ -90,11 +97,17 @@ export const validateFileList = (files: FileList | File[]): ValidationResult => 
     warnings.push(...fileValidation.warnings);
   });
 
-  return {
+  const result = {
     isValid: errors.length === 0,
     errors,
     warnings,
   };
+
+  if (!result.isValid) {
+    throw new ValidationError(result.errors.join(', '));
+  }
+
+  return result;
 };
 
 /**
@@ -109,7 +122,8 @@ export const validateAndSanitizeContent = (
   // Check content length
   if (content.length === 0) {
     errors.push('File is empty.');
-    return { isValid: false, errors, warnings };
+    const result = { isValid: false, errors, warnings };
+    throw new ValidationError(result.errors.join(', '));
   }
 
   // Split into lines for validation
@@ -154,12 +168,18 @@ export const validateAndSanitizeContent = (
     );
   }
 
-  return {
+  const result = {
     isValid: errors.length === 0,
     errors,
     warnings,
     sanitizedContent,
   };
+
+  if (!result.isValid) {
+    throw new ValidationError(result.errors.join(', '));
+  }
+
+  return result;
 };
 
 /**
@@ -229,16 +249,22 @@ export const validateRateLimit = (): ValidationResult => {
   if (!rateLimiter.isAllowed()) {
     const timeUntilReset = rateLimiter.getTimeUntilReset();
     const minutes = Math.ceil(timeUntilReset / (60 * 1000));
-    
+
     errors.push(
       `Rate limit exceeded. You can process more files in ${minutes} minute(s). ` +
       `Maximum: ${SECURITY_CONFIG.RATE_LIMIT_MAX_FILES} files per ${SECURITY_CONFIG.RATE_LIMIT_WINDOW / 60000} minutes.`
     );
   }
 
-  return {
+  const result = {
     isValid: errors.length === 0,
     errors,
     warnings,
   };
+
+  if (!result.isValid) {
+    throw new RateLimitError(result.errors.join(', '));
+  }
+
+  return result;
 };

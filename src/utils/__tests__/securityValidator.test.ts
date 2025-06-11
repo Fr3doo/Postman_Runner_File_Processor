@@ -1,11 +1,10 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { validateAndSanitizeContent, rateLimiter } from '../securityValidator';
+import { ValidationError } from '../errors';
 
 describe('validateAndSanitizeContent', () => {
   it('flags empty content', () => {
-    const result = validateAndSanitizeContent('');
-    expect(result.isValid).toBe(false);
-    expect(result.errors).toContain('File is empty.');
+    expect(() => validateAndSanitizeContent('')).toThrow(ValidationError);
   });
 
   it('sanitizes dangerous scripts', () => {

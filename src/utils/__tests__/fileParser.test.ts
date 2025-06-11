@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { parseFileContent } from '../fileParser';
+import { ParsingError } from '../errors';
 
 const validContent = `Header\n----------\nNombre de fichier(s) restant(s) : 5\nnumeroT\u00E9l\u00E9d\u00E9marche : AUTO-TEST123\nNom de projet : TRA - CODE - Example Project - v1.0\nNumero dossier : D123ABC\nDate de d\u00E9pot : 2024-05-01\n----------\nFooter`;
 
@@ -17,6 +18,6 @@ describe('parseFileContent', () => {
 
   it('throws when required fields are missing', () => {
     const invalidContent = `\n----------\nNombre de fichier(s) restant(s) : 1\n----------`;
-    expect(() => parseFileContent(invalidContent)).toThrow();
+    expect(() => parseFileContent(invalidContent)).toThrow(ParsingError);
   });
 });
