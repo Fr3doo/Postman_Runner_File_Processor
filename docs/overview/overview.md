@@ -15,3 +15,5 @@ The Postman Runner File Processor converts Postman Runner `.txt` files into stru
 - Displays processing statistics and errors
 - Client-side validation for file type, size and rate limits
 - [Security configuration reference](../reference/security-config.md) describes these limits in detail
+- Warnings are collected through a notification service
+- The UI is wrapped in an ErrorBoundary for graceful failures
