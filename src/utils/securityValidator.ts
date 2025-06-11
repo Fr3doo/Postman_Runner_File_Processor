@@ -1,4 +1,5 @@
 import { SECURITY_CONFIG } from '../config/security';
+import { formatFileSize } from './format';
 
 export interface ValidationResult {
   isValid: boolean;
@@ -201,18 +202,6 @@ export const rateLimiter = new RateLimiter();
 /**
  * Helper functions
  */
-const formatFileSize = (bytes: number): string => {
-  const units = ['B', 'KB', 'MB', 'GB'];
-  let size = bytes;
-  let unitIndex = 0;
-
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex++;
-  }
-
-  return `${size.toFixed(1)} ${units[unitIndex]}`;
-};
 
 const containsSuspiciousPatterns = (filename: string): boolean => {
   const suspiciousPatterns = [

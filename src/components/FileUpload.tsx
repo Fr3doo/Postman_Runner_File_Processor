@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Upload, FileText, AlertCircle, Shield, Info } from 'lucide-react';
 import { validateFileList } from '../utils/securityValidator';
 import { SECURITY_CONFIG } from '../config/security';
+import { formatFileSize } from '../utils/format';
 
 interface FileUploadProps {
   onFilesSelected: (files: FileList) => void;
@@ -80,19 +81,6 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
     // Files are valid, proceed with processing
     onFilesSelected(files);
   }, [onFilesSelected]);
-
-  const formatFileSize = (bytes: number): string => {
-    const units = ['B', 'KB', 'MB', 'GB'];
-    let size = bytes;
-    let unitIndex = 0;
-
-    while (size >= 1024 && unitIndex < units.length - 1) {
-      size /= 1024;
-      unitIndex++;
-    }
-
-    return `${size.toFixed(1)} ${units[unitIndex]}`;
-  };
 
   return (
     <div className="w-full max-w-4xl mx-auto mb-8">
