@@ -22,3 +22,4 @@ Project docs are stored in the `docs/` directory with the following structure:
 
 Start from [docs/index.md](docs/index.md) and see
 [docs/guides/contributing.md](docs/guides/contributing.md) for contributor guidelines.
+Refer to [docs/guides/documentation-style.md](docs/guides/documentation-style.md) for documentation conventions.
