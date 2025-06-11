@@ -19,60 +19,69 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
     e.preventDefault();
     e.stopPropagation();
     setIsDragOver(true);
-  }, []);
+  }, [setIsDragOver]);
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragOver(false);
-  }, []);
+  }, [setIsDragOver]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragOver(false);
-    
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      handleFilesSelected(files);
-    }
-  }, [handleFilesSelected]);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragOver(false);
 
-  const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      handleFilesSelected(files);
-    }
-    // Reset input value to allow re-selecting same files
-    e.target.value = '';
-  }, [handleFilesSelected]);
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        handleFilesSelected(files);
+      }
+    },
+    [handleFilesSelected, setIsDragOver]
+  );
 
-  const handleFilesSelected = useCallback((files: FileList) => {
-    // Clear previous validation messages
-    setValidationErrors([]);
-    setValidationWarnings([]);
+  const handleFileInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        handleFilesSelected(files);
+      }
+      // Reset input value to allow re-selecting same files
+      e.target.value = '';
+    },
+    [handleFilesSelected]
+  );
 
-    // Validate files
-    const validation = validationService.validateFiles(files);
-    
-    if (!validation.isValid) {
-      setValidationErrors(validation.errors);
-      setValidationWarnings(validation.warnings);
-      return;
-    }
+  const handleFilesSelected = useCallback(
+    (files: FileList) => {
+      // Clear previous validation messages
+      setValidationErrors([]);
+      setValidationWarnings([]);
 
-    if (validation.warnings.length > 0) {
-      setValidationWarnings(validation.warnings);
-    }
+      // Validate files
+      const validation = validationService.validateFiles(files);
 
-    // Files are valid, proceed with processing
-    onFilesSelected(files);
-  }, [onFilesSelected, validationService]);
+      if (!validation.isValid) {
+        setValidationErrors(validation.errors);
+        setValidationWarnings(validation.warnings);
+        return;
+      }
+
+      if (validation.warnings.length > 0) {
+        setValidationWarnings(validation.warnings);
+      }
+
+      // Files are valid, proceed with processing
+      onFilesSelected(files);
+    },
+    [onFilesSelected, validationService, setValidationErrors, setValidationWarnings]
+  );
 
   return (
     <div className="w-full max-w-4xl mx-auto mb-8">
