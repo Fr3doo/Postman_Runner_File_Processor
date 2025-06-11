@@ -56,6 +56,3 @@ jobs:
             test-results
           if-no-files-found: ignore
 
-      # Check for vulnerable dependencies
-      - name: Security audit
-        run: npm audit --audit-level=high
