@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Upload, FileText, AlertCircle, Shield, Info } from 'lucide-react';
-import { validateFileList } from '../utils/securityValidator';
+import { FileValidationService } from '../services/FileValidationService';
 import { SECURITY_CONFIG } from '../config/security';
 import { formatFileSize } from '../utils/format';
 
@@ -14,6 +14,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
   const [dragCounter, setDragCounter] = useState(0);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [validationWarnings, setValidationWarnings] = useState<string[]>([]);
+  const validationService = new FileValidationService();
 
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -66,7 +67,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
     setValidationWarnings([]);
 
     // Validate files
-    const validation = validateFileList(files);
+    const validation = validationService.validateFiles(files);
     
     if (!validation.isValid) {
       setValidationErrors(validation.errors);
