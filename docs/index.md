@@ -18,6 +18,7 @@ The documentation hierarchy is organised into the following folders:
 - [`overview/overview.md`](overview/overview.md) – High-level explanation of how the application works.
 
 ### Guides
+- [`guides/installation.md`](guides/installation.md) – Local setup instructions.
 - [`guides/contributing.md`](guides/contributing.md) – Steps for setting up the project and submitting changes.
 
 Advanced guides are not yet written. Contributions to expand this section are welcome.
