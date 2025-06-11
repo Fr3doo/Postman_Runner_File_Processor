@@ -2,6 +2,7 @@ import React from 'react';
 import { FileUpload } from './components/FileUpload';
 import { ResultsGrid } from './components/ResultsGrid';
 import { ProcessingStatsComponent } from './components/ProcessingStats';
+import { NotificationProvider } from './components/NotificationContext';
 import { useFileProcessor } from './hooks/useFileProcessor';
 import { FileText, Zap } from 'lucide-react';
 
@@ -15,8 +16,9 @@ function App() {
   } = useFileProcessor();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="container mx-auto px-4 py-8">
+    <NotificationProvider>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center space-x-3 mb-4">
@@ -62,8 +64,9 @@ function App() {
             </p>
           </div>
         )}
+        </div>
       </div>
-    </div>
+    </NotificationProvider>
   );
 }
 

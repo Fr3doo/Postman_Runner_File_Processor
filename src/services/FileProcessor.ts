@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { ProcessedFile } from '../types';
 import { FileParserService } from './FileParserService';
 import { FileValidationService } from './FileValidationService';
+import { notificationService } from './NotificationService';
 import { CONCURRENCY_LIMIT, FILE_READ_TIMEOUT } from '../config/app';
 import { RateLimitError, ValidationError, ParsingError } from '../utils/errors';
 import { ValidationResult } from '../utils/securityValidator';
@@ -51,7 +52,7 @@ export class FileProcessor {
     }
 
     if (validation.warnings.length > 0) {
-      console.warn('File validation warnings:', validation.warnings);
+      validation.warnings.forEach(w => notificationService.addWarning(w));
     }
 
     setIsProcessing(true);
