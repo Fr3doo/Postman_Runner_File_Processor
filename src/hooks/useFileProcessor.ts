@@ -2,12 +2,12 @@ import { useState, useCallback } from 'react';
 import { ProcessedFile, ProcessingStats } from '../types';
 import { FileParserService } from '../services/FileParserService';
 import { FileValidationService } from '../services/FileValidationService';
+import { CONCURRENCY_LIMIT, FILE_READ_TIMEOUT } from '../config/app';
 
 export const useFileProcessor = (
   parserService: FileParserService = new FileParserService(),
   validationService: FileValidationService = new FileValidationService()
 ) => {
-  const CONCURRENCY_LIMIT = 5;
   const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -64,7 +64,7 @@ export const useFileProcessor = (
       try {
 
         // Read file content with timeout
-        const content = await readFileWithTimeout(file, 30000); // 30 second timeout
+        const content = await readFileWithTimeout(file, FILE_READ_TIMEOUT); // 30 second timeout
 
         if (!content || content.trim().length === 0) {
           throw new Error('File is empty or could not be read.');
