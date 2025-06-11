@@ -101,8 +101,7 @@ export const validateFileList = (files: FileList | File[]): ValidationResult => 
  * Validates and sanitizes file content
  */
 export const validateAndSanitizeContent = (
-  content: string,
-  filename: string
+  content: string
 ): FileValidationResult => {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -216,6 +215,7 @@ const containsSuspiciousPatterns = (filename: string): boolean => {
 
 const sanitizeTextContent = (content: string): string => {
   // Remove null bytes and other control characters (except newlines and tabs)
+  // eslint-disable-next-line no-control-regex
   return content.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
 };
 

@@ -1,9 +1,9 @@
 import { FileData } from '../types';
 import { validateAndSanitizeContent } from './securityValidator';
 
-export const parseFileContent = (content: string, filename: string): FileData => {
+export const parseFileContent = (content: string): FileData => {
   // Validate and sanitize content first
-  const validation = validateAndSanitizeContent(content, filename);
+  const validation = validateAndSanitizeContent(content);
   
   if (!validation.isValid) {
     throw new Error(`Security validation failed: ${validation.errors.join(', ')}`);
@@ -57,7 +57,7 @@ export const parseFileContent = (content: string, filename: string): FileData =>
           }
           
           // Sanitize project name (remove potentially dangerous characters)
-          const sanitizedName = name.replace(/[<>:"|?*\\\/]/g, '_').trim();
+        const sanitizedName = name.replace(/[<>:"|?*\\/]/g, '_').trim();
           if (sanitizedName.length === 0) {
             throw new Error('Project name is empty after sanitization');
           }
@@ -123,7 +123,7 @@ export const parseFileContent = (content: string, filename: string): FileData =>
  */
 const sanitizeDate = (dateStr: string): string | null => {
   // Remove potentially dangerous characters
-  const sanitized = dateStr.replace(/[<>:"|?*\\\/]/g, '').trim();
+  const sanitized = dateStr.replace(/[<>:"|?*\\/]/g, '').trim();
   
   if (sanitized.length === 0) {
     return null;
@@ -176,7 +176,7 @@ export const downloadJSON = (data: FileData, filename: string): void => {
     
     // Sanitize filename
     const sanitizedFilename = filename
-      .replace(/[<>:"|?*\\\/]/g, '_')
+      .replace(/[<>:"|?*\\/]/g, '_')
       .replace(/\.txt$/i, '')
       .substring(0, 100); // Limit filename length
     

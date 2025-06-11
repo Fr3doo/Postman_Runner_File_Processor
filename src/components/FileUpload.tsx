@@ -11,7 +11,6 @@ interface FileUploadProps {
 
 export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProcessing }) => {
   const [isDragOver, setIsDragOver] = useState(false);
-  const [dragCounter, setDragCounter] = useState(0);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [validationWarnings, setValidationWarnings] = useState<string[]>([]);
   const validationService = new FileValidationService();
@@ -19,20 +18,13 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setDragCounter(prev => prev + 1);
     setIsDragOver(true);
   }, []);
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setDragCounter(prev => {
-      const newCounter = prev - 1;
-      if (newCounter <= 0) {
-        setIsDragOver(false);
-      }
-      return newCounter;
-    });
+    setIsDragOver(false);
   }, []);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -44,7 +36,6 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
     e.preventDefault();
     e.stopPropagation();
     setIsDragOver(false);
-    setDragCounter(0);
     
     const files = e.dataTransfer.files;
     if (files.length > 0) {
