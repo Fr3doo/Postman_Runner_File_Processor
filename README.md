@@ -25,6 +25,8 @@ A small React + TypeScript application for converting Postman Runner `.txt` file
 - [docs/reference/api-reference.md](docs/reference/api-reference.md) – internal API reference.
 - [docs/releases/changelog.md](docs/releases/changelog.md) – changelog and release notes.
 
+See [docs/index.md](docs/index.md) for the full documentation index. How‑to guides live in `docs/guides`, API and architecture references are in `docs/reference`, and changelogs and release notes can be found under `docs/releases`.
+
 ## Installation
 
 1. Install dependencies
