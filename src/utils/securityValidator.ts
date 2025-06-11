@@ -21,7 +21,7 @@ export const validateFile = (file: File): ValidationResult => {
   // Check file size
   if (file.size > SECURITY_CONFIG.MAX_FILE_SIZE) {
     errors.push(
-      `File "${file.name}" is too large (${formatFileSize(file.size)}). ` +
+      `File is too large (${formatFileSize(file.size)}). ` +
       `Maximum allowed size is ${formatFileSize(SECURITY_CONFIG.MAX_FILE_SIZE)}.`
     );
   }
@@ -33,7 +33,7 @@ export const validateFile = (file: File): ValidationResult => {
   
   if (!hasValidExtension) {
     errors.push(
-      `File "${file.name}" has an invalid extension. ` +
+      `File has an invalid extension. ` +
       `Allowed extensions: ${SECURITY_CONFIG.ALLOWED_FILE_EXTENSIONS.join(', ')}`
     );
   }
@@ -41,14 +41,14 @@ export const validateFile = (file: File): ValidationResult => {
   // Check MIME type if available
   if (file.type && !SECURITY_CONFIG.ALLOWED_MIME_TYPES.includes(file.type)) {
     warnings.push(
-      `File "${file.name}" has unexpected MIME type: ${file.type}. ` +
+      `File has unexpected MIME type: ${file.type}. ` +
       `Expected: ${SECURITY_CONFIG.ALLOWED_MIME_TYPES.filter(t => t).join(', ')}`
     );
   }
 
   // Check for suspicious file names
   if (containsSuspiciousPatterns(file.name)) {
-    errors.push(`File "${file.name}" contains suspicious characters or patterns.`);
+    errors.push('File name contains suspicious characters or patterns.');
   }
 
   return {
@@ -109,7 +109,7 @@ export const validateAndSanitizeContent = (
 
   // Check content length
   if (content.length === 0) {
-    errors.push(`File "${filename}" is empty.`);
+    errors.push('File is empty.');
     return { isValid: false, errors, warnings };
   }
 
@@ -119,7 +119,7 @@ export const validateAndSanitizeContent = (
   // Check line count
   if (lines.length > SECURITY_CONFIG.MAX_LINES_COUNT) {
     errors.push(
-      `File "${filename}" has too many lines (${lines.length}). ` +
+      `File has too many lines (${lines.length}). ` +
       `Maximum allowed: ${SECURITY_CONFIG.MAX_LINES_COUNT}`
     );
   }
@@ -128,7 +128,7 @@ export const validateAndSanitizeContent = (
   const longLines = lines.filter(line => line.length > SECURITY_CONFIG.MAX_LINE_LENGTH);
   if (longLines.length > 0) {
     warnings.push(
-      `File "${filename}" contains ${longLines.length} lines longer than ` +
+      `File contains ${longLines.length} lines longer than ` +
       `${SECURITY_CONFIG.MAX_LINE_LENGTH} characters.`
     );
   }
@@ -139,7 +139,7 @@ export const validateAndSanitizeContent = (
   // Remove dangerous patterns
   SECURITY_CONFIG.DANGEROUS_PATTERNS.forEach(pattern => {
     if (pattern.test(sanitizedContent)) {
-      warnings.push(`File "${filename}" contained potentially dangerous content that was removed.`);
+      warnings.push('File contained potentially dangerous content that was removed.');
       sanitizedContent = sanitizedContent.replace(pattern, '[REMOVED_SUSPICIOUS_CONTENT]');
     }
   });
@@ -150,8 +150,8 @@ export const validateAndSanitizeContent = (
   // Check if content was significantly modified
   if (sanitizedContent.length < content.length * 0.8) {
     errors.push(
-      `File "${filename}" content was heavily modified during sanitization. ` +
-      `This may indicate malicious content.`
+      'File content was heavily modified during sanitization. ' +
+      'This may indicate malicious content.'
     );
   }
 

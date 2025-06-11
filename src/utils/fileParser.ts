@@ -32,7 +32,7 @@ export const parseFileContent = (content: string, filename: string): FileData =>
           const count = parseInt(match[1], 10);
           // Validate reasonable range
           if (count < 0 || count > 999999) {
-            throw new Error(`Invalid file count: ${count}`);
+            throw new Error('Invalid file count.');
           }
           data.nombre_fichiers_restants = count;
         }
@@ -42,7 +42,7 @@ export const parseFileContent = (content: string, filename: string): FileData =>
           const teledemarcheNumber = match[1];
           // Validate format (alphanumeric only)
           if (!/^[A-Z0-9]+$/.test(teledemarcheNumber)) {
-            throw new Error(`Invalid télédémarche number format: ${teledemarcheNumber}`);
+            throw new Error('Invalid télédémarche number format.');
           }
           data.numero_teledemarche = teledemarcheNumber;
         }
@@ -53,7 +53,7 @@ export const parseFileContent = (content: string, filename: string): FileData =>
           
           // Validate components
           if (!/^[A-Z0-9]+$/.test(code)) {
-            throw new Error(`Invalid project code format: ${code}`);
+            throw new Error('Invalid project code format.');
           }
           
           // Sanitize project name (remove potentially dangerous characters)
@@ -64,7 +64,7 @@ export const parseFileContent = (content: string, filename: string): FileData =>
           
           // Validate version format
           if (!/^\d+(\.\d+)*$/.test(version)) {
-            throw new Error(`Invalid version format: ${version}`);
+            throw new Error('Invalid version format.');
           }
           
           data.nom_projet = `TRA - ${code} - ${sanitizedName} - v${version}`;
@@ -75,7 +75,7 @@ export const parseFileContent = (content: string, filename: string): FileData =>
           const dossierNumber = match[1];
           // Validate format (alphanumeric only)
           if (!/^[A-Z0-9]+$/.test(dossierNumber)) {
-            throw new Error(`Invalid dossier number format: ${dossierNumber}`);
+            throw new Error('Invalid dossier number format.');
           }
           data.numero_dossier = dossierNumber;
         }
@@ -87,16 +87,16 @@ export const parseFileContent = (content: string, filename: string): FileData =>
           // Validate date format and sanitize
           const sanitizedDate = sanitizeDate(dateStr);
           if (!sanitizedDate) {
-            throw new Error(`Invalid date format: ${dateStr}`);
+            throw new Error('Invalid date format.');
           }
           
           data.date_depot = sanitizedDate;
         }
       }
     } catch (error) {
-      // Re-throw with context
+      // Re-throw with context without leaking line content
       const message = error instanceof Error ? error.message : 'Unknown parsing error';
-      throw new Error(`Error parsing line "${line}": ${message}`);
+      throw new Error(`Error parsing file content: ${message}`);
     }
   }
   
@@ -192,7 +192,7 @@ export const downloadJSON = (data: FileData, filename: string): void => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   } catch (error) {
-    console.error('Error downloading JSON:', error);
+    console.error('Error downloading JSON file:', error);
     throw new Error('Failed to download JSON file. Please try again.');
   }
 };
