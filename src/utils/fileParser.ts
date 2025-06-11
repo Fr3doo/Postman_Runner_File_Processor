@@ -1,13 +1,10 @@
 import { FileData } from '../types';
 import { validateAndSanitizeContent } from './securityValidator';
+import { ParsingError } from './errors';
 
 export const parseFileContent = (content: string): FileData => {
   // Validate and sanitize content first
   const validation = validateAndSanitizeContent(content);
-  
-  if (!validation.isValid) {
-    throw new Error(`Security validation failed: ${validation.errors.join(', ')}`);
-  }
 
   // Use sanitized content for parsing
   const sanitizedContent = validation.sanitizedContent || content;
@@ -18,7 +15,7 @@ export const parseFileContent = (content: string): FileData => {
   const endIndex = lines.findIndex((line, index) => index > startIndex && line.includes('-'.repeat(10)));
   
   if (startIndex === -1 || endIndex === -1) {
-    throw new Error('No valid data block found. Expected format with dashed separators.');
+    throw new ParsingError('No valid data block found. Expected format with dashed separators.');
   }
   
   const dataBlock = lines.slice(startIndex + 1, endIndex);
@@ -32,7 +29,7 @@ export const parseFileContent = (content: string): FileData => {
           const count = parseInt(match[1], 10);
           // Validate reasonable range
           if (count < 0 || count > 999999) {
-            throw new Error('Invalid file count.');
+            throw new ParsingError('Invalid file count.');
           }
           data.nombre_fichiers_restants = count;
         }
@@ -42,7 +39,7 @@ export const parseFileContent = (content: string): FileData => {
           const teledemarcheNumber = match[1];
           // Validate format (alphanumeric only)
           if (!/^[A-Z0-9]+$/.test(teledemarcheNumber)) {
-            throw new Error('Invalid télédémarche number format.');
+            throw new ParsingError('Invalid télédémarche number format.');
           }
           data.numero_teledemarche = teledemarcheNumber;
         }
@@ -53,18 +50,18 @@ export const parseFileContent = (content: string): FileData => {
           
           // Validate components
           if (!/^[A-Z0-9]+$/.test(code)) {
-            throw new Error('Invalid project code format.');
+            throw new ParsingError('Invalid project code format.');
           }
           
           // Sanitize project name (remove potentially dangerous characters)
         const sanitizedName = name.replace(/[<>:"|?*\\/]/g, '_').trim();
           if (sanitizedName.length === 0) {
-            throw new Error('Project name is empty after sanitization');
+            throw new ParsingError('Project name is empty after sanitization');
           }
           
           // Validate version format
           if (!/^\d+(\.\d+)*$/.test(version)) {
-            throw new Error('Invalid version format.');
+            throw new ParsingError('Invalid version format.');
           }
           
           data.nom_projet = `TRA - ${code} - ${sanitizedName} - v${version}`;
@@ -75,7 +72,7 @@ export const parseFileContent = (content: string): FileData => {
           const dossierNumber = match[1];
           // Validate format (alphanumeric only)
           if (!/^[A-Z0-9]+$/.test(dossierNumber)) {
-            throw new Error('Invalid dossier number format.');
+            throw new ParsingError('Invalid dossier number format.');
           }
           data.numero_dossier = dossierNumber;
         }
@@ -87,7 +84,7 @@ export const parseFileContent = (content: string): FileData => {
           // Validate date format and sanitize
           const sanitizedDate = sanitizeDate(dateStr);
           if (!sanitizedDate) {
-            throw new Error('Invalid date format.');
+            throw new ParsingError('Invalid date format.');
           }
           
           data.date_depot = sanitizedDate;
@@ -96,7 +93,7 @@ export const parseFileContent = (content: string): FileData => {
     } catch (error) {
       // Re-throw with context without leaking line content
       const message = error instanceof Error ? error.message : 'Unknown parsing error';
-      throw new Error(`Error parsing file content: ${message}`);
+      throw new ParsingError(`Error parsing file content: ${message}`);
     }
   }
   
@@ -112,7 +109,7 @@ export const parseFileContent = (content: string): FileData => {
   const missingFields = requiredFields.filter(field => data[field] === undefined);
   
   if (missingFields.length > 0) {
-    throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
+    throw new ParsingError(`Missing required fields: ${missingFields.join(', ')}`);
   }
   
   return data as FileData;
