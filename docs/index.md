@@ -7,14 +7,15 @@ Pour l'installation et l'utilisation de base, reportez-vous au [README.md](../RE
 Les différents dossiers de `docs/` sont organisés ainsi :
 - `guides/` contient les tutoriels et conseils pour contribuer ou utiliser l'outil ;
 - `reference/` regroupe la description de l'API interne et l'architecture ;
-- `releases/` archive le journal des versions.
+- `releases/` archive le journal des versions ;
+- `overview/` présente la vue générale du projet.
 
 ---
 
 ## 📌 Sommaire
 
 ### 🧾 Vue générale du projet
-- [`project-overview.md`](project-overview.md)
+- [`overview/overview.md`](overview/overview.md)
   > Ce document résume le fonctionnement global du projet **Postman Runner File Processor** en français. Il est basé sur une explication destinée à un néophyte.
 
 ### 🧾 Vue d'ensemble des tests
