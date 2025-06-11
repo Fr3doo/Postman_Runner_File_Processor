@@ -1,6 +1,6 @@
 # Postman Runner File Processor
 
-A small React + TypeScript application for converting Postman Runner `.txt` files into structured JSON. Files are processed entirely in the browser with built‑in validation and sanitisation routines.
+A small React + TypeScript application for converting Postman Runner `.txt` files into structured JSON. Files are processed entirely in the browser with built‑in validation and sanitisation routines. For a full table of contents see [docs/index.md](docs/index.md).
 
 ## Features
 
@@ -14,6 +14,16 @@ A small React + TypeScript application for converting Postman Runner `.txt` file
 - Download a JSON file for each successfully processed input
 - Displays success or error state for every file and shows overall statistics
 - Client‑side checks for file type, size limits and rate limiting
+
+## Documentation
+
+- [docs/index.md](docs/index.md) – full documentation index.
+- [docs/overview/overview.md](docs/overview/overview.md) – project overview.
+- [docs/guides/contributing.md](docs/guides/contributing.md) – contribution guidelines.
+- [docs/reference/tests-overview.md](docs/reference/tests-overview.md) – running tests.
+- [docs/reference/architecture.md](docs/reference/architecture.md) – project architecture.
+- [docs/reference/api-reference.md](docs/reference/api-reference.md) – internal API reference.
+- [docs/releases/changelog.md](docs/releases/changelog.md) – changelog and release notes.
 
 ## Installation
 
