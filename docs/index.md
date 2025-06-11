@@ -1,12 +1,55 @@
-# Postman Runner File Processor Documentation
+# 📚 Documentation du projet - Postman Runner File Processor
 
-Welcome to the documentation for the Postman Runner File Processor. This section provides an overview of the project along with guides and technical references.
+Bienvenue dans la documentation technique du projet. Ce sommaire vous guide vers les différentes sections disponibles pour comprendre, utiliser et contribuer efficacement.
 
-## Contents
+Pour l'installation et l'utilisation de base, reportez-vous au [README.md](../README.md) situé à la racine du dépôt. Les contributeurs sont également invités à consulter [AGENTS.md](../AGENTS.md).
 
-- [Project overview](./project-overview.md)
-- [Contribution guide](./guides/contributing.md)
-- [Release notes](./releases/changelog.md)
-- [API reference](./reference/api-reference.md)
-- [Architecture](./reference/architecture.md)
-- [Tests overview](./reference/tests-overview.md)
+Les différents dossiers de `docs/` sont organisés ainsi :
+- `guides/` contient les tutoriels et conseils pour contribuer ou utiliser l'outil ;
+- `reference/` regroupe la description de l'API interne et l'architecture ;
+- `releases/` archive le journal des versions.
+
+---
+
+## 📌 Sommaire
+
+### 🧾 Vue générale du projet
+- [`project-overview.md`](project-overview.md)
+  > Ce document résume le fonctionnement global du projet **Postman Runner File Processor** en français. Il est basé sur une explication destinée à un néophyte.
+
+### 🧾 Vue d'ensemble des tests
+- [`reference/tests-overview.md`](reference/tests-overview.md)
+  > Présentation des fichiers de test, des outils utilisés et des instructions pour lancer les tests.
+
+### 🧱 Architecture du projet
+- [`reference/architecture.md`](reference/architecture.md)
+  > Description de la structure des dossiers, des composants techniques et du schéma de fonctionnement.
+
+### 📘 Référence API interne
+- [`reference/api-reference.md`](reference/api-reference.md)
+  > Documentation des fonctions clés et modules internes du projet.
+
+### 🤝 Guide de contribution
+- [`guides/contributing.md`](guides/contributing.md)
+  > Instructions pour les développeurs souhaitant proposer des modifications au projet.
+
+### 📝 Journal des modifications
+- [`releases/changelog.md`](releases/changelog.md)
+  > Historique des évolutions du projet, version par version.
+
+### 🧪 Tutoriels & Guides avancés
+- aucun tutoriels et/ou guides
+  > NA
+
+
+---
+
+## 🛠️ Générer la documentation (optionnel)
+
+Si vous utilisez un générateur comme [MkDocs](https://www.mkdocs.org/) ou [Sphinx](https://www.sphinx-doc.org/)
+
+---
+
+## 📬 Contact
+
+Pour toute question ou suggestion : ouvrez une *Issue* ou envoyez un mail à l’équipe projet.
