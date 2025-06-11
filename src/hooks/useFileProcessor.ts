@@ -62,15 +62,6 @@ export const useFileProcessor = (
       const fileId = initialFiles[index].id;
 
       try {
-        // Additional file validation
-        if (!file.name.endsWith('.txt')) {
-          throw new Error('Invalid file type. Only .txt files are supported.');
-        }
-
-        // Check file size again (defense in depth)
-        if (file.size > 10 * 1024 * 1024) { // 10MB
-          throw new Error(`File too large: ${(file.size / (1024 * 1024)).toFixed(1)}MB. Maximum allowed: 10MB.`);
-        }
 
         // Read file content with timeout
         const content = await readFileWithTimeout(file, 30000); // 30 second timeout
