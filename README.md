@@ -17,6 +17,8 @@ A small React + TypeScript application for converting Postman Runner `.txt` file
 
 ## Documentation
 
+See [docs/index.md](docs/index.md) for the full documentation index. How‑to guides live in `docs/guides`, API and architecture references are in `docs/reference`, and changelogs and release notes can be found under `docs/releases`.
+
 - [docs/index.md](docs/index.md) – full documentation index.
 - [docs/overview/overview.md](docs/overview/overview.md) – project overview.
 - [docs/guides/contributing.md](docs/guides/contributing.md) – contribution guidelines.
@@ -24,8 +26,6 @@ A small React + TypeScript application for converting Postman Runner `.txt` file
 - [docs/reference/architecture.md](docs/reference/architecture.md) – project architecture.
 - [docs/reference/api-reference.md](docs/reference/api-reference.md) – internal API reference.
 - [docs/releases/changelog.md](docs/releases/changelog.md) – changelog and release notes.
-
-See [docs/index.md](docs/index.md) for the full documentation index. How‑to guides live in `docs/guides`, API and architecture references are in `docs/reference`, and changelogs and release notes can be found under `docs/releases`.
 
 ## Installation
 
