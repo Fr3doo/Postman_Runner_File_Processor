@@ -79,7 +79,7 @@ export const useFileProcessor = (
         }
 
         // Parse with enhanced error handling
-        const data = parserService.parse(content, file.name);
+        const data = parserService.parse(content);
 
         setProcessedFiles(prev => prev.map(f =>
           f.id === fileId

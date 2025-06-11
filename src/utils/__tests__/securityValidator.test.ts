@@ -3,14 +3,14 @@ import { validateAndSanitizeContent, rateLimiter } from '../securityValidator';
 
 describe('validateAndSanitizeContent', () => {
   it('flags empty content', () => {
-    const result = validateAndSanitizeContent('', 'empty.txt');
+    const result = validateAndSanitizeContent('');
     expect(result.isValid).toBe(false);
     expect(result.errors).toContain('File is empty.');
   });
 
   it('sanitizes dangerous scripts', () => {
     const content = 'hello <script>alert(1)</script> world';
-    const result = validateAndSanitizeContent(content, 'a.txt');
+    const result = validateAndSanitizeContent(content);
     expect(result.isValid).toBe(true);
     expect(result.sanitizedContent).not.toContain('<script>');
   });
@@ -18,7 +18,7 @@ describe('validateAndSanitizeContent', () => {
 
 describe('RateLimiter', () => {
   afterEach(() => {
-    (rateLimiter as any).requests = [];
+    (rateLimiter as unknown as { requests: number[] }).requests = [];
     vi.useRealTimers();
   });
 

@@ -2,8 +2,8 @@ import { FileData } from '../types';
 import { parseFileContent, generateJSONContent, downloadJSON } from '../utils/fileParser';
 
 export class FileParserService {
-  parse(content: string, filename: string): FileData {
-    return parseFileContent(content, filename);
+  parse(content: string): FileData {
+    return parseFileContent(content);
   }
 
   toJSON(data: FileData): string {

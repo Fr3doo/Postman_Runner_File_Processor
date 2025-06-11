@@ -5,7 +5,7 @@ const validContent = `Header\n----------\nNombre de fichier(s) restant(s) : 5\nn
 
 describe('parseFileContent', () => {
   it('parses valid file content', () => {
-    const data = parseFileContent(validContent, 'sample.txt');
+    const data = parseFileContent(validContent);
     expect(data).toEqual({
       nombre_fichiers_restants: 5,
       numero_teledemarche: 'TEST123',
@@ -17,6 +17,6 @@ describe('parseFileContent', () => {
 
   it('throws when required fields are missing', () => {
     const invalidContent = `\n----------\nNombre de fichier(s) restant(s) : 1\n----------`;
-    expect(() => parseFileContent(invalidContent, 'sample.txt')).toThrow();
+    expect(() => parseFileContent(invalidContent)).toThrow();
   });
 });
