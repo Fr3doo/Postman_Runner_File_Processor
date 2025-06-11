@@ -20,8 +20,8 @@ The documentation hierarchy is organised into the following folders:
 ### Guides
 - [`guides/installation.md`](guides/installation.md) – Local setup instructions.
 - [`guides/contributing.md`](guides/contributing.md) – Steps for setting up the project and submitting changes.
-
-Advanced guides are not yet written. Contributions to expand this section are welcome.
+- [`guides/usage-example.md`](guides/usage-example.md) – Example workflow for uploading files and getting results.
+Additional advanced guides are welcome.
 
 ### Reference
 - [`reference/api-reference.md`](reference/api-reference.md) – Documentation of utility functions and modules.
