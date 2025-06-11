@@ -114,7 +114,7 @@ export const useFileProcessor = (
     }
 
     setIsProcessing(false);
-  }, []);
+  }, [parserService, validationService]);
 
   const clearResults = useCallback(() => {
     setProcessedFiles([]);

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { Upload, FileText, AlertCircle, Shield, Info } from 'lucide-react';
 import { FileValidationService } from '../services/FileValidationService';
 import { SECURITY_CONFIG } from '../config/security';
@@ -13,7 +13,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
   const [isDragOver, setIsDragOver] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [validationWarnings, setValidationWarnings] = useState<string[]>([]);
-  const validationService = new FileValidationService();
+  const validationService = useMemo(() => new FileValidationService(), []);
 
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -41,7 +41,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
     if (files.length > 0) {
       handleFilesSelected(files);
     }
-  }, []);
+  }, [handleFilesSelected]);
 
   const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -50,7 +50,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
     }
     // Reset input value to allow re-selecting same files
     e.target.value = '';
-  }, []);
+  }, [handleFilesSelected]);
 
   const handleFilesSelected = useCallback((files: FileList) => {
     // Clear previous validation messages
@@ -72,7 +72,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
 
     // Files are valid, proceed with processing
     onFilesSelected(files);
-  }, [onFilesSelected]);
+  }, [onFilesSelected, validationService]);
 
   return (
     <div className="w-full max-w-4xl mx-auto mb-8">
