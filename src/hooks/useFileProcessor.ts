@@ -11,7 +11,8 @@ export const useFileProcessor = (
   const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const processFiles = useCallback(async (files: FileList) => {
+  const processFiles = useCallback(
+    async (files: FileList) => {
     // Validate rate limiting first
     const rateLimitValidation = validationService.validateRateLimit();
     if (!rateLimitValidation.isValid) {
@@ -114,11 +115,11 @@ export const useFileProcessor = (
     }
 
     setIsProcessing(false);
-  }, [parserService, validationService]);
+  }, [parserService, validationService, setProcessedFiles, setIsProcessing]);
 
   const clearResults = useCallback(() => {
     setProcessedFiles([]);
-  }, []);
+  }, [setProcessedFiles]);
 
   const getStats = useCallback((): ProcessingStats => {
     return {
