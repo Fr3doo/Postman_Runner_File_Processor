@@ -7,6 +7,7 @@ export const useFileProcessor = (
   parserService: FileParserService = new FileParserService(),
   validationService: FileValidationService = new FileValidationService()
 ) => {
+  const CONCURRENCY_LIMIT = 5;
   const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -46,21 +47,19 @@ export const useFileProcessor = (
 
     setIsProcessing(true);
     const fileArray = Array.from(files);
-    
+
     // Initialize all files as processing
     const initialFiles: ProcessedFile[] = fileArray.map(file => ({
       id: crypto.randomUUID(),
       filename: file.name,
       status: 'processing',
     }));
-    
+
     setProcessedFiles(prev => [...initialFiles, ...prev]);
 
-    // Process each file with enhanced error handling
-    for (let i = 0; i < fileArray.length; i++) {
-      const file = fileArray[i];
-      const fileId = initialFiles[i].id;
-      
+    const tasks = fileArray.map((file, index) => async () => {
+      const fileId = initialFiles[index].id;
+
       try {
         // Additional file validation
         if (!file.name.endsWith('.txt')) {
@@ -74,22 +73,22 @@ export const useFileProcessor = (
 
         // Read file content with timeout
         const content = await readFileWithTimeout(file, 30000); // 30 second timeout
-        
+
         if (!content || content.trim().length === 0) {
           throw new Error('File is empty or could not be read.');
         }
 
         // Parse with enhanced error handling
         const data = parserService.parse(content, file.name);
-        
-        setProcessedFiles(prev => prev.map(f => 
-          f.id === fileId 
+
+        setProcessedFiles(prev => prev.map(f =>
+          f.id === fileId
             ? { ...f, status: 'success', data, originalContent: content }
             : f
         ));
       } catch (error) {
         let errorMessage = 'Unknown error occurred';
-        
+
         if (error instanceof Error) {
           errorMessage = error.message;
         } else if (typeof error === 'string') {
@@ -98,18 +97,22 @@ export const useFileProcessor = (
 
         // Sanitize error message to prevent XSS
         errorMessage = errorMessage.replace(/[<>]/g, '').substring(0, 500);
-        
-        setProcessedFiles(prev => prev.map(f => 
-          f.id === fileId 
+
+        setProcessedFiles(prev => prev.map(f =>
+          f.id === fileId
             ? { ...f, status: 'error', error: errorMessage }
             : f
         ));
       }
-      
-      // Add delay for visual feedback and to prevent overwhelming the system
+
       await new Promise(resolve => setTimeout(resolve, 300));
+    });
+
+    for (let i = 0; i < tasks.length; i += CONCURRENCY_LIMIT) {
+      const chunk = tasks.slice(i, i + CONCURRENCY_LIMIT).map(task => task());
+      await Promise.allSettled(chunk);
     }
-    
+
     setIsProcessing(false);
   }, []);
 
@@ -168,7 +171,7 @@ const readFileWithTimeout = (file: File, timeout: number): Promise<string> => {
 
     try {
       reader.readAsText(file, 'utf-8');
-    } catch (error) {
+    } catch {
       clearTimeout(timeoutId);
       reject(new Error('Failed to start reading file.'));
     }
