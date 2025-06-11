@@ -1,0 +1,173 @@
+import { useState, useCallback } from 'react';
+import { ProcessedFile, ProcessingStats } from '../types';
+import { parseFileContent } from '../utils/fileParser';
+import { validateFileList, validateRateLimit } from '../utils/securityValidator';
+
+export const useFileProcessor = () => {
+  const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const processFiles = useCallback(async (files: FileList) => {
+    // Validate rate limiting first
+    const rateLimitValidation = validateRateLimit();
+    if (!rateLimitValidation.isValid) {
+      // Show rate limit error
+      const errorFile: ProcessedFile = {
+        id: crypto.randomUUID(),
+        filename: 'Rate Limit Error',
+        status: 'error',
+        error: rateLimitValidation.errors.join(', '),
+      };
+      setProcessedFiles(prev => [errorFile, ...prev]);
+      return;
+    }
+
+    // Validate files before processing
+    const validation = validateFileList(files);
+    if (!validation.isValid) {
+      // Create error entries for validation failures
+      const errorFile: ProcessedFile = {
+        id: crypto.randomUUID(),
+        filename: 'Validation Error',
+        status: 'error',
+        error: validation.errors.join(', '),
+      };
+      setProcessedFiles(prev => [errorFile, ...prev]);
+      return;
+    }
+
+    // Show warnings if any
+    if (validation.warnings.length > 0) {
+      console.warn('File validation warnings:', validation.warnings);
+    }
+
+    setIsProcessing(true);
+    const fileArray = Array.from(files);
+    
+    // Initialize all files as processing
+    const initialFiles: ProcessedFile[] = fileArray.map(file => ({
+      id: crypto.randomUUID(),
+      filename: file.name,
+      status: 'processing',
+    }));
+    
+    setProcessedFiles(prev => [...initialFiles, ...prev]);
+
+    // Process each file with enhanced error handling
+    for (let i = 0; i < fileArray.length; i++) {
+      const file = fileArray[i];
+      const fileId = initialFiles[i].id;
+      
+      try {
+        // Additional file validation
+        if (!file.name.endsWith('.txt')) {
+          throw new Error('Invalid file type. Only .txt files are supported.');
+        }
+
+        // Check file size again (defense in depth)
+        if (file.size > 10 * 1024 * 1024) { // 10MB
+          throw new Error(`File too large: ${(file.size / (1024 * 1024)).toFixed(1)}MB. Maximum allowed: 10MB.`);
+        }
+
+        // Read file content with timeout
+        const content = await readFileWithTimeout(file, 30000); // 30 second timeout
+        
+        if (!content || content.trim().length === 0) {
+          throw new Error('File is empty or could not be read.');
+        }
+
+        // Parse with enhanced error handling
+        const data = parseFileContent(content, file.name);
+        
+        setProcessedFiles(prev => prev.map(f => 
+          f.id === fileId 
+            ? { ...f, status: 'success', data, originalContent: content }
+            : f
+        ));
+      } catch (error) {
+        let errorMessage = 'Unknown error occurred';
+        
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        } else if (typeof error === 'string') {
+          errorMessage = error;
+        }
+
+        // Sanitize error message to prevent XSS
+        errorMessage = errorMessage.replace(/[<>]/g, '').substring(0, 500);
+        
+        setProcessedFiles(prev => prev.map(f => 
+          f.id === fileId 
+            ? { ...f, status: 'error', error: errorMessage }
+            : f
+        ));
+      }
+      
+      // Add delay for visual feedback and to prevent overwhelming the system
+      await new Promise(resolve => setTimeout(resolve, 300));
+    }
+    
+    setIsProcessing(false);
+  }, []);
+
+  const clearResults = useCallback(() => {
+    setProcessedFiles([]);
+  }, []);
+
+  const getStats = useCallback((): ProcessingStats => {
+    return {
+      total: processedFiles.length,
+      processed: processedFiles.filter(f => f.status !== 'processing').length,
+      successful: processedFiles.filter(f => f.status === 'success').length,
+      failed: processedFiles.filter(f => f.status === 'error').length,
+    };
+  }, [processedFiles]);
+
+  return {
+    processedFiles,
+    isProcessing,
+    processFiles,
+    clearResults,
+    getStats,
+  };
+};
+
+/**
+ * Reads file content with timeout to prevent hanging
+ */
+const readFileWithTimeout = (file: File, timeout: number): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    
+    const timeoutId = setTimeout(() => {
+      reader.abort();
+      reject(new Error('File reading timeout. File may be corrupted or too large.'));
+    }, timeout);
+
+    reader.onload = () => {
+      clearTimeout(timeoutId);
+      if (typeof reader.result === 'string') {
+        resolve(reader.result);
+      } else {
+        reject(new Error('Failed to read file as text.'));
+      }
+    };
+
+    reader.onerror = () => {
+      clearTimeout(timeoutId);
+      reject(new Error('Failed to read file. File may be corrupted.'));
+    };
+
+    reader.onabort = () => {
+      clearTimeout(timeoutId);
+      reject(new Error('File reading was aborted.'));
+    };
+
+    try {
+      reader.readAsText(file, 'utf-8');
+    } catch (error) {
+      clearTimeout(timeoutId);
+      reject(new Error('Failed to start reading file.'));
+    }
+  });
+};
