@@ -27,6 +27,7 @@ Additional advanced guides are welcome.
 - [`reference/api-reference.md`](reference/api-reference.md) – Documentation of utility functions and modules.
 - [`reference/architecture.md`](reference/architecture.md) – Folder structure and architecture details.
 - [`reference/tests-overview.md`](reference/tests-overview.md) – Overview of tests and how to run them.
+- [`reference/security-config.md`](reference/security-config.md) – Explanation of security constants.
 
 ### Releases
 - [`releases/changelog.md`](releases/changelog.md) – Project history and version notes.
