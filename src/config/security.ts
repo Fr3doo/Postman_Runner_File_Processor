@@ -1,13 +1,13 @@
 // Security configuration constants
 export const SECURITY_CONFIG = {
   // File size limits
-  MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB per file
-  MAX_TOTAL_SIZE: 50 * 1024 * 1024, // 50MB total
+  MAX_FILE_SIZE: 100 * 1024 * 1024, // 10MB per file
+  MAX_TOTAL_SIZE: 500 * 1024 * 1024, // 50MB total
   MAX_FILES_COUNT: 20, // Maximum number of files
   
   // Content validation
-  MAX_LINE_LENGTH: 1000, // Maximum characters per line
-  MAX_LINES_COUNT: 10000, // Maximum lines per file
+  MAX_LINE_LENGTH: 50000, // Maximum characters per line
+  MAX_LINES_COUNT: 100000, // Maximum lines per file
   
   // Allowed patterns
   ALLOWED_FILE_EXTENSIONS: ['.txt'],
