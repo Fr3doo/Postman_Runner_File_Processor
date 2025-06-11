@@ -27,10 +27,15 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
     setIsDragOver(false);
   }, [setIsDragOver]);
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }, []);
+  const handleDragOver = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      // Keep drag state active while dragging over the drop zone
+      setIsDragOver(true);
+    },
+    [setIsDragOver]
+  );
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
