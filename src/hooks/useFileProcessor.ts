@@ -1,15 +1,18 @@
 import { useState, useCallback } from 'react';
 import { ProcessedFile, ProcessingStats } from '../types';
-import { parseFileContent } from '../utils/fileParser';
-import { validateFileList, validateRateLimit } from '../utils/securityValidator';
+import { FileParserService } from '../services/FileParserService';
+import { FileValidationService } from '../services/FileValidationService';
 
-export const useFileProcessor = () => {
+export const useFileProcessor = (
+  parserService: FileParserService = new FileParserService(),
+  validationService: FileValidationService = new FileValidationService()
+) => {
   const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const processFiles = useCallback(async (files: FileList) => {
     // Validate rate limiting first
-    const rateLimitValidation = validateRateLimit();
+    const rateLimitValidation = validationService.validateRateLimit();
     if (!rateLimitValidation.isValid) {
       // Show rate limit error
       const errorFile: ProcessedFile = {
@@ -23,7 +26,7 @@ export const useFileProcessor = () => {
     }
 
     // Validate files before processing
-    const validation = validateFileList(files);
+    const validation = validationService.validateFiles(files);
     if (!validation.isValid) {
       // Create error entries for validation failures
       const errorFile: ProcessedFile = {
@@ -77,7 +80,7 @@ export const useFileProcessor = () => {
         }
 
         // Parse with enhanced error handling
-        const data = parseFileContent(content, file.name);
+        const data = parserService.parse(content, file.name);
         
         setProcessedFiles(prev => prev.map(f => 
           f.id === fileId 
