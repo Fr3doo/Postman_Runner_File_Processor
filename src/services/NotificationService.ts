@@ -1,6 +1,13 @@
 export type WarningListener = (warnings: string[]) => void;
 
-class NotificationService {
+export interface INotificationService {
+  addWarning(warning: string): void;
+  clearWarnings(): void;
+  getWarnings(): string[];
+  subscribe(listener: WarningListener): () => void;
+}
+
+class NotificationService implements INotificationService {
   private warnings: string[] = [];
   private listeners: WarningListener[] = [];
 
@@ -32,4 +39,4 @@ class NotificationService {
   }
 }
 
-export const notificationService = new NotificationService();
+export const notificationService: INotificationService = new NotificationService();
