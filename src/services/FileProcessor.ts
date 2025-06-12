@@ -8,14 +8,16 @@ import {
 } from './NotificationService';
 import { loggingService } from './LoggingService';
 import { configService } from './ConfigService';
-import { RateLimitError, ValidationError, ParsingError } from '../utils/errors';
+import { ErrorHandler } from './ErrorHandler';
+import { RateLimitError, ValidationError } from '../utils/errors';
 import { ValidationResult } from '../utils/securityValidator';
 
 export class FileProcessor {
   constructor(
     private parserService: FileParserService,
     private validationService: FileValidationService,
-    private notifyService: INotificationService = notificationService
+    private notifyService: INotificationService = notificationService,
+    private errorHandler: ErrorHandler = new ErrorHandler()
   ) {}
 
   async processFiles(
@@ -28,12 +30,13 @@ export class FileProcessor {
       this.validationService.validateRateLimit();
     } catch (error) {
       if (error instanceof RateLimitError) {
-        loggingService.logError(`Rate limit exceeded: ${error.message}`);
+        const message = this.errorHandler.handle(error);
+        loggingService.logError(`Rate limit exceeded: ${message}`);
         const errorFile: ProcessedFile = {
           id: crypto.randomUUID(),
           filename: 'Rate Limit Error',
           status: 'error',
-          error: error.message,
+          error: message,
         };
         setProcessedFiles(prev => [errorFile, ...prev]);
         return;
@@ -46,12 +49,13 @@ export class FileProcessor {
       validation = this.validationService.validateFiles(files);
     } catch (error) {
       if (error instanceof ValidationError) {
-        loggingService.logError(`Validation failed: ${error.message}`);
+        const message = this.errorHandler.handle(error);
+        loggingService.logError(`Validation failed: ${message}`);
         const errorFile: ProcessedFile = {
           id: crypto.randomUUID(),
           filename: 'Validation Error',
           status: 'error',
-          error: error.message,
+          error: message,
         };
         setProcessedFiles(prev => [errorFile, ...prev]);
         return;
@@ -96,27 +100,13 @@ export class FileProcessor {
         );
         loggingService.logInfo(`Processed ${file.name} successfully`);
       } catch (error) {
-          let errorMessage = 'Une erreur inconnue est survenue';
-        if (
-          error instanceof ParsingError ||
-          error instanceof ValidationError ||
-          error instanceof RateLimitError
-        ) {
-          errorMessage = error.message;
-        } else if (error instanceof Error) {
-          errorMessage = error.message;
-        } else if (typeof error === 'string') {
-          errorMessage = error;
-        }
-
-        errorMessage = errorMessage.replace(/[<>]/g, '').substring(0, 500);
-
+        const message = this.errorHandler.handle(error);
         setProcessedFiles(prev =>
           prev.map(f =>
-            f.id === fileId ? { ...f, status: 'error', error: errorMessage } : f
+            f.id === fileId ? { ...f, status: 'error', error: message } : f
           )
         );
-        loggingService.logError(`Failed processing ${file.name}: ${errorMessage}`);
+        loggingService.logError(`Failed processing ${file.name}: ${message}`);
       }
 
       await new Promise(resolve => setTimeout(resolve, 300));
