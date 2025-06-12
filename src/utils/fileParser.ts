@@ -23,6 +23,7 @@ export const parseFileContent = (content: string): FileData => {
   
   for (const line of dataBlock) {
     try {
+      // Handle "📂 Nombre de fichier(s) restant(s) : 0"
       if (line.includes('Nombre de fichier(s) restant(s)')) {
         const match = line.match(/:\s*(\d+)/);
         if (match) {
@@ -33,8 +34,10 @@ export const parseFileContent = (content: string): FileData => {
           }
           data.nombre_fichiers_restants = count;
         }
-      } else if (line.includes('numeroTélédémarche')) {
-        const match = line.match(/AUTO-(\w+)/);
+      } 
+      // Handle "➡️ Le dossier au numeroTélédémarche: AUTO-YWSEVNW5 est déposé"
+      else if (line.includes('numeroTélédémarche') || line.includes('numeroTeledemarche')) {
+        const match = line.match(/AUTO-([A-Z0-9]+)/);
         if (match) {
           const teledemarcheNumber = match[1];
           // Validate format (alphanumeric only)
@@ -43,8 +46,11 @@ export const parseFileContent = (content: string): FileData => {
           }
           data.numero_teledemarche = teledemarcheNumber;
         }
-      } else if (line.includes('Nom de projet')) {
-        const match = line.match(/TRA - (\w+) - (.+?) - v([\d.]+)/);
+      } 
+      // Handle "➡️ Nom de projet : TRA - DICPE - Test Fred - v5"
+      else if (line.includes('Nom de projet')) {
+        // More flexible regex to handle different project name formats
+        const match = line.match(/:\s*TRA\s*-\s*([A-Z0-9]+)\s*-\s*(.+?)\s*-\s*v([\d.]+)/);
         if (match) {
           const [, code, name, version] = match;
           
@@ -54,20 +60,32 @@ export const parseFileContent = (content: string): FileData => {
           }
           
           // Sanitize project name (remove potentially dangerous characters)
-        const sanitizedName = name.replace(/[<>:"|?*\\/]/g, '_').trim();
+          const sanitizedName = name.replace(/[<>:"|?*\\/]/g, '_').trim();
           if (sanitizedName.length === 0) {
             throw new ParsingError('Project name is empty after sanitization');
           }
           
-          // Validate version format
+          // Validate version format (more flexible for single digit versions)
           if (!/^\d+(\.\d+)*$/.test(version)) {
             throw new ParsingError('Invalid version format.');
           }
           
           data.nom_projet = `TRA - ${code} - ${sanitizedName} - v${version}`;
+        } else {
+          // Fallback: try to extract the full project name as-is
+          const fallbackMatch = line.match(/:\s*(.+)$/);
+          if (fallbackMatch) {
+            const projectName = fallbackMatch[1].trim();
+            // Basic validation that it contains TRA
+            if (projectName.includes('TRA')) {
+              data.nom_projet = projectName;
+            }
+          }
         }
-      } else if (line.includes('Numero dossier')) {
-        const match = line.match(/D(\w+)/);
+      } 
+      // Handle "➡️ Numero dossier : D001726159"
+      else if (line.includes('Numero dossier')) {
+        const match = line.match(/D([A-Z0-9]+)/);
         if (match) {
           const dossierNumber = match[1];
           // Validate format (alphanumeric only)
@@ -76,7 +94,9 @@ export const parseFileContent = (content: string): FileData => {
           }
           data.numero_dossier = dossierNumber;
         }
-      } else if (line.includes('Date de dépot')) {
+      } 
+      // Handle "➡️ Date de dépot : 2025-06-11T12:00:00"
+      else if (line.includes('Date de dépot') || line.includes('Date de depot')) {
         const match = line.match(/:\s*(.+)$/);
         if (match) {
           const dateStr = match[1].trim();
@@ -126,10 +146,11 @@ const sanitizeDate = (dateStr: string): string | null => {
     return null;
   }
   
-  // Check for common date patterns
+  // Check for common date patterns including ISO format
   const datePatterns = [
     /^\d{1,2}\/\d{1,2}\/\d{4}$/, // DD/MM/YYYY or MM/DD/YYYY
     /^\d{4}-\d{1,2}-\d{1,2}$/, // YYYY-MM-DD
+    /^\d{4}-\d{1,2}-\d{1,2}T\d{1,2}:\d{1,2}:\d{1,2}$/, // ISO format: YYYY-MM-DDTHH:MM:SS
     /^\d{1,2}-\d{1,2}-\d{4}$/, // DD-MM-YYYY
     /^\d{1,2}\.\d{1,2}\.\d{4}$/, // DD.MM.YYYY
   ];

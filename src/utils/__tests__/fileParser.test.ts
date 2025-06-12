@@ -2,31 +2,36 @@ import { describe, it, expect } from 'vitest';
 import { parseFileContent } from '../fileParser';
 import { ParsingError } from '../errors';
 
-const validContent = `Header\n----------\nNombre de fichier(s) restant(s) : 5\nnumeroT\u00E9l\u00E9d\u00E9marche : AUTO-TEST123\nNom de projet : TRA - CODE - Example Project - v1.0\nNumero dossier : D123ABC\nDate de d\u00E9pot : 2024-05-01\n----------\nFooter`;
+const validContent = `Header\n-----------------------------------------------------------------\n📂 Nombre de fichier(s) restant(s) : 0\n➡️ Le dossier au numeroTélédémarche: AUTO-YWSEVNW5 est déposé\n➡️ Nom de projet : TRA - DICPE - Test Fred - v5\n➡️ Numero dossier : D001726159\n➡️ Date de dépot : 2025-06-11T12:00:00\n-----------------------------------------------------------------\nFooter`;
 
 const buildContent = (date: string): string =>
-  `Header\n----------\nNombre de fichier(s) restant(s) : 5\nnumeroT\u00E9l\u00E9d\u00E9marche : AUTO-TEST123\nNom de projet : TRA - CODE - Example Project - v1.0\nNumero dossier : D123ABC\nDate de d\u00E9pot : ${date}\n----------\nFooter`;
+  `Header\n-----------------------------------------------------------------\n📂 Nombre de fichier(s) restant(s) : 5\n➡️ Le dossier au numeroTélédémarche: AUTO-TEST123 est déposé\n➡️ Nom de projet : TRA - CODE - Example Project - v1.0\n➡️ Numero dossier : D123ABC\n➡️ Date de dépot : ${date}\n-----------------------------------------------------------------\nFooter`;
 
 describe('parseFileContent', () => {
-  it('parses valid file content', () => {
+  it('parses valid file content with new format', () => {
     const data = parseFileContent(validContent);
     expect(data).toEqual({
-      nombre_fichiers_restants: 5,
-      numero_teledemarche: 'TEST123',
-      nom_projet: 'TRA - CODE - Example Project - v1.0',
-      numero_dossier: '123ABC',
-      date_depot: '2024-05-01',
+      nombre_fichiers_restants: 0,
+      numero_teledemarche: 'YWSEVNW5',
+      nom_projet: 'TRA - DICPE - Test Fred - v5',
+      numero_dossier: '001726159',
+      date_depot: '2025-06-11T12:00:00',
     });
   });
 
   it('throws when required fields are missing', () => {
-    const invalidContent = `\n----------\nNombre de fichier(s) restant(s) : 1\n----------`;
+    const invalidContent = `\n-----------------------------------------------------------------\n📂 Nombre de fichier(s) restant(s) : 1\n-----------------------------------------------------------------`;
     expect(() => parseFileContent(invalidContent)).toThrow(ParsingError);
   });
 
   it('parses alternate date formats', () => {
     const data = parseFileContent(buildContent('01/05/2024'));
-    expect(data.date_depot).toBe('01052024');
+    expect(data.date_depot).toBe('01/05/2024');
+  });
+
+  it('parses ISO date format', () => {
+    const data = parseFileContent(buildContent('2025-06-11T12:00:00'));
+    expect(data.date_depot).toBe('2025-06-11T12:00:00');
   });
 
   it('throws for empty date', () => {
@@ -46,7 +51,7 @@ describe('parseFileContent', () => {
   });
 
   it('throws for invalid project code', () => {
-    const invalid = `Header\n----------\nNombre de fichier(s) restant(s) : 5\nnumeroT\u00E9l\u00E9d\u00E9marche : AUTO-TEST123\nNom de projet : TRA - badCode - Example Project - v1.0\nNumero dossier : D123ABC\nDate de d\u00E9pot : 2024-05-01\n----------\nFooter`;
+    const invalid = `Header\n-----------------------------------------------------------------\n📂 Nombre de fichier(s) restant(s) : 5\n➡️ Le dossier au numeroTélédémarche: AUTO-TEST123 est déposé\n➡️ Nom de projet : TRA - badCode - Example Project - v1.0\n➡️ Numero dossier : D123ABC\n➡️ Date de dépot : 2024-05-01\n-----------------------------------------------------------------\nFooter`;
     const fn = () => parseFileContent(invalid);
     expect(fn).toThrow(ParsingError);
     expect(fn).toThrow('Error parsing file content: Invalid project code format.');
@@ -60,9 +65,21 @@ describe('parseFileContent', () => {
   });
 
   it('throws for negative remaining files count', () => {
-    const invalid = `Header\n----------\nNombre de fichier(s) restant(s) : -1\nnumeroT\u00E9l\u00E9d\u00E9marche : AUTO-TEST123\nNom de projet : TRA - CODE - Example Project - v1.0\nNumero dossier : D123ABC\nDate de d\u00E9pot : 2024-05-01\n----------\nFooter`;
+    const invalid = `Header\n-----------------------------------------------------------------\n📂 Nombre de fichier(s) restant(s) : -1\n➡️ Le dossier au numeroTélédémarche: AUTO-TEST123 est déposé\n➡️ Nom de projet : TRA - CODE - Example Project - v1.0\n➡️ Numero dossier : D123ABC\n➡️ Date de dépot : 2024-05-01\n-----------------------------------------------------------------\nFooter`;
     const fn = () => parseFileContent(invalid);
     expect(fn).toThrow(ParsingError);
     expect(fn).toThrow('Missing required fields: nombre_fichiers_restants');
+  });
+
+  it('handles single digit version numbers', () => {
+    const content = `Header\n-----------------------------------------------------------------\n📂 Nombre de fichier(s) restant(s) : 0\n➡️ Le dossier au numeroTélédémarche: AUTO-YWSEVNW5 est déposé\n➡️ Nom de projet : TRA - DICPE - Test Fred - v5\n➡️ Numero dossier : D001726159\n➡️ Date de dépot : 2025-06-11T12:00:00\n-----------------------------------------------------------------\nFooter`;
+    const data = parseFileContent(content);
+    expect(data.nom_projet).toBe('TRA - DICPE - Test Fred - v5');
+  });
+
+  it('handles numeric dossier numbers with leading zeros', () => {
+    const content = `Header\n-----------------------------------------------------------------\n📂 Nombre de fichier(s) restant(s) : 0\n➡️ Le dossier au numeroTélédémarche: AUTO-YWSEVNW5 est déposé\n➡️ Nom de projet : TRA - DICPE - Test Fred - v5\n➡️ Numero dossier : D001726159\n➡️ Date de dépot : 2025-06-11T12:00:00\n-----------------------------------------------------------------\nFooter`;
+    const data = parseFileContent(content);
+    expect(data.numero_dossier).toBe('001726159');
   });
 });
