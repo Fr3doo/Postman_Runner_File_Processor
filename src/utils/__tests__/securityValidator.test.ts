@@ -13,6 +13,22 @@ describe('validateAndSanitizeContent', () => {
     expect(result.isValid).toBe(true);
     expect(result.sanitizedContent).not.toContain('<script>');
   });
+
+  it('throws when sanitization removes most content', () => {
+    const bigScript = `<script>${'malicious'.repeat(100)}</script>`;
+    const iframe = '<iframe src="javascript:alert(2)"></iframe>';
+    const content = `${bigScript}${iframe} onload=alert(1)`;
+    const fn = () => validateAndSanitizeContent(content);
+    expect(fn).toThrow(ValidationError);
+    expect(fn).toThrow('File content was heavily modified during sanitization.');
+  });
+
+  it('returns identical content when no issues found', () => {
+    const content = 'just some safe text';
+    const result = validateAndSanitizeContent(content);
+    expect(result.isValid).toBe(true);
+    expect(result.sanitizedContent).toBe(content);
+  });
 });
 
 describe('RateLimiter', () => {
