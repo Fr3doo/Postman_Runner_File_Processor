@@ -27,6 +27,8 @@ See [docs/index.md](docs/index.md) for the full documentation index. How‑to gu
 - [docs/reference/api-reference.md](docs/reference/api-reference.md) – internal API reference.
 - [docs/releases/changelog.md](docs/releases/changelog.md) – changelog and release notes.
 
+Consultez également [AGENTS.md](AGENTS.md) pour les conventions de contribution.
+
 ## Installation
 
 1. Install dependencies
