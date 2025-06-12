@@ -13,7 +13,10 @@ interface ErrorBoundaryState {
   hasError: boolean;
 }
 
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   public state: ErrorBoundaryState = { hasError: false };
 
   static getDerivedStateFromError(): ErrorBoundaryState {
@@ -34,8 +37,13 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
           <div className="space-y-4 text-center">
             <AlertTriangle className="mx-auto text-red-500" size={48} />
-              <h1 className="text-2xl font-semibold text-gray-800">Une erreur est survenue.</h1>
-              <p className="text-gray-600">Essayez de recharger la page ou contactez le support si le problème persiste.</p>
+            <h1 className="text-2xl font-semibold text-gray-800">
+              Une erreur est survenue.
+            </h1>
+            <p className="text-gray-600">
+              Essayez de recharger la page ou contactez le support si le
+              problème persiste.
+            </p>
           </div>
         </div>
       );

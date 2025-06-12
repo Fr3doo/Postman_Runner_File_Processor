@@ -7,63 +7,60 @@ import { useFileProcessor } from './hooks/useFileProcessor';
 import { FileText, Zap } from 'lucide-react';
 
 function App() {
-  const { 
-    processedFiles, 
-    isProcessing, 
-    processFiles, 
-    clearResults, 
-    getStats 
-  } = useFileProcessor();
+  const { processedFiles, isProcessing, processFiles, clearResults, getStats } =
+    useFileProcessor();
 
   return (
     <NotificationProvider>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="p-3 bg-blue-600 rounded-full">
-              <FileText className="text-white" size={32} />
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center space-x-3 mb-4">
+              <div className="p-3 bg-blue-600 rounded-full">
+                <FileText className="text-white" size={32} />
+              </div>
+              <div className="p-3 bg-purple-600 rounded-full">
+                <Zap className="text-white" size={32} />
+              </div>
             </div>
-            <div className="p-3 bg-purple-600 rounded-full">
-              <Zap className="text-white" size={32} />
-            </div>
-          </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Convertisseur de fichiers Postman Runner
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Téléchargez et traitez vos fichiers .txt issus de Postman Runner afin d'extraire des données structurées
-            et de générer des fichiers JSON téléchargeables avec une gestion complète des erreurs.
-          </p>
-        </div>
-
-        {/* File Upload Section */}
-        <FileUpload 
-          onFilesSelected={processFiles} 
-          isProcessing={isProcessing} 
-        />
-
-        {/* Processing Stats */}
-        <ProcessingStatsComponent 
-          stats={getStats()} 
-          onClearResults={clearResults} 
-        />
-
-        {/* Results Grid */}
-        <ResultsGrid files={processedFiles} />
-
-        {/* Empty State */}
-        {processedFiles.length === 0 && !isProcessing && (
-          <div className="text-center py-16">
-            <div className="p-4 bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-              <FileText className="text-gray-400" size={32} />
-            </div>
-            <p className="text-gray-500 text-lg">
-              Aucun fichier traité pour l'instant. Importez des fichiers .txt pour commencer !
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Convertisseur de fichiers Postman Runner
+            </h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Téléchargez et traitez vos fichiers .txt issus de Postman Runner
+              afin d'extraire des données structurées et de générer des fichiers
+              JSON téléchargeables avec une gestion complète des erreurs.
             </p>
           </div>
-        )}
+
+          {/* File Upload Section */}
+          <FileUpload
+            onFilesSelected={processFiles}
+            isProcessing={isProcessing}
+          />
+
+          {/* Processing Stats */}
+          <ProcessingStatsComponent
+            stats={getStats()}
+            onClearResults={clearResults}
+          />
+
+          {/* Results Grid */}
+          <ResultsGrid files={processedFiles} />
+
+          {/* Empty State */}
+          {processedFiles.length === 0 && !isProcessing && (
+            <div className="text-center py-16">
+              <div className="p-4 bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <FileText className="text-gray-400" size={32} />
+              </div>
+              <p className="text-gray-500 text-lg">
+                Aucun fichier traité pour l'instant. Importez des fichiers .txt
+                pour commencer !
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </NotificationProvider>

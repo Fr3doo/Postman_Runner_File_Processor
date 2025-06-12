@@ -32,7 +32,9 @@ describe('FileParserService', () => {
   });
 
   it('parse uses default strategy when none provided', () => {
-    (defaultParseStrategy as unknown as ReturnType<typeof vi.fn>).mockReturnValue(['d']);
+    (
+      defaultParseStrategy as unknown as ReturnType<typeof vi.fn>
+    ).mockReturnValue(['d']);
     const result = service.parse('content');
     expect(defaultParseStrategy).toHaveBeenCalledWith('content');
     expect(result).toEqual(['d']);
@@ -47,7 +49,9 @@ describe('FileParserService', () => {
   });
 
   it('toJSON calls generateJSONContent and returns its result', () => {
-    (generateJSONContent as unknown as ReturnType<typeof vi.fn>).mockReturnValue('json');
+    (
+      generateJSONContent as unknown as ReturnType<typeof vi.fn>
+    ).mockReturnValue('json');
     const data = {} as unknown as FileData;
     const result = service.toJSON(data);
     expect(generateJSONContent).toHaveBeenCalledWith(data);
@@ -69,8 +73,14 @@ describe('FileValidationService', () => {
   });
 
   it('validateFiles calls validateFileList and returns its result', () => {
-    const resultMock: ValidationResult = { isValid: true, errors: [], warnings: [] };
-    (validateFileList as unknown as ReturnType<typeof vi.fn>).mockReturnValue(resultMock);
+    const resultMock: ValidationResult = {
+      isValid: true,
+      errors: [],
+      warnings: [],
+    };
+    (validateFileList as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
+      resultMock,
+    );
     const files = [] as unknown as FileList;
     const result = service.validateFiles(files);
     expect(validateFileList).toHaveBeenCalledWith(files);
@@ -78,8 +88,14 @@ describe('FileValidationService', () => {
   });
 
   it('validateRateLimit calls validateRateLimit util and returns its result', () => {
-    const resultMock: ValidationResult = { isValid: true, errors: [], warnings: [] };
-    (validateRateLimit as unknown as ReturnType<typeof vi.fn>).mockReturnValue(resultMock);
+    const resultMock: ValidationResult = {
+      isValid: true,
+      errors: [],
+      warnings: [],
+    };
+    (validateRateLimit as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
+      resultMock,
+    );
     const result = service.validateRateLimit();
     expect(validateRateLimit).toHaveBeenCalled();
     expect(result).toBe(resultMock);
