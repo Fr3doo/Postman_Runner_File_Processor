@@ -78,12 +78,13 @@ Refer to [docs/guides/documentation-style.md](docs/guides/documentation-style.md
 
 ```mermaid
 graph TD
-    Utilisateur --> FileUpload
-    FileUpload --> FileProcessor
-    FileProcessor --> FileParserService
-    FileProcessor --> FileValidationService
-    FileProcessor --> NotificationService
-    NotificationService --> NotificationContext
+  A[Utilisateur] -->|sélection de fichiers| B(FileUpload)
+  B -->|liste valide| C(FileProcessor)
+  C --> D(FileParserService)
+  C --> E(FileValidationService)
+  C --> F(NotificationService)
+  F --> G(NotificationContext)
+
 
 ```
 
