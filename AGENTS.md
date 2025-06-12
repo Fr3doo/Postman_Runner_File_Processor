@@ -37,6 +37,7 @@ Refer to [docs/guides/documentation-style.md](docs/guides/documentation-style.md
 | **FileParserService** | Analyse le contenu d'un fichier texte pour extraire les données structurées | `src/services/FileParserService.ts` | Contenu texte brut | Tableau de `FileData` |
 | **FileValidationService** | Vérifie la taille, l'extension et le nombre de fichiers, applique les limites de débit | `src/services/FileValidationService.ts` | `FileList` | Résultat de validation ou exception |
 | **NotificationService** | Centralise les avertissements et permet aux composants de s'abonner | `src/services/NotificationService.ts` | Messages d'avertissement | Notifications via `NotificationContext` |
+| **LoggingService** | Enregistre les actions et erreurs importantes | `src/services/LoggingService.ts` | Chaînes de log | Liste des entrées de log |
 
 ---
 
@@ -70,6 +71,12 @@ Refer to [docs/guides/documentation-style.md](docs/guides/documentation-style.md
 - **Rôle** : Stocke les avertissements et informe les abonnés lorsque la liste change.
 - **Entrées** : Chaînes d'avertissement.
 - **Sorties** : Notifications via la méthode `subscribe`.
+- **Dépendances** : Aucune externe.
+
+### `LoggingService`
+- **Rôle** : Conserve les messages d'information et les erreurs pour un suivi interne.
+- **Entrées** : Chaînes de log via `logInfo` ou `logError`.
+- **Sorties** : Tableau d'entrées accessible avec `getLogs`.
 - **Dépendances** : Aucune externe.
 
 ---
