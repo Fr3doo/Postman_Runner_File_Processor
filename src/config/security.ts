@@ -1,8 +1,8 @@
 // Security configuration constants
 export const SECURITY_CONFIG = {
   // File size limits
-  MAX_FILE_SIZE: 100 * 1024 * 1024, // 10MB per file
-  MAX_TOTAL_SIZE: 500 * 1024 * 1024, // 50MB total
+  MAX_FILE_SIZE: 100 * 1024 * 1024, // 100MB per file
+  MAX_TOTAL_SIZE: 500 * 1024 * 1024, // 500MB total
   MAX_FILES_COUNT: 20, // Maximum number of files
   
   // Content validation
