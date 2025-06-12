@@ -38,6 +38,7 @@ Refer to [docs/guides/documentation-style.md](docs/guides/documentation-style.md
 | **FileValidationService** | Vérifie la taille, l'extension et le nombre de fichiers, applique les limites de débit | `src/services/FileValidationService.ts` | `FileList` | Résultat de validation ou exception |
 | **NotificationService** | Centralise les avertissements et permet aux composants de s'abonner | `src/services/NotificationService.ts` | Messages d'avertissement | Notifications via `NotificationContext` |
 | **LoggingService** | Enregistre les actions et erreurs importantes | `src/services/LoggingService.ts` | Chaînes de log | Liste des entrées de log |
+| **ErrorHandler** | Transforme les exceptions en messages utilisateur propres | `src/services/ErrorHandler.ts` | `Error` capturées | Chaîne de message nettoyée |
 
 ---
 
@@ -77,6 +78,12 @@ Refer to [docs/guides/documentation-style.md](docs/guides/documentation-style.md
 - **Rôle** : Conserve les messages d'information et les erreurs pour un suivi interne.
 - **Entrées** : Chaînes de log via `logInfo` ou `logError`.
 - **Sorties** : Tableau d'entrées accessible avec `getLogs`.
+- **Dépendances** : Aucune externe.
+
+### `ErrorHandler`
+- **Rôle** : Nettoie et normalise les messages d'erreur avant affichage.
+- **Entrées** : `Error` ou valeur inconnue.
+- **Sorties** : Chaîne de message utilisateur.
 - **Dépendances** : Aucune externe.
 
 ---
