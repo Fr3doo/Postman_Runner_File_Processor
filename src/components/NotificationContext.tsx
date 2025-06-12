@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { notificationService } from '../services/NotificationService';
+import {
+  notificationService,
+  type INotificationService,
+} from '../services/NotificationService';
 
 /* eslint-disable react-refresh/only-export-components */
 
@@ -13,22 +16,23 @@ const NotificationContext = createContext<NotificationContextValue | undefined>(
   undefined
 );
 
-export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const NotificationProvider: React.FC<{
+  children: React.ReactNode;
+  service?: INotificationService;
+}> = ({ children, service = notificationService }) => {
   const [warnings, setWarnings] = useState<string[]>([]);
 
   useEffect(() => {
-    const unsubscribe = notificationService.subscribe(setWarnings);
+    const unsubscribe = service.subscribe(setWarnings);
     return () => unsubscribe();
-  }, []);
+  }, [service]);
 
   return (
     <NotificationContext.Provider
       value={{
         warnings,
-        addWarning: notificationService.addWarning.bind(notificationService),
-        clearWarnings: notificationService.clearWarnings.bind(notificationService),
+        addWarning: service.addWarning.bind(service),
+        clearWarnings: service.clearWarnings.bind(service),
       }}
     >
       {children}

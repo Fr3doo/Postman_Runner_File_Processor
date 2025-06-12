@@ -2,7 +2,10 @@ import { Dispatch, SetStateAction } from 'react';
 import { ProcessedFile } from '../types';
 import { FileParserService } from './FileParserService';
 import { FileValidationService } from './FileValidationService';
-import { notificationService } from './NotificationService';
+import {
+  notificationService,
+  type INotificationService,
+} from './NotificationService';
 import { loggingService } from './LoggingService';
 import { CONCURRENCY_LIMIT, FILE_READ_TIMEOUT } from '../config/app';
 import { RateLimitError, ValidationError, ParsingError } from '../utils/errors';
@@ -11,7 +14,8 @@ import { ValidationResult } from '../utils/securityValidator';
 export class FileProcessor {
   constructor(
     private parserService: FileParserService,
-    private validationService: FileValidationService
+    private validationService: FileValidationService,
+    private notifyService: INotificationService = notificationService
   ) {}
 
   async processFiles(
@@ -56,7 +60,7 @@ export class FileProcessor {
     }
 
     if (validation.warnings.length > 0) {
-      validation.warnings.forEach(w => notificationService.addWarning(w));
+      validation.warnings.forEach(w => this.notifyService.addWarning(w));
       validation.warnings.forEach(w => loggingService.logInfo(`Warning: ${w}`));
     }
 
