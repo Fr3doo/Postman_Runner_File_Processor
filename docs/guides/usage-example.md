@@ -4,7 +4,7 @@ This guide walks through a basic workflow for processing Postman Runner `.txt` f
 
 ## 1. Upload files
 
-Drag one or more `.txt` files onto the **Upload Postman Runner Files** area or click **Choose Files** to browse from your computer. Validation errors or warnings appear below the drop zone if a file is not accepted.
+Drag one or more `.txt` files onto the **Téléverser des fichiers Postman Runner** area or click **Choisir des fichiers** to browse from your computer. Validation errors or warnings appear below the drop zone if a file is not accepted.
 
 ## 2. View results
 
@@ -20,7 +20,7 @@ If a file fails to parse, an error message is shown instead of the details.
 
 ## 3. Download the JSON output
 
-For successfully processed files, click **Download JSON** to save a structured output. A sample file looks like:
+For successfully processed files, click **Télécharger le JSON** to save a structured output. A sample file looks like:
 
 ```json
 {

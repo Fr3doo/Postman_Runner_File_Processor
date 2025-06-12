@@ -71,9 +71,9 @@ export class FileProcessor {
 
       try {
         const content = await this.readFileWithTimeout(file, FILE_READ_TIMEOUT);
-        if (!content || content.trim().length === 0) {
-          throw new Error('File is empty or could not be read.');
-        }
+          if (!content || content.trim().length === 0) {
+            throw new Error("Le fichier est vide ou n'a pas pu être lu.");
+          }
 
         const summaries = this.parserService.parse(content);
 
@@ -84,8 +84,8 @@ export class FileProcessor {
               : f
           )
         );
-      } catch (error) {
-        let errorMessage = 'Unknown error occurred';
+        } catch (error) {
+          let errorMessage = 'Une erreur inconnue est survenue';
         if (
           error instanceof ParsingError ||
           error instanceof ValidationError ||
@@ -124,7 +124,7 @@ export class FileProcessor {
       const timeoutId = setTimeout(() => {
         reader.abort();
         reject(
-          new Error('File reading timeout. File may be corrupted or too large.')
+            new Error('Délai de lecture dépassé. Le fichier est peut-être corrompu ou trop volumineux.')
         );
       }, timeout);
 
@@ -133,25 +133,25 @@ export class FileProcessor {
         if (typeof reader.result === 'string') {
           resolve(reader.result);
         } else {
-          reject(new Error('Failed to read file as text.'));
+            reject(new Error("Impossible de lire le fichier en texte."));
         }
       };
 
       reader.onerror = () => {
         clearTimeout(timeoutId);
-        reject(new Error('Failed to read file. File may be corrupted.'));
+          reject(new Error('Impossible de lire le fichier. Il est peut-être corrompu.'));
       };
 
       reader.onabort = () => {
         clearTimeout(timeoutId);
-        reject(new Error('File reading was aborted.'));
+          reject(new Error('La lecture du fichier a été annulée.'));
       };
 
       try {
         reader.readAsText(file, 'utf-8');
       } catch {
         clearTimeout(timeoutId);
-        reject(new Error('Failed to start reading file.'));
+          reject(new Error("Impossible de démarrer la lecture du fichier."));
       }
     });
   }

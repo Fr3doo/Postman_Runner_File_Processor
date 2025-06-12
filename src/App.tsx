@@ -30,11 +30,11 @@ function App() {
             </div>
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Postman Runner File Processor
+            Convertisseur de fichiers Postman Runner
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Upload and process your Postman Runner .txt files to extract structured data 
-            and generate downloadable JSON files with comprehensive error handling.
+            Téléchargez et traitez vos fichiers .txt issus de Postman Runner afin d'extraire des données structurées
+            et de générer des fichiers JSON téléchargeables avec une gestion complète des erreurs.
           </p>
         </div>
 
@@ -60,7 +60,7 @@ function App() {
               <FileText className="text-gray-400" size={32} />
             </div>
             <p className="text-gray-500 text-lg">
-              No files processed yet. Upload some .txt files to get started!
+              Aucun fichier traité pour l'instant. Importez des fichiers .txt pour commencer !
             </p>
           </div>
         )}

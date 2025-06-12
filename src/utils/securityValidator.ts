@@ -22,8 +22,8 @@ export const validateFile = (file: File): ValidationResult => {
   // Check file size
   if (file.size > SECURITY_CONFIG.MAX_FILE_SIZE) {
     errors.push(
-      `File is too large (${formatFileSize(file.size)}). ` +
-      `Maximum allowed size is ${formatFileSize(SECURITY_CONFIG.MAX_FILE_SIZE)}.`
+      `Fichier trop volumineux (${formatFileSize(file.size)}). ` +
+      `Taille maximale autorisée : ${formatFileSize(SECURITY_CONFIG.MAX_FILE_SIZE)}.`
     );
   }
 
@@ -34,22 +34,22 @@ export const validateFile = (file: File): ValidationResult => {
   
   if (!hasValidExtension) {
     errors.push(
-      `File has an invalid extension. ` +
-      `Allowed extensions: ${SECURITY_CONFIG.ALLOWED_FILE_EXTENSIONS.join(', ')}`
+      `Extension de fichier invalide. ` +
+      `Extensions autorisées : ${SECURITY_CONFIG.ALLOWED_FILE_EXTENSIONS.join(', ')}`
     );
   }
 
   // Check MIME type if available
   if (file.type && !SECURITY_CONFIG.ALLOWED_MIME_TYPES.includes(file.type)) {
     warnings.push(
-      `File has unexpected MIME type: ${file.type}. ` +
-      `Expected: ${SECURITY_CONFIG.ALLOWED_MIME_TYPES.filter(t => t).join(', ')}`
+      `Type MIME inattendu : ${file.type}. ` +
+      `Type(s) attendu(s) : ${SECURITY_CONFIG.ALLOWED_MIME_TYPES.filter(t => t).join(', ')}`
     );
   }
 
   // Check for suspicious file names
   if (containsSuspiciousPatterns(file.name)) {
-    errors.push('File name contains suspicious characters or patterns.');
+    errors.push('Le nom du fichier contient des caractères ou motifs suspects.');
   }
 
   const result = {
@@ -76,8 +76,8 @@ export const validateFileList = (files: FileList | File[]): ValidationResult => 
   // Check file count
   if (fileArray.length > SECURITY_CONFIG.MAX_FILES_COUNT) {
     errors.push(
-      `Too many files selected (${fileArray.length}). ` +
-      `Maximum allowed: ${SECURITY_CONFIG.MAX_FILES_COUNT}`
+        `Trop de fichiers sélectionnés (${fileArray.length}). ` +
+        `Maximum autorisé : ${SECURITY_CONFIG.MAX_FILES_COUNT}`
     );
   }
 
@@ -85,8 +85,8 @@ export const validateFileList = (files: FileList | File[]): ValidationResult => 
   const totalSize = fileArray.reduce((sum, file) => sum + file.size, 0);
   if (totalSize > SECURITY_CONFIG.MAX_TOTAL_SIZE) {
     errors.push(
-      `Total file size too large (${formatFileSize(totalSize)}). ` +
-      `Maximum allowed: ${formatFileSize(SECURITY_CONFIG.MAX_TOTAL_SIZE)}`
+        `Taille totale des fichiers trop grande (${formatFileSize(totalSize)}). ` +
+        `Maximum autorisé : ${formatFileSize(SECURITY_CONFIG.MAX_TOTAL_SIZE)}`
     );
   }
 
@@ -121,7 +121,7 @@ export const validateAndSanitizeContent = (
 
   // Check content length
   if (content.length === 0) {
-    errors.push('File is empty.');
+    errors.push('Le fichier est vide.');
     const result = { isValid: false, errors, warnings };
     throw new ValidationError(result.errors.join(', '));
   }
@@ -132,8 +132,8 @@ export const validateAndSanitizeContent = (
   // Check line count
   if (lines.length > SECURITY_CONFIG.MAX_LINES_COUNT) {
     errors.push(
-      `File has too many lines (${lines.length}). ` +
-      `Maximum allowed: ${SECURITY_CONFIG.MAX_LINES_COUNT}`
+      `Le fichier contient trop de lignes (${lines.length}). ` +
+      `Maximum autorisé : ${SECURITY_CONFIG.MAX_LINES_COUNT}`
     );
   }
 
@@ -141,8 +141,8 @@ export const validateAndSanitizeContent = (
   const longLines = lines.filter(line => line.length > SECURITY_CONFIG.MAX_LINE_LENGTH);
   if (longLines.length > 0) {
     warnings.push(
-      `File contains ${longLines.length} lines longer than ` +
-      `${SECURITY_CONFIG.MAX_LINE_LENGTH} characters.`
+      `Le fichier contient ${longLines.length} ligne(s) dépassant ` +
+      `${SECURITY_CONFIG.MAX_LINE_LENGTH} caractères.`
     );
   }
 
@@ -152,7 +152,7 @@ export const validateAndSanitizeContent = (
   // Remove dangerous patterns
   SECURITY_CONFIG.DANGEROUS_PATTERNS.forEach(pattern => {
     if (pattern.test(sanitizedContent)) {
-      warnings.push('File contained potentially dangerous content that was removed.');
+      warnings.push('Le fichier contenait du contenu potentiellement dangereux qui a été supprimé.');
       sanitizedContent = sanitizedContent.replace(pattern, '[REMOVED_SUSPICIOUS_CONTENT]');
     }
   });
@@ -163,8 +163,8 @@ export const validateAndSanitizeContent = (
   // Check if content was significantly modified
   if (sanitizedContent.length < content.length * 0.8) {
     errors.push(
-      'File content was heavily modified during sanitization. ' +
-      'This may indicate malicious content.'
+        'Le contenu du fichier a été fortement modifié lors de la sanitisation. ' +
+        'Cela peut indiquer un contenu malveillant.'
     );
   }
 
@@ -251,8 +251,8 @@ export const validateRateLimit = (): ValidationResult => {
     const minutes = Math.ceil(timeUntilReset / (60 * 1000));
 
     errors.push(
-      `Rate limit exceeded. You can process more files in ${minutes} minute(s). ` +
-      `Maximum: ${SECURITY_CONFIG.RATE_LIMIT_MAX_FILES} files per ${SECURITY_CONFIG.RATE_LIMIT_WINDOW / 60000} minutes.`
+        `Limite de débit dépassée. Vous pourrez traiter d'autres fichiers dans ${minutes} minute(s). ` +
+        `Maximum : ${SECURITY_CONFIG.RATE_LIMIT_MAX_FILES} fichiers par ${SECURITY_CONFIG.RATE_LIMIT_WINDOW / 60000} minutes.`
     );
   }
 

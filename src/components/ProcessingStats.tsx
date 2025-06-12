@@ -18,12 +18,12 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
     <div className="w-full max-w-4xl mx-auto mb-8">
       <Card className="border border-gray-200">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-800">Processing Summary</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Résumé du traitement</h3>
           <button
             onClick={onClearResults}
             className="text-red-600 hover:text-red-700 text-sm font-medium transition-colors"
           >
-            Clear Results
+              Effacer les résultats
           </button>
         </div>
         
@@ -33,7 +33,7 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
               <FileText className="text-gray-600" size={24} />
             </div>
             <div className="text-2xl font-bold text-gray-800">{stats.total}</div>
-            <div className="text-sm text-gray-600">Total Files</div>
+              <div className="text-sm text-gray-600">Fichiers totaux</div>
           </div>
           
           <div className="bg-blue-50 rounded-lg p-4 text-center">
@@ -41,7 +41,7 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
               <Clock className="text-blue-600" size={24} />
             </div>
             <div className="text-2xl font-bold text-blue-600">{stats.processed}</div>
-            <div className="text-sm text-blue-600">Processed</div>
+              <div className="text-sm text-blue-600">Traités</div>
           </div>
           
           <div className="bg-green-50 rounded-lg p-4 text-center">
@@ -49,7 +49,7 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
               <CheckCircle className="text-green-600" size={24} />
             </div>
             <div className="text-2xl font-bold text-green-600">{stats.successful}</div>
-            <div className="text-sm text-green-600">Successful</div>
+              <div className="text-sm text-green-600">Réussis</div>
           </div>
           
           <div className="bg-red-50 rounded-lg p-4 text-center">
@@ -57,14 +57,14 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
               <XCircle className="text-red-600" size={24} />
             </div>
             <div className="text-2xl font-bold text-red-600">{stats.failed}</div>
-            <div className="text-sm text-red-600">Failed</div>
+              <div className="text-sm text-red-600">Échoués</div>
           </div>
         </div>
         
         {stats.total > 0 && (
           <div className="mt-4">
             <div className="flex justify-between text-sm text-gray-600 mb-1">
-              <span>Progress</span>
+                <span>Avancement</span>
               <span>{Math.round((stats.processed / stats.total) * 100)}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
