@@ -50,7 +50,7 @@ describe('parseFileContent', () => {
     ➡️ Numero dossier : D222222
     ➡️ Date de dépot : 2024-12-31T23:59:59
     `;
-    
+
     const data = parseFileContent(multipleBlocksContent);
     expect(data).toEqual({
       nombre_fichiers_restants: 0,
@@ -96,7 +96,9 @@ describe('parseFileContent', () => {
     const invalid = `Header\n-----------------------------------------------------------------\n📂 Nombre de fichier(s) restant(s) : 5\n➡️ Le dossier au numeroTélédémarche: AUTO-TEST123 est déposé\n➡️ Nom de projet : TRA - badCode - Example Project - v1.0\n➡️ Numero dossier : D123ABC\n➡️ Date de dépot : 2024-05-01\n-----------------------------------------------------------------\nFooter`;
     const fn = () => parseFileContent(invalid);
     expect(fn).toThrow(ParsingError);
-    expect(fn).toThrow('Error parsing file content: Invalid project code format.');
+    expect(fn).toThrow(
+      'Error parsing file content: Invalid project code format.',
+    );
   });
 
   it('throws for unsupported date format', () => {

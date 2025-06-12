@@ -11,23 +11,32 @@ interface FileUploadProps {
   isProcessing: boolean;
 }
 
-export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProcessing }) => {
+export const FileUpload: React.FC<FileUploadProps> = ({
+  onFilesSelected,
+  isProcessing,
+}) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const { warnings, addWarning, clearWarnings } = useNotifications();
   const validationService = useMemo(() => new FileValidationService(), []);
 
-  const handleDragEnter = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragOver(true);
-  }, [setIsDragOver]);
+  const handleDragEnter = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragOver(true);
+    },
+    [setIsDragOver],
+  );
 
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragOver(false);
-  }, [setIsDragOver]);
+  const handleDragLeave = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragOver(false);
+    },
+    [setIsDragOver],
+  );
 
   const handleDragOver = useCallback(
     (e: React.DragEvent) => {
@@ -36,41 +45,47 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
       // Keep drag state active while dragging over the drop zone
       setIsDragOver(true);
     },
-    [setIsDragOver]
+    [setIsDragOver],
   );
 
-    const handleFilesSelected = useCallback(
-      (files: FileList) => {
-        // Clear previous validation messages
-        setValidationErrors([]);
-        clearWarnings();
+  const handleFilesSelected = useCallback(
+    (files: FileList) => {
+      // Clear previous validation messages
+      setValidationErrors([]);
+      clearWarnings();
 
-        try {
-          // Validate files
-          const validation = validationService.validateFiles(files);
+      try {
+        // Validate files
+        const validation = validationService.validateFiles(files);
 
-          if (!validation.isValid) {
-            setValidationErrors(validation.errors);
-            validation.warnings.forEach(addWarning);
-            return;
-          }
-
-          if (validation.warnings.length > 0) {
-            validation.warnings.forEach(addWarning);
-          }
-
-          // Files are valid, proceed with processing
-          onFilesSelected(files);
-        } catch (error) {
-          if (error instanceof Error) {
-            setValidationErrors([error.message]);
-          } else {
-            setValidationErrors(['An unknown error occurred during validation.']);
-          }
+        if (!validation.isValid) {
+          setValidationErrors(validation.errors);
+          validation.warnings.forEach(addWarning);
+          return;
         }
-      },
-      [onFilesSelected, validationService, setValidationErrors, addWarning, clearWarnings]
-    );
+
+        if (validation.warnings.length > 0) {
+          validation.warnings.forEach(addWarning);
+        }
+
+        // Files are valid, proceed with processing
+        onFilesSelected(files);
+      } catch (error) {
+        if (error instanceof Error) {
+          setValidationErrors([error.message]);
+        } else {
+          setValidationErrors(['An unknown error occurred during validation.']);
+        }
+      }
+    },
+    [
+      onFilesSelected,
+      validationService,
+      setValidationErrors,
+      addWarning,
+      clearWarnings,
+    ],
+  );
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
@@ -83,7 +98,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
         handleFilesSelected(files);
       }
     },
-    [handleFilesSelected, setIsDragOver]
+    [handleFilesSelected, setIsDragOver],
   );
 
   const handleFileInput = useCallback(
@@ -95,7 +110,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
       // Reset input value to allow re-selecting same files
       e.target.value = '';
     },
-    [handleFilesSelected]
+    [handleFilesSelected],
   );
 
   return (
@@ -103,9 +118,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
       <Card
         className={`
           relative border-2 border-dashed text-center transition-all duration-300
-          ${isDragOver
-            ? 'border-blue-500 bg-blue-50 scale-105'
-            : 'border-gray-300 hover:border-gray-400'
+          ${
+            isDragOver
+              ? 'border-blue-500 bg-blue-50 scale-105'
+              : 'border-gray-300 hover:border-gray-400'
           }
           ${isProcessing ? 'opacity-50 pointer-events-none' : ''}
         `}
@@ -115,30 +131,34 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
         onDrop={handleDrop}
       >
         <div className="flex flex-col items-center space-y-4">
-          <div className={`
+          <div
+            className={`
             p-4 rounded-full transition-colors duration-300
             ${isDragOver ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'}
-          `}>
+          `}
+          >
             <Upload size={32} />
           </div>
-          
+
           <div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                Téléverser des fichiers Postman Runner
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Déposez vos fichiers .txt ici ou cliquez pour parcourir
-              </p>
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              Téléverser des fichiers Postman Runner
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Déposez vos fichiers .txt ici ou cliquez pour parcourir
+            </p>
           </div>
-          
+
           <div className="flex items-center space-x-4">
-            <label className="
+            <label
+              className="
               bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg
               cursor-pointer transition-colors duration-200 font-medium
               flex items-center space-x-2
-            ">
+            "
+            >
               <FileText size={20} />
-                <span>Choisir des fichiers</span>
+              <span>Choisir des fichiers</span>
               <input
                 type="file"
                 multiple
@@ -149,25 +169,40 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
               />
             </label>
           </div>
-          
+
           {/* Security Information */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl">
             <div className="flex items-center space-x-2 mb-2">
               <Shield className="text-blue-600" size={16} />
-                <span className="text-sm font-medium text-blue-800">Limites de sécurité</span>
+              <span className="text-sm font-medium text-blue-800">
+                Limites de sécurité
+              </span>
             </div>
             <div className="text-xs text-blue-700 space-y-1">
-                <div>• Maximum {configService.security.MAX_FILES_COUNT} fichiers par envoi</div>
-                <div>• Taille maximale {formatFileSize(configService.security.MAX_FILE_SIZE)} par fichier</div>
-                <div>• Taille totale maximale {formatFileSize(configService.security.MAX_TOTAL_SIZE)}</div>
-                <div>• Seuls les fichiers .txt provenant de Postman Runner sont pris en charge</div>
+              <div>
+                • Maximum {configService.security.MAX_FILES_COUNT} fichiers par
+                envoi
+              </div>
+              <div>
+                • Taille maximale{' '}
+                {formatFileSize(configService.security.MAX_FILE_SIZE)} par
+                fichier
+              </div>
+              <div>
+                • Taille totale maximale{' '}
+                {formatFileSize(configService.security.MAX_TOTAL_SIZE)}
+              </div>
+              <div>
+                • Seuls les fichiers .txt provenant de Postman Runner sont pris
+                en charge
+              </div>
             </div>
           </div>
-          
+
           {isDragOver && (
             <div className="absolute inset-0 bg-blue-500 bg-opacity-10 rounded-xl flex items-center justify-center">
               <div className="text-blue-600 font-semibold text-lg">
-                  Déposez les fichiers ici pour les traiter
+                Déposez les fichiers ici pour les traiter
               </div>
             </div>
           )}
@@ -179,7 +214,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
         <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex items-center space-x-2 mb-2">
             <AlertCircle className="text-red-500" size={16} />
-              <span className="text-sm font-medium text-red-800">Erreurs de validation</span>
+            <span className="text-sm font-medium text-red-800">
+              Erreurs de validation
+            </span>
           </div>
           <ul className="text-sm text-red-700 space-y-1">
             {validationErrors.map((error, index) => (
@@ -194,7 +231,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
         <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <div className="flex items-center space-x-2 mb-2">
             <Info className="text-yellow-600" size={16} />
-              <span className="text-sm font-medium text-yellow-800">Avertissements</span>
+            <span className="text-sm font-medium text-yellow-800">
+              Avertissements
+            </span>
           </div>
           <ul className="text-sm text-yellow-700 space-y-1">
             {warnings.map((warning, index) => (

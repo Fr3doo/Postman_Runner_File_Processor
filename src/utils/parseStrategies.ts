@@ -4,18 +4,26 @@ import { ParsingError } from './errors';
 
 export type ParseStrategy = (content: string) => FileData[];
 
-export const defaultParseStrategy: ParseStrategy = (content: string): FileData[] => {
+export const defaultParseStrategy: ParseStrategy = (
+  content: string,
+): FileData[] => {
   const validation = validateAndSanitizeContent(content);
   const sanitizedContent = validation.sanitizedContent || content;
-  const lines = sanitizedContent.split('\n').map(line => line.trim());
+  const lines = sanitizedContent.split('\n').map((line) => line.trim());
 
   const starts: number[] = [];
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    if (line.includes('📂 Nombre de fichier(s) restant(s)') || line.includes('Nombre de fichier(s) restant(s)')) {
+    if (
+      line.includes('📂 Nombre de fichier(s) restant(s)') ||
+      line.includes('Nombre de fichier(s) restant(s)')
+    ) {
       let hasValidPattern = false;
       for (let j = i; j < Math.min(i + 10, lines.length); j++) {
-        if (lines[j].includes('numeroTélédémarche') && lines[j].includes('AUTO-')) {
+        if (
+          lines[j].includes('numeroTélédémarche') &&
+          lines[j].includes('AUTO-')
+        ) {
           hasValidPattern = true;
           break;
         }
@@ -27,7 +35,9 @@ export const defaultParseStrategy: ParseStrategy = (content: string): FileData[]
   }
 
   if (starts.length === 0) {
-    throw new ParsingError('No valid summary block found. Expected format with file count and télédémarche number.');
+    throw new ParsingError(
+      'No valid summary block found. Expected format with file count and télédémarche number.',
+    );
   }
 
   const summaries: FileData[] = [];
@@ -54,7 +64,10 @@ const parseSummaryLines = (summaryLines: string[]): FileData => {
           }
           data.nombre_fichiers_restants = count;
         }
-      } else if (line.includes('numeroTélédémarche') || line.includes('numeroTeledemarche')) {
+      } else if (
+        line.includes('numeroTélédémarche') ||
+        line.includes('numeroTeledemarche')
+      ) {
         const match = line.match(/AUTO-([A-Z0-9-]+)/);
         if (match) {
           const cleanNumber = match[1].replace(/[^A-Z0-9-]/g, '');
@@ -64,7 +77,9 @@ const parseSummaryLines = (summaryLines: string[]): FileData => {
           data.numero_teledemarche = cleanNumber;
         }
       } else if (line.includes('Nom de projet')) {
-        const match = line.match(/:\s*TRA\s*-\s*([A-Z0-9]+)\s*-\s*(.+?)\s*-\s*v([\d.]+)/);
+        const match = line.match(
+          /:\s*TRA\s*-\s*([A-Z0-9]+)\s*-\s*(.+?)\s*-\s*v([\d.]+)/,
+        );
         if (match) {
           const [, code, name, version] = match;
           if (!/^[A-Z0-9]+$/.test(code)) {
@@ -83,7 +98,7 @@ const parseSummaryLines = (summaryLines: string[]): FileData => {
           if (fallbackMatch) {
             const projectName = fallbackMatch[1].trim();
             if (projectName.includes('TRA')) {
-              const parts = projectName.split('-').map(p => p.trim());
+              const parts = projectName.split('-').map((p) => p.trim());
               if (parts.length >= 2 && !/^[A-Z0-9]+$/.test(parts[1])) {
                 throw new ParsingError('Invalid project code format.');
               }
@@ -100,7 +115,10 @@ const parseSummaryLines = (summaryLines: string[]): FileData => {
           }
           data.numero_dossier = dossierNumber;
         }
-      } else if (line.includes('Date de dépot') || line.includes('Date de depot')) {
+      } else if (
+        line.includes('Date de dépot') ||
+        line.includes('Date de depot')
+      ) {
         const match = line.match(/:\s*(.+)$/);
         if (match) {
           const sanitizedDate = sanitizeDate(match[1].trim());
@@ -111,7 +129,8 @@ const parseSummaryLines = (summaryLines: string[]): FileData => {
         }
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown parsing error';
+      const message =
+        error instanceof Error ? error.message : 'Unknown parsing error';
       throw new ParsingError(`Error parsing file content: ${message}`);
     }
   }
@@ -121,11 +140,15 @@ const parseSummaryLines = (summaryLines: string[]): FileData => {
     'numero_teledemarche',
     'nom_projet',
     'numero_dossier',
-    'date_depot'
+    'date_depot',
   ];
-  const missingFields = requiredFields.filter(field => data[field] === undefined);
+  const missingFields = requiredFields.filter(
+    (field) => data[field] === undefined,
+  );
   if (missingFields.length > 0) {
-    throw new ParsingError(`Missing required fields: ${missingFields.join(', ')}`);
+    throw new ParsingError(
+      `Missing required fields: ${missingFields.join(', ')}`,
+    );
   }
   return data as FileData;
 };
@@ -145,7 +168,7 @@ const sanitizeDate = (dateStr: string): string | null => {
     /^\d{1,2}\.\d{1,2}\.\d{4}$/,
   ];
 
-  const isValidFormat = datePatterns.some(pattern => pattern.test(sanitized));
+  const isValidFormat = datePatterns.some((pattern) => pattern.test(sanitized));
 
   if (!isValidFormat) {
     if (sanitized.length > 50) {

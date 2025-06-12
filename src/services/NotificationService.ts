@@ -29,14 +29,15 @@ class NotificationService implements INotificationService {
     this.listeners.push(listener);
     listener(this.getWarnings());
     return () => {
-      this.listeners = this.listeners.filter(l => l !== listener);
+      this.listeners = this.listeners.filter((l) => l !== listener);
     };
   }
 
   private notify(): void {
     const warningsCopy = this.getWarnings();
-    this.listeners.forEach(listener => listener(warningsCopy));
+    this.listeners.forEach((listener) => listener(warningsCopy));
   }
 }
 
-export const notificationService: INotificationService = new NotificationService();
+export const notificationService: INotificationService =
+  new NotificationService();

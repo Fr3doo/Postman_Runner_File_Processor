@@ -15,7 +15,9 @@ import { SECURITY_CONFIG } from '../config/security';
 import { CONCURRENCY_LIMIT, FILE_READ_TIMEOUT } from '../config/app';
 
 const metaEnv: ImportMetaEnv | undefined =
-  typeof import.meta !== 'undefined' ? (import.meta as ImportMeta).env : undefined;
+  typeof import.meta !== 'undefined'
+    ? (import.meta as ImportMeta).env
+    : undefined;
 const env = metaEnv ?? process.env;
 
 class ConfigService {
@@ -28,7 +30,10 @@ class ConfigService {
   private getStringArray(key: string, fallback: string[]): string[] {
     const value = env[`VITE_${key}`] ?? env[key];
     if (typeof value !== 'string') return fallback;
-    return value.split(',').map(v => v.trim()).filter(Boolean);
+    return value
+      .split(',')
+      .map((v) => v.trim())
+      .filter(Boolean);
   }
 
   get concurrencyLimit(): number {
@@ -41,16 +46,43 @@ class ConfigService {
 
   get security(): SecurityConfig {
     return {
-      MAX_FILE_SIZE: this.getNumber('MAX_FILE_SIZE', SECURITY_CONFIG.MAX_FILE_SIZE),
-      MAX_TOTAL_SIZE: this.getNumber('MAX_TOTAL_SIZE', SECURITY_CONFIG.MAX_TOTAL_SIZE),
-      MAX_FILES_COUNT: this.getNumber('MAX_FILES_COUNT', SECURITY_CONFIG.MAX_FILES_COUNT),
-      MAX_LINE_LENGTH: this.getNumber('MAX_LINE_LENGTH', SECURITY_CONFIG.MAX_LINE_LENGTH),
-      MAX_LINES_COUNT: this.getNumber('MAX_LINES_COUNT', SECURITY_CONFIG.MAX_LINES_COUNT),
-      ALLOWED_FILE_EXTENSIONS: this.getStringArray('ALLOWED_FILE_EXTENSIONS', SECURITY_CONFIG.ALLOWED_FILE_EXTENSIONS),
-      ALLOWED_MIME_TYPES: this.getStringArray('ALLOWED_MIME_TYPES', SECURITY_CONFIG.ALLOWED_MIME_TYPES),
+      MAX_FILE_SIZE: this.getNumber(
+        'MAX_FILE_SIZE',
+        SECURITY_CONFIG.MAX_FILE_SIZE,
+      ),
+      MAX_TOTAL_SIZE: this.getNumber(
+        'MAX_TOTAL_SIZE',
+        SECURITY_CONFIG.MAX_TOTAL_SIZE,
+      ),
+      MAX_FILES_COUNT: this.getNumber(
+        'MAX_FILES_COUNT',
+        SECURITY_CONFIG.MAX_FILES_COUNT,
+      ),
+      MAX_LINE_LENGTH: this.getNumber(
+        'MAX_LINE_LENGTH',
+        SECURITY_CONFIG.MAX_LINE_LENGTH,
+      ),
+      MAX_LINES_COUNT: this.getNumber(
+        'MAX_LINES_COUNT',
+        SECURITY_CONFIG.MAX_LINES_COUNT,
+      ),
+      ALLOWED_FILE_EXTENSIONS: this.getStringArray(
+        'ALLOWED_FILE_EXTENSIONS',
+        SECURITY_CONFIG.ALLOWED_FILE_EXTENSIONS,
+      ),
+      ALLOWED_MIME_TYPES: this.getStringArray(
+        'ALLOWED_MIME_TYPES',
+        SECURITY_CONFIG.ALLOWED_MIME_TYPES,
+      ),
       DANGEROUS_PATTERNS: SECURITY_CONFIG.DANGEROUS_PATTERNS,
-      RATE_LIMIT_WINDOW: this.getNumber('RATE_LIMIT_WINDOW', SECURITY_CONFIG.RATE_LIMIT_WINDOW),
-      RATE_LIMIT_MAX_FILES: this.getNumber('RATE_LIMIT_MAX_FILES', SECURITY_CONFIG.RATE_LIMIT_MAX_FILES),
+      RATE_LIMIT_WINDOW: this.getNumber(
+        'RATE_LIMIT_WINDOW',
+        SECURITY_CONFIG.RATE_LIMIT_WINDOW,
+      ),
+      RATE_LIMIT_MAX_FILES: this.getNumber(
+        'RATE_LIMIT_MAX_FILES',
+        SECURITY_CONFIG.RATE_LIMIT_MAX_FILES,
+      ),
     };
   }
 }

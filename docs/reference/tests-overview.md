@@ -3,6 +3,7 @@
 Unit tests live in `src/utils/__tests__` and are executed with [Vitest](https://vitest.dev/).
 
 To run the test suite:
+
 ```bash
 npm test
 ```

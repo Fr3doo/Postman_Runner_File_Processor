@@ -1,9 +1,15 @@
 import { FileData } from '../types';
 import { generateJSONContent, downloadJSON } from '../utils/fileParser';
-import { defaultParseStrategy, type ParseStrategy } from '../utils/parseStrategies';
+import {
+  defaultParseStrategy,
+  type ParseStrategy,
+} from '../utils/parseStrategies';
 
 export class FileParserService {
-  parse(content: string, strategy: ParseStrategy = defaultParseStrategy): FileData[] {
+  parse(
+    content: string,
+    strategy: ParseStrategy = defaultParseStrategy,
+  ): FileData[] {
     return strategy(content);
   }
 

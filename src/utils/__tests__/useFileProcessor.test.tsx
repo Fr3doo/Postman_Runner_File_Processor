@@ -7,7 +7,8 @@ import type { FileValidationService } from '../../services/FileValidationService
 import type { FileData } from '../../types';
 import { ParsingError } from '../../utils/errors';
 
-const createFile = (name: string): File => new File(['dummy'], name, { type: 'text/plain' });
+const createFile = (name: string): File =>
+  new File(['dummy'], name, { type: 'text/plain' });
 
 const data: FileData = {
   nombre_fichiers_restants: 0,
@@ -21,15 +22,25 @@ describe('useFileProcessor', () => {
   it('processes files and calculates stats', async () => {
     vi.useFakeTimers();
     const parseMock = vi.fn(() => [data]);
-    const validateFilesMock = vi.fn(() => ({ isValid: true, errors: [], warnings: [] }));
-    const validateRateLimitMock = vi.fn(() => ({ isValid: true, errors: [], warnings: [] }));
+    const validateFilesMock = vi.fn(() => ({
+      isValid: true,
+      errors: [],
+      warnings: [],
+    }));
+    const validateRateLimitMock = vi.fn(() => ({
+      isValid: true,
+      errors: [],
+      warnings: [],
+    }));
     const parser = { parse: parseMock } as unknown as FileParserService;
     const validator = {
       validateFiles: validateFilesMock,
       validateRateLimit: validateRateLimitMock,
     } as unknown as FileValidationService;
     const processor = new FileProcessor(parser, validator);
-    (processor as unknown as { readFileWithTimeout: () => Promise<string> }).readFileWithTimeout = vi.fn(async () => 'content');
+    (
+      processor as unknown as { readFileWithTimeout: () => Promise<string> }
+    ).readFileWithTimeout = vi.fn(async () => 'content');
 
     const { result } = renderHook(() => useFileProcessor(processor));
     const files = [createFile('good.txt')];
@@ -53,15 +64,25 @@ describe('useFileProcessor', () => {
     const parseMock = vi.fn(() => {
       throw new ParsingError('nope');
     });
-    const validateFilesMock = vi.fn(() => ({ isValid: true, errors: [], warnings: [] }));
-    const validateRateLimitMock = vi.fn(() => ({ isValid: true, errors: [], warnings: [] }));
+    const validateFilesMock = vi.fn(() => ({
+      isValid: true,
+      errors: [],
+      warnings: [],
+    }));
+    const validateRateLimitMock = vi.fn(() => ({
+      isValid: true,
+      errors: [],
+      warnings: [],
+    }));
     const parser = { parse: parseMock } as unknown as FileParserService;
     const validator = {
       validateFiles: validateFilesMock,
       validateRateLimit: validateRateLimitMock,
     } as unknown as FileValidationService;
     const processor = new FileProcessor(parser, validator);
-    (processor as unknown as { readFileWithTimeout: () => Promise<string> }).readFileWithTimeout = vi.fn(async () => 'content');
+    (
+      processor as unknown as { readFileWithTimeout: () => Promise<string> }
+    ).readFileWithTimeout = vi.fn(async () => 'content');
 
     const { result } = renderHook(() => useFileProcessor(processor));
     const files = [createFile('bad.txt')];

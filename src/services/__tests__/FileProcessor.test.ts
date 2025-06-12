@@ -7,7 +7,8 @@ import type { FileData, ProcessedFile } from '../../types';
 import { ParsingError } from '../../utils/errors';
 import type { Dispatch, SetStateAction } from 'react';
 
-const createFile = (name: string): File => new File(['dummy'], name, { type: 'text/plain' });
+const createFile = (name: string): File =>
+  new File(['dummy'], name, { type: 'text/plain' });
 
 describe('FileProcessor', () => {
   let parseMock: ReturnType<typeof vi.fn>;
@@ -20,9 +21,17 @@ describe('FileProcessor', () => {
   let setIsProcessing: Dispatch<SetStateAction<boolean>>;
 
   beforeEach(() => {
-    parseMock = vi.fn((): FileData[] => ([] as FileData[]));
-    validateFilesMock = vi.fn(() => ({ isValid: true, errors: [], warnings: [] }));
-    validateRateLimitMock = vi.fn(() => ({ isValid: true, errors: [], warnings: [] }));
+    parseMock = vi.fn((): FileData[] => [] as FileData[]);
+    validateFilesMock = vi.fn(() => ({
+      isValid: true,
+      errors: [],
+      warnings: [],
+    }));
+    validateRateLimitMock = vi.fn(() => ({
+      isValid: true,
+      errors: [],
+      warnings: [],
+    }));
 
     const parserService = { parse: parseMock } as unknown as FileParserService;
     const validationService = {
@@ -35,10 +44,12 @@ describe('FileProcessor', () => {
     processedFiles = [];
     isProcessing = false;
     setProcessedFiles = (update): void => {
-      processedFiles = typeof update === 'function' ? update(processedFiles) : update;
+      processedFiles =
+        typeof update === 'function' ? update(processedFiles) : update;
     };
     setIsProcessing = (update): void => {
-      isProcessing = typeof update === 'function' ? update(isProcessing) : update;
+      isProcessing =
+        typeof update === 'function' ? update(isProcessing) : update;
     };
   });
 
@@ -50,18 +61,28 @@ describe('FileProcessor', () => {
     vi.useFakeTimers();
     let active = 0;
     let maxActive = 0;
-    (processor as unknown as { readFileWithTimeout: (file: File) => Promise<string> }).readFileWithTimeout = vi.fn(async () => {
+    (
+      processor as unknown as {
+        readFileWithTimeout: (file: File) => Promise<string>;
+      }
+    ).readFileWithTimeout = vi.fn(async () => {
       active++;
       maxActive = Math.max(maxActive, active);
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
       active--;
       return 'content';
     });
 
     const limit = configService.concurrencyLimit;
-    const files = Array.from({ length: limit * 2 }, (_, i) => createFile(`f${i}.txt`));
+    const files = Array.from({ length: limit * 2 }, (_, i) =>
+      createFile(`f${i}.txt`),
+    );
 
-    const promise = processor.processFiles(files as unknown as FileList, setProcessedFiles, setIsProcessing);
+    const promise = processor.processFiles(
+      files as unknown as FileList,
+      setProcessedFiles,
+      setIsProcessing,
+    );
     await vi.runAllTimersAsync();
     await promise;
 
@@ -76,15 +97,25 @@ describe('FileProcessor', () => {
       if (content === 'bad') throw new ParsingError('fail');
       return [{} as FileData];
     });
-    (processor as unknown as { readFileWithTimeout: (file: File) => Promise<string> }).readFileWithTimeout = vi.fn(async (file: File) => (file.name.includes('bad') ? 'bad' : 'good'));
+    (
+      processor as unknown as {
+        readFileWithTimeout: (file: File) => Promise<string>;
+      }
+    ).readFileWithTimeout = vi.fn(async (file: File) =>
+      file.name.includes('bad') ? 'bad' : 'good',
+    );
 
     const files = [createFile('good.txt'), createFile('bad.txt')];
-    const promise = processor.processFiles(files as unknown as FileList, setProcessedFiles, setIsProcessing);
+    const promise = processor.processFiles(
+      files as unknown as FileList,
+      setProcessedFiles,
+      setIsProcessing,
+    );
     await vi.runAllTimersAsync();
     await promise;
 
-    const good = processedFiles.find(f => f.filename === 'good.txt');
-    const bad = processedFiles.find(f => f.filename === 'bad.txt');
+    const good = processedFiles.find((f) => f.filename === 'good.txt');
+    const bad = processedFiles.find((f) => f.filename === 'bad.txt');
     expect(good?.status).toBe('success');
     expect(bad?.status).toBe('error');
     expect(bad?.error).toBeDefined();
@@ -92,15 +123,23 @@ describe('FileProcessor', () => {
 
   it('stores all parsed summary blocks', async () => {
     vi.useFakeTimers();
-    parseMock.mockReturnValue([{ } as FileData, {} as FileData]);
-    (processor as unknown as { readFileWithTimeout: (file: File) => Promise<string> }).readFileWithTimeout = vi.fn(async () => 'good');
+    parseMock.mockReturnValue([{} as FileData, {} as FileData]);
+    (
+      processor as unknown as {
+        readFileWithTimeout: (file: File) => Promise<string>;
+      }
+    ).readFileWithTimeout = vi.fn(async () => 'good');
 
     const files = [createFile('good.txt')];
-    const promise = processor.processFiles(files as unknown as FileList, setProcessedFiles, setIsProcessing);
+    const promise = processor.processFiles(
+      files as unknown as FileList,
+      setProcessedFiles,
+      setIsProcessing,
+    );
     await vi.runAllTimersAsync();
     await promise;
 
-    const good = processedFiles.find(f => f.filename === 'good.txt');
+    const good = processedFiles.find((f) => f.filename === 'good.txt');
     expect(good?.summaries?.length).toBe(2);
   });
 });

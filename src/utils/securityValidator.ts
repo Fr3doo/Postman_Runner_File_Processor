@@ -23,33 +23,38 @@ export const validateFile = (file: File): ValidationResult => {
   if (file.size > configService.security.MAX_FILE_SIZE) {
     errors.push(
       `Fichier trop volumineux (${formatFileSize(file.size)}). ` +
-      `Taille maximale autorisée : ${formatFileSize(configService.security.MAX_FILE_SIZE)}.`
+        `Taille maximale autorisée : ${formatFileSize(configService.security.MAX_FILE_SIZE)}.`,
     );
   }
 
   // Check file extension
-  const hasValidExtension = configService.security.ALLOWED_FILE_EXTENSIONS.some(ext =>
-    file.name.toLowerCase().endsWith(ext)
+  const hasValidExtension = configService.security.ALLOWED_FILE_EXTENSIONS.some(
+    (ext) => file.name.toLowerCase().endsWith(ext),
   );
-  
+
   if (!hasValidExtension) {
     errors.push(
       `Extension de fichier invalide. ` +
-      `Extensions autorisées : ${configService.security.ALLOWED_FILE_EXTENSIONS.join(', ')}`
+        `Extensions autorisées : ${configService.security.ALLOWED_FILE_EXTENSIONS.join(', ')}`,
     );
   }
 
   // Check MIME type if available
-  if (file.type && !configService.security.ALLOWED_MIME_TYPES.includes(file.type)) {
+  if (
+    file.type &&
+    !configService.security.ALLOWED_MIME_TYPES.includes(file.type)
+  ) {
     warnings.push(
       `Type MIME inattendu : ${file.type}. ` +
-      `Type(s) attendu(s) : ${configService.security.ALLOWED_MIME_TYPES.filter(t => t).join(', ')}`
+        `Type(s) attendu(s) : ${configService.security.ALLOWED_MIME_TYPES.filter((t) => t).join(', ')}`,
     );
   }
 
   // Check for suspicious file names
   if (containsSuspiciousPatterns(file.name)) {
-    errors.push('Le nom du fichier contient des caractères ou motifs suspects.');
+    errors.push(
+      'Le nom du fichier contient des caractères ou motifs suspects.',
+    );
   }
 
   const result = {
@@ -68,7 +73,9 @@ export const validateFile = (file: File): ValidationResult => {
 /**
  * Validates multiple files collectively
  */
-export const validateFileList = (files: FileList | File[]): ValidationResult => {
+export const validateFileList = (
+  files: FileList | File[],
+): ValidationResult => {
   const fileArray = Array.from(files);
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -76,8 +83,8 @@ export const validateFileList = (files: FileList | File[]): ValidationResult => 
   // Check file count
   if (fileArray.length > configService.security.MAX_FILES_COUNT) {
     errors.push(
-        `Trop de fichiers sélectionnés (${fileArray.length}). ` +
-        `Maximum autorisé : ${configService.security.MAX_FILES_COUNT}`
+      `Trop de fichiers sélectionnés (${fileArray.length}). ` +
+        `Maximum autorisé : ${configService.security.MAX_FILES_COUNT}`,
     );
   }
 
@@ -85,13 +92,13 @@ export const validateFileList = (files: FileList | File[]): ValidationResult => 
   const totalSize = fileArray.reduce((sum, file) => sum + file.size, 0);
   if (totalSize > configService.security.MAX_TOTAL_SIZE) {
     errors.push(
-        `Taille totale des fichiers trop grande (${formatFileSize(totalSize)}). ` +
-        `Maximum autorisé : ${formatFileSize(configService.security.MAX_TOTAL_SIZE)}`
+      `Taille totale des fichiers trop grande (${formatFileSize(totalSize)}). ` +
+        `Maximum autorisé : ${formatFileSize(configService.security.MAX_TOTAL_SIZE)}`,
     );
   }
 
   // Validate each file individually
-  fileArray.forEach(file => {
+  fileArray.forEach((file) => {
     const fileValidation = validateFile(file);
     errors.push(...fileValidation.errors);
     warnings.push(...fileValidation.warnings);
@@ -114,7 +121,7 @@ export const validateFileList = (files: FileList | File[]): ValidationResult => 
  * Validates and sanitizes file content
  */
 export const validateAndSanitizeContent = (
-  content: string
+  content: string,
 ): FileValidationResult => {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -133,27 +140,34 @@ export const validateAndSanitizeContent = (
   if (lines.length > configService.security.MAX_LINES_COUNT) {
     errors.push(
       `Le fichier contient trop de lignes (${lines.length}). ` +
-      `Maximum autorisé : ${configService.security.MAX_LINES_COUNT}`
+        `Maximum autorisé : ${configService.security.MAX_LINES_COUNT}`,
     );
   }
 
   // Check line length
-  const longLines = lines.filter(line => line.length > configService.security.MAX_LINE_LENGTH);
+  const longLines = lines.filter(
+    (line) => line.length > configService.security.MAX_LINE_LENGTH,
+  );
   if (longLines.length > 0) {
     warnings.push(
       `Le fichier contient ${longLines.length} ligne(s) dépassant ` +
-      `${configService.security.MAX_LINE_LENGTH} caractères.`
+        `${configService.security.MAX_LINE_LENGTH} caractères.`,
     );
   }
 
   // Sanitize content
   let sanitizedContent = content;
-  
+
   // Remove dangerous patterns
-  configService.security.DANGEROUS_PATTERNS.forEach(pattern => {
+  configService.security.DANGEROUS_PATTERNS.forEach((pattern) => {
     if (pattern.test(sanitizedContent)) {
-      warnings.push('Le fichier contenait du contenu potentiellement dangereux qui a été supprimé.');
-      sanitizedContent = sanitizedContent.replace(pattern, '[REMOVED_SUSPICIOUS_CONTENT]');
+      warnings.push(
+        'Le fichier contenait du contenu potentiellement dangereux qui a été supprimé.',
+      );
+      sanitizedContent = sanitizedContent.replace(
+        pattern,
+        '[REMOVED_SUSPICIOUS_CONTENT]',
+      );
     }
   });
 
@@ -163,8 +177,8 @@ export const validateAndSanitizeContent = (
   // Check if content was significantly modified
   if (sanitizedContent.length < content.length * 0.8) {
     errors.push(
-        'Le contenu du fichier a été fortement modifié lors de la sanitisation. ' +
-        'Cela peut indiquer un contenu malveillant.'
+      'Le contenu du fichier a été fortement modifié lors de la sanitisation. ' +
+        'Cela peut indiquer un contenu malveillant.',
     );
   }
 
@@ -190,10 +204,10 @@ class RateLimiter {
 
   isAllowed(): boolean {
     const now = Date.now();
-    
+
     // Remove old requests outside the window
     this.requests = this.requests.filter(
-      time => now - time < configService.security.RATE_LIMIT_WINDOW
+      (time) => now - time < configService.security.RATE_LIMIT_WINDOW,
     );
 
     // Check if under limit
@@ -208,10 +222,11 @@ class RateLimiter {
 
   getTimeUntilReset(): number {
     if (this.requests.length === 0) return 0;
-    
+
     const oldestRequest = Math.min(...this.requests);
-    const timeUntilReset = configService.security.RATE_LIMIT_WINDOW - (Date.now() - oldestRequest);
-    
+    const timeUntilReset =
+      configService.security.RATE_LIMIT_WINDOW - (Date.now() - oldestRequest);
+
     return Math.max(0, timeUntilReset);
   }
 }
@@ -224,13 +239,13 @@ export const rateLimiter = new RateLimiter();
 
 const containsSuspiciousPatterns = (filename: string): boolean => {
   const suspiciousPatterns = [
-    /\.\./,  // Directory traversal
-    /[<>:"|?*]/,  // Invalid filename characters
-    /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i,  // Windows reserved names
-    /^\./,  // Hidden files
+    /\.\./, // Directory traversal
+    /[<>:"|?*]/, // Invalid filename characters
+    /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i, // Windows reserved names
+    /^\./, // Hidden files
   ];
 
-  return suspiciousPatterns.some(pattern => pattern.test(filename));
+  return suspiciousPatterns.some((pattern) => pattern.test(filename));
 };
 
 const sanitizeTextContent = (content: string): string => {
@@ -251,8 +266,8 @@ export const validateRateLimit = (): ValidationResult => {
     const minutes = Math.ceil(timeUntilReset / (60 * 1000));
 
     errors.push(
-        `Limite de débit dépassée. Vous pourrez traiter d'autres fichiers dans ${minutes} minute(s). ` +
-        `Maximum : ${configService.security.RATE_LIMIT_MAX_FILES} fichiers par ${configService.security.RATE_LIMIT_WINDOW / 60000} minutes.`
+      `Limite de débit dépassée. Vous pourrez traiter d'autres fichiers dans ${minutes} minute(s). ` +
+        `Maximum : ${configService.security.RATE_LIMIT_MAX_FILES} fichiers par ${configService.security.RATE_LIMIT_WINDOW / 60000} minutes.`,
     );
   }
 

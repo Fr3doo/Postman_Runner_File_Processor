@@ -7,8 +7,8 @@ import { FileProcessor } from '../services/FileProcessor';
 export const useFileProcessor = (
   processor: FileProcessor = new FileProcessor(
     new FileParserService(),
-    new FileValidationService()
-  )
+    new FileValidationService(),
+  ),
 ) => {
   const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -17,7 +17,7 @@ export const useFileProcessor = (
     async (files: FileList) => {
       await processor.processFiles(files, setProcessedFiles, setIsProcessing);
     },
-    [processor, setProcessedFiles, setIsProcessing]
+    [processor, setProcessedFiles, setIsProcessing],
   );
 
   const clearResults = useCallback(() => {
@@ -27,9 +27,9 @@ export const useFileProcessor = (
   const getStats = useCallback((): ProcessingStats => {
     return {
       total: processedFiles.length,
-      processed: processedFiles.filter(f => f.status !== 'processing').length,
-      successful: processedFiles.filter(f => f.status === 'success').length,
-      failed: processedFiles.filter(f => f.status === 'error').length,
+      processed: processedFiles.filter((f) => f.status !== 'processing').length,
+      successful: processedFiles.filter((f) => f.status === 'success').length,
+      failed: processedFiles.filter((f) => f.status === 'error').length,
     };
   }, [processedFiles]);
 
