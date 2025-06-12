@@ -3,6 +3,7 @@ import { ProcessedFile } from '../types';
 import { FileParserService } from './FileParserService';
 import { FileValidationService } from './FileValidationService';
 import { notificationService } from './NotificationService';
+import { loggingService } from './LoggingService';
 import { CONCURRENCY_LIMIT, FILE_READ_TIMEOUT } from '../config/app';
 import { RateLimitError, ValidationError, ParsingError } from '../utils/errors';
 import { ValidationResult } from '../utils/securityValidator';
@@ -18,10 +19,12 @@ export class FileProcessor {
     setProcessedFiles: Dispatch<SetStateAction<ProcessedFile[]>>,
     setIsProcessing: Dispatch<SetStateAction<boolean>>
   ): Promise<void> {
+    loggingService.logInfo(`Start processing ${files.length} file(s)`);
     try {
       this.validationService.validateRateLimit();
     } catch (error) {
       if (error instanceof RateLimitError) {
+        loggingService.logError(`Rate limit exceeded: ${error.message}`);
         const errorFile: ProcessedFile = {
           id: crypto.randomUUID(),
           filename: 'Rate Limit Error',
@@ -39,6 +42,7 @@ export class FileProcessor {
       validation = this.validationService.validateFiles(files);
     } catch (error) {
       if (error instanceof ValidationError) {
+        loggingService.logError(`Validation failed: ${error.message}`);
         const errorFile: ProcessedFile = {
           id: crypto.randomUUID(),
           filename: 'Validation Error',
@@ -53,6 +57,7 @@ export class FileProcessor {
 
     if (validation.warnings.length > 0) {
       validation.warnings.forEach(w => notificationService.addWarning(w));
+      validation.warnings.forEach(w => loggingService.logInfo(`Warning: ${w}`));
     }
 
     setIsProcessing(true);
@@ -67,6 +72,7 @@ export class FileProcessor {
     setProcessedFiles(prev => [...initialFiles, ...prev]);
 
     const tasks = fileArray.map((file, index) => async () => {
+      loggingService.logInfo(`Processing file: ${file.name}`);
       const fileId = initialFiles[index].id;
 
       try {
@@ -84,7 +90,8 @@ export class FileProcessor {
               : f
           )
         );
-        } catch (error) {
+        loggingService.logInfo(`Processed ${file.name} successfully`);
+      } catch (error) {
           let errorMessage = 'Une erreur inconnue est survenue';
         if (
           error instanceof ParsingError ||
@@ -105,6 +112,7 @@ export class FileProcessor {
             f.id === fileId ? { ...f, status: 'error', error: errorMessage } : f
           )
         );
+        loggingService.logError(`Failed processing ${file.name}: ${errorMessage}`);
       }
 
       await new Promise(resolve => setTimeout(resolve, 300));
@@ -116,6 +124,7 @@ export class FileProcessor {
     }
 
     setIsProcessing(false);
+    loggingService.logInfo('All files processed');
   }
 
   private readFileWithTimeout(file: File, timeout: number): Promise<string> {
