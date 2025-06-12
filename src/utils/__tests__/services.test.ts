@@ -5,8 +5,11 @@ import type { FileData } from '../../types';
 import type { ValidationResult } from '../securityValidator';
 
 // Mock utility modules used by the services
+vi.mock('../parseStrategies', () => ({
+  defaultParseStrategy: vi.fn(),
+}));
+
 vi.mock('../fileParser', () => ({
-  parseAllSummaryBlocks: vi.fn(),
   generateJSONContent: vi.fn(),
   downloadJSON: vi.fn(),
 }));
@@ -17,11 +20,8 @@ vi.mock('../securityValidator', () => ({
 }));
 
 // Import the mocked functions for assertions
-import {
-  parseAllSummaryBlocks,
-  generateJSONContent,
-  downloadJSON,
-} from '../fileParser';
+import { defaultParseStrategy } from '../parseStrategies';
+import { generateJSONContent, downloadJSON } from '../fileParser';
 import { validateFileList, validateRateLimit } from '../securityValidator';
 
 describe('FileParserService', () => {
@@ -31,18 +31,19 @@ describe('FileParserService', () => {
     vi.clearAllMocks();
   });
 
-  it('parse calls parseAllSummaryBlocks and returns its result', () => {
-    (parseAllSummaryBlocks as unknown as ReturnType<typeof vi.fn>).mockReturnValue(['d']);
+  it('parse uses default strategy when none provided', () => {
+    (defaultParseStrategy as unknown as ReturnType<typeof vi.fn>).mockReturnValue(['d']);
     const result = service.parse('content');
-    expect(parseAllSummaryBlocks).toHaveBeenCalledWith('content');
+    expect(defaultParseStrategy).toHaveBeenCalledWith('content');
     expect(result).toEqual(['d']);
   });
 
-  it('parseAll calls parseAllSummaryBlocks and returns its result', () => {
-    (parseAllSummaryBlocks as unknown as ReturnType<typeof vi.fn>).mockReturnValue(['d']);
-    const result = service.parseAll('content');
-    expect(parseAllSummaryBlocks).toHaveBeenCalledWith('content');
-    expect(result).toEqual(['d']);
+  it('parse uses provided strategy', () => {
+    const custom = vi.fn().mockReturnValue(['x']);
+    const result = service.parse('custom', custom);
+    expect(custom).toHaveBeenCalledWith('custom');
+    expect(defaultParseStrategy).not.toHaveBeenCalled();
+    expect(result).toEqual(['x']);
   });
 
   it('toJSON calls generateJSONContent and returns its result', () => {

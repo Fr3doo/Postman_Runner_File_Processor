@@ -1,13 +1,10 @@
 import { FileData } from '../types';
-import { parseAllSummaryBlocks, generateJSONContent, downloadJSON } from '../utils/fileParser';
+import { generateJSONContent, downloadJSON } from '../utils/fileParser';
+import { defaultParseStrategy, type ParseStrategy } from '../utils/parseStrategies';
 
 export class FileParserService {
-  parse(content: string): FileData[] {
-    return parseAllSummaryBlocks(content);
-  }
-
-  parseAll(content: string): FileData[] {
-    return parseAllSummaryBlocks(content);
+  parse(content: string, strategy: ParseStrategy = defaultParseStrategy): FileData[] {
+    return strategy(content);
   }
 
   toJSON(data: FileData): string {
