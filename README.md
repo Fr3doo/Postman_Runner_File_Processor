@@ -28,27 +28,33 @@ See [docs/index.md](docs/index.md) for the full documentation index. How‑to gu
 - [docs/releases/changelog.md](docs/releases/changelog.md) – changelog and release notes.
 
 Consultez également [AGENTS.md](AGENTS.md) pour les conventions de contribution.
+Avant toute contribution, exécutez `npm run lint` puis `npm test`.
 
 ## Installation
 
-1. Install dependencies
+1. Check that Node.js 18 or newer is installed
+   ```bash
+   node -v
+   ```
+2. Install dependencies
    ```bash
    npm install
    ```
-2. Start the development server
+   Run this before `npm run lint` or `npm test`.
+3. Start the development server
    ```bash
    npm run dev
    ```
    The app will be served by Vite and reload on changes.
-3. Run the unit tests
+4. Run the unit tests
    ```bash
    npm test
    ```
-4. Create a production build
+5. Create a production build
    ```bash
    npm run build
    ```
-5. Preview the build locally
+6. Preview the build locally
    ```bash
    npm run preview
    ```
