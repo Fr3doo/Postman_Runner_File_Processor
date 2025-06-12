@@ -2,6 +2,7 @@ import React from 'react';
 import { ProcessedFile, FileData } from '../types';
 import { CheckCircle, XCircle, Clock, Download, FileText, Calendar, Hash, FolderOpen } from 'lucide-react';
 import { downloadJSON } from '../utils/fileParser';
+import { Card } from './ui/Card';
 
 interface ResultCardProps {
   file: ProcessedFile;
@@ -51,7 +52,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow duration-300">
+    <Card className="border border-gray-200 hover:shadow-xl transition-shadow duration-300">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
           {getStatusIcon()}
@@ -153,6 +154,6 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
           ))}
         </div>
       )}
-    </div>
+    </Card>
   );
 };
