@@ -20,7 +20,7 @@ describe('validateAndSanitizeContent', () => {
     const content = `${bigScript}${iframe} onload=alert(1)`;
     const fn = () => validateAndSanitizeContent(content);
     expect(fn).toThrow(ValidationError);
-    expect(fn).toThrow('File content was heavily modified during sanitization.');
+    expect(fn).toThrow('Le contenu du fichier a été fortement modifié lors de la sanitisation.');
   });
 
   it('returns identical content when no issues found', () => {

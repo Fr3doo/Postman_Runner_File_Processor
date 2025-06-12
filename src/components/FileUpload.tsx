@@ -123,12 +123,12 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
           </div>
           
           <div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              Upload Postman Runner Files
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Drag and drop your .txt files here, or click to browse
-            </p>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Téléverser des fichiers Postman Runner
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Déposez vos fichiers .txt ici ou cliquez pour parcourir
+              </p>
           </div>
           
           <div className="flex items-center space-x-4">
@@ -138,7 +138,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
               flex items-center space-x-2
             ">
               <FileText size={20} />
-              <span>Choose Files</span>
+                <span>Choisir des fichiers</span>
               <input
                 type="file"
                 multiple
@@ -154,20 +154,20 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl">
             <div className="flex items-center space-x-2 mb-2">
               <Shield className="text-blue-600" size={16} />
-              <span className="text-sm font-medium text-blue-800">Security Limits</span>
+                <span className="text-sm font-medium text-blue-800">Limites de sécurité</span>
             </div>
             <div className="text-xs text-blue-700 space-y-1">
-              <div>• Maximum {SECURITY_CONFIG.MAX_FILES_COUNT} files per upload</div>
-              <div>• Maximum {formatFileSize(SECURITY_CONFIG.MAX_FILE_SIZE)} per file</div>
-              <div>• Maximum {formatFileSize(SECURITY_CONFIG.MAX_TOTAL_SIZE)} total size</div>
-              <div>• Only .txt files from Postman Runner are supported</div>
+                <div>• Maximum {SECURITY_CONFIG.MAX_FILES_COUNT} fichiers par envoi</div>
+                <div>• Taille maximale {formatFileSize(SECURITY_CONFIG.MAX_FILE_SIZE)} par fichier</div>
+                <div>• Taille totale maximale {formatFileSize(SECURITY_CONFIG.MAX_TOTAL_SIZE)}</div>
+                <div>• Seuls les fichiers .txt provenant de Postman Runner sont pris en charge</div>
             </div>
           </div>
           
           {isDragOver && (
             <div className="absolute inset-0 bg-blue-500 bg-opacity-10 rounded-xl flex items-center justify-center">
               <div className="text-blue-600 font-semibold text-lg">
-                Drop files here to process
+                  Déposez les fichiers ici pour les traiter
               </div>
             </div>
           )}
@@ -179,7 +179,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
         <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex items-center space-x-2 mb-2">
             <AlertCircle className="text-red-500" size={16} />
-            <span className="text-sm font-medium text-red-800">Validation Errors</span>
+              <span className="text-sm font-medium text-red-800">Erreurs de validation</span>
           </div>
           <ul className="text-sm text-red-700 space-y-1">
             {validationErrors.map((error, index) => (
@@ -194,7 +194,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
         <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <div className="flex items-center space-x-2 mb-2">
             <Info className="text-yellow-600" size={16} />
-            <span className="text-sm font-medium text-yellow-800">Warnings</span>
+              <span className="text-sm font-medium text-yellow-800">Avertissements</span>
           </div>
           <ul className="text-sm text-yellow-700 space-y-1">
             {warnings.map((warning, index) => (

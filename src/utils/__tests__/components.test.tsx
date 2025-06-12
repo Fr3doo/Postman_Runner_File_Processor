@@ -34,7 +34,7 @@ describe('FileUpload', () => {
     const file = createFile('test.txt');
     const fileList = createFileList([file]);
     render(<FileUpload onFilesSelected={handler} isProcessing={false} />);
-    const dropZone = screen.getByText(/Upload Postman Runner Files/i).parentElement!.parentElement! as HTMLElement;
+    const dropZone = screen.getByText(/Téléverser des fichiers Postman Runner/i).parentElement!.parentElement! as HTMLElement;
     fireEvent.drop(dropZone, { dataTransfer: { files: fileList } });
     expect(handler).toHaveBeenCalledTimes(1);
   });
@@ -44,7 +44,7 @@ describe('FileUpload', () => {
     const file = createFile('test.txt');
     const fileList = createFileList([file]);
     render(<FileUpload onFilesSelected={handler} isProcessing={false} />);
-    const input = screen.getByLabelText(/choose files/i) as HTMLInputElement;
+    const input = screen.getByLabelText(/choisir des fichiers/i) as HTMLInputElement;
     fireEvent.change(input, { target: { files: fileList } });
     expect(handler).toHaveBeenCalledTimes(1);
   });
@@ -57,7 +57,7 @@ describe('FileUpload', () => {
       throw new ValidationError('Invalid extension');
     });
     render(<FileUpload onFilesSelected={handler} isProcessing={false} />);
-    const input = screen.getByLabelText(/choose files/i) as HTMLInputElement;
+    const input = screen.getByLabelText(/choisir des fichiers/i) as HTMLInputElement;
     fireEvent.change(input, { target: { files: fileList } });
     expect(handler).not.toHaveBeenCalled();
     expect(screen.getByText(/Invalid extension/)).toBeTruthy();
@@ -81,19 +81,19 @@ describe('ResultCard', () => {
       />
     );
     expect(screen.getByText('file.txt')).toBeTruthy();
-    expect(screen.getByText(/Download JSON/)).toBeTruthy();
+    expect(screen.getByText(/Télécharger le JSON/)).toBeTruthy();
     expect(screen.getByText('Project')).toBeTruthy();
   });
 
   it('shows error message', () => {
     render(<ResultCard file={{ id: '2', filename: 'bad.txt', status: 'error', error: 'oops' }} />);
-    expect(screen.getByText(/Processing Error/)).toBeTruthy();
+    expect(screen.getByText(/Erreur de traitement/)).toBeTruthy();
     expect(screen.getByText('oops')).toBeTruthy();
   });
 
   it('indicates processing state', () => {
     render(<ResultCard file={{ id: '3', filename: 'proc.txt', status: 'processing' }} />);
-    expect(screen.getByText(/Processing file/)).toBeTruthy();
+    expect(screen.getByText(/Traitement du fichier/)).toBeTruthy();
   });
 });
 
@@ -130,8 +130,8 @@ describe('ProcessingStatsComponent', () => {
         onClearResults={onClear}
       />
     );
-    expect(screen.getByText('Processing Summary')).toBeTruthy();
-    fireEvent.click(screen.getByText(/Clear Results/));
+    expect(screen.getByText('Résumé du traitement')).toBeTruthy();
+    fireEvent.click(screen.getByText(/Effacer les résultats/));
     expect(onClear).toHaveBeenCalled();
   });
 });
@@ -153,7 +153,7 @@ describe('App integration', () => {
   it('wires FileUpload to hook', async () => {
     const { default: App } = await import('../../App');
     render(<App />);
-    const input = screen.getByLabelText(/choose files/i) as HTMLInputElement;
+    const input = screen.getByLabelText(/choisir des fichiers/i) as HTMLInputElement;
     const file = createFile('test.txt');
     const fileList = createFileList([file]);
     fireEvent.change(input, { target: { files: fileList } });

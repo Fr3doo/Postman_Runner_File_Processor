@@ -31,19 +31,19 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
       case 'success':
         return (
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-            ✅ Success
+              ✅ Réussi
           </span>
         );
       case 'error':
         return (
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-            ⛔️ Error
+              ⛔️ Erreur
           </span>
         );
       case 'processing':
         return (
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-            🔄 Processing
+              🔄 Traitement
           </span>
         );
       default:
@@ -67,7 +67,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
           <div className="flex items-center space-x-2">
             <XCircle className="text-red-500" size={16} />
-            <p className="text-sm font-medium text-red-800">Processing Error</p>
+              <p className="text-sm font-medium text-red-800">Erreur de traitement</p>
           </div>
           <p className="text-sm text-red-700 mt-1">{file.error}</p>
         </div>
@@ -77,7 +77,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
           <div className="flex items-center space-x-2">
             <Clock className="text-blue-500 animate-pulse" size={16} />
-            <p className="text-sm font-medium text-blue-800">Processing file...</p>
+              <p className="text-sm font-medium text-blue-800">Traitement du fichier...</p>
           </div>
         </div>
       )}
@@ -93,7 +93,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
                     <FileText className="text-gray-600" size={16} />
-                    <span className="text-sm font-medium text-gray-700">Files Remaining</span>
+                      <span className="text-sm font-medium text-gray-700">Fichiers restants</span>
                   </div>
                   <p className="text-lg font-semibold text-gray-900">
                     {summary.nombre_fichiers_restants}
@@ -113,7 +113,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
                 <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
                   <div className="flex items-center space-x-2 mb-2">
                     <FolderOpen className="text-gray-600" size={16} />
-                    <span className="text-sm font-medium text-gray-700">Project Name</span>
+                      <span className="text-sm font-medium text-gray-700">Nom du projet</span>
                   </div>
                   <p className="text-lg font-semibold text-gray-900">
                     {summary.nom_projet}
@@ -123,7 +123,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
                     <Hash className="text-gray-600" size={16} />
-                    <span className="text-sm font-medium text-gray-700">Dossier Number</span>
+                      <span className="text-sm font-medium text-gray-700">Numéro de dossier</span>
                   </div>
                   <p className="text-lg font-semibold text-gray-900">
                     D{summary.numero_dossier}
@@ -133,7 +133,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
                     <Calendar className="text-gray-600" size={16} />
-                    <span className="text-sm font-medium text-gray-700">Deposit Date</span>
+                      <span className="text-sm font-medium text-gray-700">Date de dépôt</span>
                   </div>
                   <p className="text-lg font-semibold text-gray-900">
                     {summary.date_depot}
@@ -147,7 +147,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
                   <Download size={16} />
-                  <span>Download JSON</span>
+                    <span>Télécharger le JSON</span>
                 </button>
               </div>
             </div>
