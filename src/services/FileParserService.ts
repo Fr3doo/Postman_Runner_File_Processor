@@ -1,9 +1,9 @@
 import { FileData } from '../types';
-import { parseFileContent, parseAllSummaryBlocks, generateJSONContent, downloadJSON } from '../utils/fileParser';
+import { parseAllSummaryBlocks, generateJSONContent, downloadJSON } from '../utils/fileParser';
 
 export class FileParserService {
-  parse(content: string): FileData {
-    return parseFileContent(content);
+  parse(content: string): FileData[] {
+    return parseAllSummaryBlocks(content);
   }
 
   parseAll(content: string): FileData[] {

@@ -75,12 +75,12 @@ export class FileProcessor {
           throw new Error('File is empty or could not be read.');
         }
 
-        const data = this.parserService.parse(content);
+        const summaries = this.parserService.parse(content);
 
         setProcessedFiles(prev =>
           prev.map(f =>
             f.id === fileId
-              ? { ...f, status: 'success', data, originalContent: content }
+              ? { ...f, status: 'success', summaries, originalContent: content }
               : f
           )
         );

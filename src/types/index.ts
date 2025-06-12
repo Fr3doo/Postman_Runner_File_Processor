@@ -10,7 +10,7 @@ export interface ProcessedFile {
   id: string;
   filename: string;
   status: 'processing' | 'success' | 'error';
-  data?: FileData;
+  summaries?: FileData[];
   error?: string;
   originalContent?: string;
 }
