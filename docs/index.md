@@ -2,7 +2,7 @@
 
 Welcome to the documentation hub. This page lists all available documents to help you understand, use and contribute to the project.
 
-For installation and basic usage see [readme.md](../readme.md). Contributors should also read [AGENTS.md](../AGENTS.md).
+For installation and basic usage see [README.md](../README.md). Contributors should also read [AGENTS.md](../AGENTS.md).
 
 The documentation hierarchy is organised into the following folders:
 
@@ -26,6 +26,7 @@ The documentation hierarchy is organised into the following folders:
 - [`guides/documentation-style.md`](guides/documentation-style.md) – Documentation style guide.
 - [`guides/usage-example.md`](guides/usage-example.md) – Example workflow for uploading files and getting results.
 - [`guides/configuration.md`](guides/configuration.md) – How to adjust security and runtime settings.
+- [`guides/logging-and-errors.md`](guides/logging-and-errors.md) – How to log actions and display safe error messages.
   Additional advanced guides are welcome.
 
 ### Reference
