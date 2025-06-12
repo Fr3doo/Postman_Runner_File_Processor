@@ -10,18 +10,39 @@ export const parseFileContent = (content: string): FileData => {
   const sanitizedContent = validation.sanitizedContent || content;
   const lines = sanitizedContent.split('\n').map(line => line.trim());
   
-  // Find the data block between dashes
-  const startIndex = lines.findIndex(line => line.includes('-'.repeat(10)));
-  const endIndex = lines.findIndex((line, index) => index > startIndex && line.includes('-'.repeat(10)));
+  // Find the LAST occurrence of the summary block (the final results)
+  // Look for the pattern that appears at the end of the file
+  let lastSummaryStart = -1;
   
-  if (startIndex === -1 || endIndex === -1) {
-    throw new ParsingError('No valid data block found. Expected format with dashed separators.');
+  // Find the last occurrence of the summary pattern
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const line = lines[i];
+    if (line.includes('📂 Nombre de fichier(s) restant(s)') || 
+        line.includes('Nombre de fichier(s) restant(s)')) {
+      // Found a summary block, check if it's followed by the expected pattern
+      let hasValidPattern = false;
+      for (let j = i; j < Math.min(i + 10, lines.length); j++) {
+        if (lines[j].includes('numeroTélédémarche') && lines[j].includes('AUTO-')) {
+          hasValidPattern = true;
+          break;
+        }
+      }
+      if (hasValidPattern) {
+        lastSummaryStart = i;
+        break;
+      }
+    }
   }
   
-  const dataBlock = lines.slice(startIndex + 1, endIndex);
+  if (lastSummaryStart === -1) {
+    throw new ParsingError('No valid summary block found. Expected format with file count and télédémarche number.');
+  }
+  
+  // Process the last 20 lines from the summary start to ensure we get the complete block
+  const summaryLines = lines.slice(lastSummaryStart, Math.min(lastSummaryStart + 20, lines.length));
   const data: Partial<FileData> = {};
   
-  for (const line of dataBlock) {
+  for (const line of summaryLines) {
     try {
       // Handle "📂 Nombre de fichier(s) restant(s) : 0"
       if (line.includes('Nombre de fichier(s) restant(s)')) {
@@ -37,14 +58,15 @@ export const parseFileContent = (content: string): FileData => {
       } 
       // Handle "➡️ Le dossier au numeroTélédémarche: AUTO-YWSEVNW5 est déposé"
       else if (line.includes('numeroTélédémarche') || line.includes('numeroTeledemarche')) {
-        const match = line.match(/AUTO-([A-Z0-9]+)/);
+        const match = line.match(/AUTO-([A-Z0-9\-]+)/);
         if (match) {
           const teledemarcheNumber = match[1];
-          // Validate format (alphanumeric only)
-          if (!/^[A-Z0-9]+$/.test(teledemarcheNumber)) {
+          // Clean up any trailing characters and validate format
+          const cleanNumber = teledemarcheNumber.replace(/[^A-Z0-9\-]/g, '');
+          if (!/^[A-Z0-9\-]+$/.test(cleanNumber)) {
             throw new ParsingError('Invalid télédémarche number format.');
           }
-          data.numero_teledemarche = teledemarcheNumber;
+          data.numero_teledemarche = cleanNumber;
         }
       } 
       // Handle "➡️ Nom de projet : TRA - DICPE - Test Fred - v5"
@@ -177,7 +199,7 @@ export const generateJSONContent = (data: FileData): string => {
   // Ensure data is properly sanitized before JSON generation
   const sanitizedData = {
     nombre_fichiers_restants: Number(data.nombre_fichiers_restants),
-    numero_teledemarche: String(data.numero_teledemarche).replace(/[^\w]/g, ''),
+    numero_teledemarche: String(data.numero_teledemarche).replace(/[^\w\-]/g, ''),
     nom_projet: String(data.nom_projet).substring(0, 200), // Limit length
     numero_dossier: String(data.numero_dossier).replace(/[^\w]/g, ''),
     date_depot: String(data.date_depot).substring(0, 50), // Limit length
