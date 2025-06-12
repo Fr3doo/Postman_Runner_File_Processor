@@ -4,7 +4,7 @@ This guide explains how to adjust runtime limits and processing options.
 
 ## Security limits
 
-`SECURITY_CONFIG` in `src/config/security.ts` defines file size rules and content validation. Update these values to tighten or relax the checks:
+`ConfigService` reads the security limits from environment variables or falls back to `src/config/security.ts` defaults. Use the following variable names to adjust the rules:
 
 - `MAX_FILE_SIZE` sets the largest allowed file.
 - `MAX_TOTAL_SIZE` controls the combined size of all uploads.
@@ -16,9 +16,9 @@ This guide explains how to adjust runtime limits and processing options.
 
 ## Application constants
 
-`src/config/app.ts` exports additional constants:
+`ConfigService` also exposes application constants:
 
 - `CONCURRENCY_LIMIT` sets how many files are parsed in parallel.
 - `FILE_READ_TIMEOUT` specifies the time in milliseconds allowed to read each file.
 
-Change these values to tune performance based on your environment.
+Define these variables in your `.env` file (prefix each with `VITE_` when running in the browser) to override the defaults. This allows different limits per environment.

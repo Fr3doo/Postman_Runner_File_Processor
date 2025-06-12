@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useMemo } from 'react';
 import { Upload, FileText, AlertCircle, Info, Shield } from 'lucide-react';
 import { FileValidationService } from '../services/FileValidationService';
-import { SECURITY_CONFIG } from '../config/security';
+import { configService } from '../services/ConfigService';
 import { formatFileSize } from '../utils/format';
 import { useNotifications } from './NotificationContext';
 import { Card } from './ui/Card';
@@ -157,9 +157,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
                 <span className="text-sm font-medium text-blue-800">Limites de sécurité</span>
             </div>
             <div className="text-xs text-blue-700 space-y-1">
-                <div>• Maximum {SECURITY_CONFIG.MAX_FILES_COUNT} fichiers par envoi</div>
-                <div>• Taille maximale {formatFileSize(SECURITY_CONFIG.MAX_FILE_SIZE)} par fichier</div>
-                <div>• Taille totale maximale {formatFileSize(SECURITY_CONFIG.MAX_TOTAL_SIZE)}</div>
+                <div>• Maximum {configService.security.MAX_FILES_COUNT} fichiers par envoi</div>
+                <div>• Taille maximale {formatFileSize(configService.security.MAX_FILE_SIZE)} par fichier</div>
+                <div>• Taille totale maximale {formatFileSize(configService.security.MAX_TOTAL_SIZE)}</div>
                 <div>• Seuls les fichiers .txt provenant de Postman Runner sont pris en charge</div>
             </div>
           </div>

@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { FileProcessor } from '../FileProcessor';
 import { FileParserService } from '../FileParserService';
 import { FileValidationService } from '../FileValidationService';
-import { CONCURRENCY_LIMIT } from '../../config/app';
+import { configService } from '../../services/ConfigService';
 import type { FileData, ProcessedFile } from '../../types';
 import { ParsingError } from '../../utils/errors';
 import type { Dispatch, SetStateAction } from 'react';
@@ -58,14 +58,15 @@ describe('FileProcessor', () => {
       return 'content';
     });
 
-    const files = Array.from({ length: CONCURRENCY_LIMIT * 2 }, (_, i) => createFile(`f${i}.txt`));
+    const limit = configService.concurrencyLimit;
+    const files = Array.from({ length: limit * 2 }, (_, i) => createFile(`f${i}.txt`));
 
     const promise = processor.processFiles(files as unknown as FileList, setProcessedFiles, setIsProcessing);
     await vi.runAllTimersAsync();
     await promise;
 
     expect(parseMock).toHaveBeenCalledTimes(files.length);
-    expect(maxActive).toBeLessThanOrEqual(CONCURRENCY_LIMIT);
+    expect(maxActive).toBeLessThanOrEqual(limit);
     expect(isProcessing).toBe(false);
   });
 
