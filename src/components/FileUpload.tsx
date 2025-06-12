@@ -38,30 +38,38 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
     [setIsDragOver]
   );
 
-  const handleFilesSelected = useCallback(
-    (files: FileList) => {
-      // Clear previous validation messages
-      setValidationErrors([]);
-      clearWarnings();
+    const handleFilesSelected = useCallback(
+      (files: FileList) => {
+        // Clear previous validation messages
+        setValidationErrors([]);
+        clearWarnings();
 
-      // Validate files
-      const validation = validationService.validateFiles(files);
+        try {
+          // Validate files
+          const validation = validationService.validateFiles(files);
 
-      if (!validation.isValid) {
-        setValidationErrors(validation.errors);
-        validation.warnings.forEach(addWarning);
-        return;
-      }
+          if (!validation.isValid) {
+            setValidationErrors(validation.errors);
+            validation.warnings.forEach(addWarning);
+            return;
+          }
 
-      if (validation.warnings.length > 0) {
-        validation.warnings.forEach(addWarning);
-      }
+          if (validation.warnings.length > 0) {
+            validation.warnings.forEach(addWarning);
+          }
 
-      // Files are valid, proceed with processing
-      onFilesSelected(files);
-    },
-    [onFilesSelected, validationService, setValidationErrors, addWarning, clearWarnings]
-  );
+          // Files are valid, proceed with processing
+          onFilesSelected(files);
+        } catch (error) {
+          if (error instanceof Error) {
+            setValidationErrors([error.message]);
+          } else {
+            setValidationErrors(['An unknown error occurred during validation.']);
+          }
+        }
+      },
+      [onFilesSelected, validationService, setValidationErrors, addWarning, clearWarnings]
+    );
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
