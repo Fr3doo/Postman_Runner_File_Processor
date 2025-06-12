@@ -5,6 +5,8 @@ import { FileUpload } from '../../components/FileUpload';
 import { ResultCard } from '../../components/ResultCard';
 import { ResultsGrid } from '../../components/ResultsGrid';
 import { ProcessingStatsComponent } from '../../components/ProcessingStats';
+import { FileValidationService } from '../../services/FileValidationService';
+import { ValidationError } from '../errors';
 
 // Mock notifications hook used by FileUpload and App
 vi.mock('../../components/NotificationContext', () => ({
@@ -45,6 +47,21 @@ describe('FileUpload', () => {
     const input = screen.getByLabelText(/choose files/i) as HTMLInputElement;
     fireEvent.change(input, { target: { files: fileList } });
     expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('displays validation errors when validation fails', () => {
+    const handler = vi.fn();
+    const file = createFile('bad.exe');
+    const fileList = createFileList([file]);
+    vi.spyOn(FileValidationService.prototype, 'validateFiles').mockImplementation(() => {
+      throw new ValidationError('Invalid extension');
+    });
+    render(<FileUpload onFilesSelected={handler} isProcessing={false} />);
+    const input = screen.getByLabelText(/choose files/i) as HTMLInputElement;
+    fireEvent.change(input, { target: { files: fileList } });
+    expect(handler).not.toHaveBeenCalled();
+    expect(screen.getByText(/Invalid extension/)).toBeTruthy();
+    vi.restoreAllMocks();
   });
 });
 
