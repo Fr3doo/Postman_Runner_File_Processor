@@ -4,6 +4,7 @@ import { FileValidationService } from '../services/FileValidationService';
 import { SECURITY_CONFIG } from '../config/security';
 import { formatFileSize } from '../utils/format';
 import { useNotifications } from './NotificationContext';
+import { Card } from './ui/Card';
 
 interface FileUploadProps {
   onFilesSelected: (files: FileList) => void;
@@ -99,11 +100,11 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
 
   return (
     <div className="w-full max-w-4xl mx-auto mb-8">
-      <div
+      <Card
         className={`
-          relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300
-          ${isDragOver 
-            ? 'border-blue-500 bg-blue-50 scale-105' 
+          relative border-2 border-dashed text-center transition-all duration-300
+          ${isDragOver
+            ? 'border-blue-500 bg-blue-50 scale-105'
             : 'border-gray-300 hover:border-gray-400'
           }
           ${isProcessing ? 'opacity-50 pointer-events-none' : ''}
@@ -171,7 +172,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFilesSelected, isProce
             </div>
           )}
         </div>
-      </div>
+      </Card>
 
       {/* Validation Errors */}
       {validationErrors.length > 0 && (

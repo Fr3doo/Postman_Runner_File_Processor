@@ -1,6 +1,7 @@
 import React from 'react';
 import { ProcessingStats } from '../types';
 import { CheckCircle, XCircle, Clock, FileText } from 'lucide-react';
+import { Card } from './ui/Card';
 
 interface ProcessingStatsProps {
   stats: ProcessingStats;
@@ -15,7 +16,7 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
 
   return (
     <div className="w-full max-w-4xl mx-auto mb-8">
-      <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+      <Card className="border border-gray-200">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-800">Processing Summary</h3>
           <button
@@ -74,7 +75,7 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
             </div>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 };
