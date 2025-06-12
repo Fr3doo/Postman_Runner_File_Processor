@@ -44,4 +44,25 @@ describe('parseFileContent', () => {
     const invalid = buildContent(longDate);
     expect(() => parseFileContent(invalid)).toThrow(ParsingError);
   });
+
+  it('throws for invalid project code', () => {
+    const invalid = `Header\n----------\nNombre de fichier(s) restant(s) : 5\nnumeroT\u00E9l\u00E9d\u00E9marche : AUTO-TEST123\nNom de projet : TRA - badCode - Example Project - v1.0\nNumero dossier : D123ABC\nDate de d\u00E9pot : 2024-05-01\n----------\nFooter`;
+    const fn = () => parseFileContent(invalid);
+    expect(fn).toThrow(ParsingError);
+    expect(fn).toThrow('Error parsing file content: Invalid project code format.');
+  });
+
+  it('throws for unsupported date format', () => {
+    const invalid = buildContent('<>');
+    const fn = () => parseFileContent(invalid);
+    expect(fn).toThrow(ParsingError);
+    expect(fn).toThrow('Error parsing file content: Invalid date format.');
+  });
+
+  it('throws for negative remaining files count', () => {
+    const invalid = `Header\n----------\nNombre de fichier(s) restant(s) : -1\nnumeroT\u00E9l\u00E9d\u00E9marche : AUTO-TEST123\nNom de projet : TRA - CODE - Example Project - v1.0\nNumero dossier : D123ABC\nDate de d\u00E9pot : 2024-05-01\n----------\nFooter`;
+    const fn = () => parseFileContent(invalid);
+    expect(fn).toThrow(ParsingError);
+    expect(fn).toThrow('Missing required fields: nombre_fichiers_restants');
+  });
 });
