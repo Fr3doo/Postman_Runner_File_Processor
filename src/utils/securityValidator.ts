@@ -1,4 +1,4 @@
-import { SECURITY_CONFIG } from '../config/security';
+import { configService } from '../services/ConfigService';
 import { formatFileSize } from './format';
 import { ValidationError, RateLimitError } from './errors';
 
@@ -20,30 +20,30 @@ export const validateFile = (file: File): ValidationResult => {
   const warnings: string[] = [];
 
   // Check file size
-  if (file.size > SECURITY_CONFIG.MAX_FILE_SIZE) {
+  if (file.size > configService.security.MAX_FILE_SIZE) {
     errors.push(
       `Fichier trop volumineux (${formatFileSize(file.size)}). ` +
-      `Taille maximale autorisée : ${formatFileSize(SECURITY_CONFIG.MAX_FILE_SIZE)}.`
+      `Taille maximale autorisée : ${formatFileSize(configService.security.MAX_FILE_SIZE)}.`
     );
   }
 
   // Check file extension
-  const hasValidExtension = SECURITY_CONFIG.ALLOWED_FILE_EXTENSIONS.some(ext =>
+  const hasValidExtension = configService.security.ALLOWED_FILE_EXTENSIONS.some(ext =>
     file.name.toLowerCase().endsWith(ext)
   );
   
   if (!hasValidExtension) {
     errors.push(
       `Extension de fichier invalide. ` +
-      `Extensions autorisées : ${SECURITY_CONFIG.ALLOWED_FILE_EXTENSIONS.join(', ')}`
+      `Extensions autorisées : ${configService.security.ALLOWED_FILE_EXTENSIONS.join(', ')}`
     );
   }
 
   // Check MIME type if available
-  if (file.type && !SECURITY_CONFIG.ALLOWED_MIME_TYPES.includes(file.type)) {
+  if (file.type && !configService.security.ALLOWED_MIME_TYPES.includes(file.type)) {
     warnings.push(
       `Type MIME inattendu : ${file.type}. ` +
-      `Type(s) attendu(s) : ${SECURITY_CONFIG.ALLOWED_MIME_TYPES.filter(t => t).join(', ')}`
+      `Type(s) attendu(s) : ${configService.security.ALLOWED_MIME_TYPES.filter(t => t).join(', ')}`
     );
   }
 
@@ -74,19 +74,19 @@ export const validateFileList = (files: FileList | File[]): ValidationResult => 
   const warnings: string[] = [];
 
   // Check file count
-  if (fileArray.length > SECURITY_CONFIG.MAX_FILES_COUNT) {
+  if (fileArray.length > configService.security.MAX_FILES_COUNT) {
     errors.push(
         `Trop de fichiers sélectionnés (${fileArray.length}). ` +
-        `Maximum autorisé : ${SECURITY_CONFIG.MAX_FILES_COUNT}`
+        `Maximum autorisé : ${configService.security.MAX_FILES_COUNT}`
     );
   }
 
   // Check total size
   const totalSize = fileArray.reduce((sum, file) => sum + file.size, 0);
-  if (totalSize > SECURITY_CONFIG.MAX_TOTAL_SIZE) {
+  if (totalSize > configService.security.MAX_TOTAL_SIZE) {
     errors.push(
         `Taille totale des fichiers trop grande (${formatFileSize(totalSize)}). ` +
-        `Maximum autorisé : ${formatFileSize(SECURITY_CONFIG.MAX_TOTAL_SIZE)}`
+        `Maximum autorisé : ${formatFileSize(configService.security.MAX_TOTAL_SIZE)}`
     );
   }
 
@@ -130,19 +130,19 @@ export const validateAndSanitizeContent = (
   const lines = content.split('\n');
 
   // Check line count
-  if (lines.length > SECURITY_CONFIG.MAX_LINES_COUNT) {
+  if (lines.length > configService.security.MAX_LINES_COUNT) {
     errors.push(
       `Le fichier contient trop de lignes (${lines.length}). ` +
-      `Maximum autorisé : ${SECURITY_CONFIG.MAX_LINES_COUNT}`
+      `Maximum autorisé : ${configService.security.MAX_LINES_COUNT}`
     );
   }
 
   // Check line length
-  const longLines = lines.filter(line => line.length > SECURITY_CONFIG.MAX_LINE_LENGTH);
+  const longLines = lines.filter(line => line.length > configService.security.MAX_LINE_LENGTH);
   if (longLines.length > 0) {
     warnings.push(
       `Le fichier contient ${longLines.length} ligne(s) dépassant ` +
-      `${SECURITY_CONFIG.MAX_LINE_LENGTH} caractères.`
+      `${configService.security.MAX_LINE_LENGTH} caractères.`
     );
   }
 
@@ -150,7 +150,7 @@ export const validateAndSanitizeContent = (
   let sanitizedContent = content;
   
   // Remove dangerous patterns
-  SECURITY_CONFIG.DANGEROUS_PATTERNS.forEach(pattern => {
+  configService.security.DANGEROUS_PATTERNS.forEach(pattern => {
     if (pattern.test(sanitizedContent)) {
       warnings.push('Le fichier contenait du contenu potentiellement dangereux qui a été supprimé.');
       sanitizedContent = sanitizedContent.replace(pattern, '[REMOVED_SUSPICIOUS_CONTENT]');
@@ -193,11 +193,11 @@ class RateLimiter {
     
     // Remove old requests outside the window
     this.requests = this.requests.filter(
-      time => now - time < SECURITY_CONFIG.RATE_LIMIT_WINDOW
+      time => now - time < configService.security.RATE_LIMIT_WINDOW
     );
 
     // Check if under limit
-    if (this.requests.length >= SECURITY_CONFIG.RATE_LIMIT_MAX_FILES) {
+    if (this.requests.length >= configService.security.RATE_LIMIT_MAX_FILES) {
       return false;
     }
 
@@ -210,7 +210,7 @@ class RateLimiter {
     if (this.requests.length === 0) return 0;
     
     const oldestRequest = Math.min(...this.requests);
-    const timeUntilReset = SECURITY_CONFIG.RATE_LIMIT_WINDOW - (Date.now() - oldestRequest);
+    const timeUntilReset = configService.security.RATE_LIMIT_WINDOW - (Date.now() - oldestRequest);
     
     return Math.max(0, timeUntilReset);
   }
@@ -252,7 +252,7 @@ export const validateRateLimit = (): ValidationResult => {
 
     errors.push(
         `Limite de débit dépassée. Vous pourrez traiter d'autres fichiers dans ${minutes} minute(s). ` +
-        `Maximum : ${SECURITY_CONFIG.RATE_LIMIT_MAX_FILES} fichiers par ${SECURITY_CONFIG.RATE_LIMIT_WINDOW / 60000} minutes.`
+        `Maximum : ${configService.security.RATE_LIMIT_MAX_FILES} fichiers par ${configService.security.RATE_LIMIT_WINDOW / 60000} minutes.`
     );
   }
 

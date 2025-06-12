@@ -7,7 +7,7 @@ import {
   type INotificationService,
 } from './NotificationService';
 import { loggingService } from './LoggingService';
-import { CONCURRENCY_LIMIT, FILE_READ_TIMEOUT } from '../config/app';
+import { configService } from './ConfigService';
 import { RateLimitError, ValidationError, ParsingError } from '../utils/errors';
 import { ValidationResult } from '../utils/securityValidator';
 
@@ -80,7 +80,7 @@ export class FileProcessor {
       const fileId = initialFiles[index].id;
 
       try {
-        const content = await this.readFileWithTimeout(file, FILE_READ_TIMEOUT);
+        const content = await this.readFileWithTimeout(file, configService.fileReadTimeout);
           if (!content || content.trim().length === 0) {
             throw new Error("Le fichier est vide ou n'a pas pu être lu.");
           }
@@ -122,8 +122,9 @@ export class FileProcessor {
       await new Promise(resolve => setTimeout(resolve, 300));
     });
 
-    for (let i = 0; i < tasks.length; i += CONCURRENCY_LIMIT) {
-      const chunk = tasks.slice(i, i + CONCURRENCY_LIMIT).map(task => task());
+    const limit = configService.concurrencyLimit;
+    for (let i = 0; i < tasks.length; i += limit) {
+      const chunk = tasks.slice(i, i + limit).map(task => task());
       await Promise.allSettled(chunk);
     }
 

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { validateFile, validateFileList } from '../securityValidator';
 import { ValidationError } from '../errors';
-import { SECURITY_CONFIG } from '../../config/security';
+import { configService } from '../../services/ConfigService';
 
 const createMockFile = (
   name: string,
@@ -16,7 +16,7 @@ describe('validateFile', () => {
   });
 
   it('throws for excessive size', () => {
-    const bigSize = SECURITY_CONFIG.MAX_FILE_SIZE + 1;
+    const bigSize = configService.security.MAX_FILE_SIZE + 1;
     const file = createMockFile('big.txt', bigSize, 'text/plain');
     expect(() => validateFile(file)).toThrow(ValidationError);
   });
@@ -38,15 +38,15 @@ describe('validateFile', () => {
 
 describe('validateFileList', () => {
   it('throws when file count exceeds limit', () => {
-    const files = Array.from({ length: SECURITY_CONFIG.MAX_FILES_COUNT + 1 }).map(
+    const files = Array.from({ length: configService.security.MAX_FILES_COUNT + 1 }).map(
       (_, i) => createMockFile(`f${i}.txt`, 10, 'text/plain')
     );
     expect(() => validateFileList(files)).toThrow(ValidationError);
   });
 
   it('throws when total size exceeds limit', () => {
-    const perFileSize = SECURITY_CONFIG.MAX_FILE_SIZE - 1;
-    const fileCount = Math.floor(SECURITY_CONFIG.MAX_TOTAL_SIZE / perFileSize) + 1;
+    const perFileSize = configService.security.MAX_FILE_SIZE - 1;
+    const fileCount = Math.floor(configService.security.MAX_TOTAL_SIZE / perFileSize) + 1;
     const files = Array.from({ length: fileCount }).map((_, i) =>
       createMockFile(`f${i}.txt`, perFileSize, 'text/plain')
     );
