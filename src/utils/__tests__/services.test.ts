@@ -7,6 +7,7 @@ import type { ValidationResult } from '../securityValidator';
 // Mock utility modules used by the services
 vi.mock('../fileParser', () => ({
   parseFileContent: vi.fn(),
+  parseAllSummaryBlocks: vi.fn(),
   generateJSONContent: vi.fn(),
   downloadJSON: vi.fn(),
 }));
@@ -19,6 +20,7 @@ vi.mock('../securityValidator', () => ({
 // Import the mocked functions for assertions
 import {
   parseFileContent,
+  parseAllSummaryBlocks,
   generateJSONContent,
   downloadJSON,
 } from '../fileParser';
@@ -36,6 +38,13 @@ describe('FileParserService', () => {
     const result = service.parse('content');
     expect(parseFileContent).toHaveBeenCalledWith('content');
     expect(result).toBe('data');
+  });
+
+  it('parseAll calls parseAllSummaryBlocks and returns its result', () => {
+    (parseAllSummaryBlocks as unknown as ReturnType<typeof vi.fn>).mockReturnValue(['d']);
+    const result = service.parseAll('content');
+    expect(parseAllSummaryBlocks).toHaveBeenCalledWith('content');
+    expect(result).toEqual(['d']);
   });
 
   it('toJSON calls generateJSONContent and returns its result', () => {

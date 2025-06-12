@@ -5,6 +5,9 @@ The application runs entirely in the browser and exposes utility functions for p
 ## `parseFileContent(content: string): FileData`
 Parses sanitized file content and returns a structured object. Throws an error when required fields are missing or invalid.
 
+## `parseAllSummaryBlocks(content: string): FileData[]`
+Returns an array of all summary blocks found in the text. Each element has the same structure as `parseFileContent`.
+
 ## `validateFile(file: File): ValidationResult`
 Checks a single file's size, extension and basic properties before processing.
 
