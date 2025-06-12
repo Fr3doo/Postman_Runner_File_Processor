@@ -21,4 +21,9 @@ describe('ErrorHandler', () => {
     const msg = handler.handle({} as unknown as Error);
     expect(msg).toMatch(/erreur inconnue/i);
   });
+
+  it('handles string error input', () => {
+    const msg = handler.handle('oops');
+    expect(msg).toBe('oops');
+  });
 });

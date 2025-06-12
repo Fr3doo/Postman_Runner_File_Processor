@@ -22,4 +22,18 @@ describe('loggingService', () => {
     expect(logs[0].level).toBe('error');
     expect(logs[0].message).toBe('fail');
   });
+
+  it('clears logs', () => {
+    loggingService.logInfo('a');
+    expect(loggingService.getLogs().length).toBe(1);
+    loggingService.clear();
+    expect(loggingService.getLogs().length).toBe(0);
+  });
+
+  it('getLogs returns a copy', () => {
+    loggingService.logInfo('a');
+    const logs = loggingService.getLogs();
+    logs.push({ level: 'info', message: 'b', timestamp: new Date() });
+    expect(loggingService.getLogs().length).toBe(1);
+  });
 });
