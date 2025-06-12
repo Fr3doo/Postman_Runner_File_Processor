@@ -75,7 +75,11 @@ describe('ResultCard', () => {
   };
 
   it('displays success information', () => {
-    render(<ResultCard file={{ id: '1', filename: 'file.txt', status: 'success', data }} />);
+    render(
+      <ResultCard
+        file={{ id: '1', filename: 'file.txt', status: 'success', summaries: [data] }}
+      />
+    );
     expect(screen.getByText('file.txt')).toBeTruthy();
     expect(screen.getByText(/Download JSON/)).toBeTruthy();
     expect(screen.getByText('Project')).toBeTruthy();

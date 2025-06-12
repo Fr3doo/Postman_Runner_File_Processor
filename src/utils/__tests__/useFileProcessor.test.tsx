@@ -20,7 +20,7 @@ const data: FileData = {
 describe('useFileProcessor', () => {
   it('processes files and calculates stats', async () => {
     vi.useFakeTimers();
-    const parseMock = vi.fn(() => data);
+    const parseMock = vi.fn(() => [data]);
     const validateFilesMock = vi.fn(() => ({ isValid: true, errors: [], warnings: [] }));
     const validateRateLimitMock = vi.fn(() => ({ isValid: true, errors: [], warnings: [] }));
     const parser = { parse: parseMock } as unknown as FileParserService;
