@@ -117,4 +117,3 @@ Ce projet est distribué sous licence MIT.
 
 - [x] Ajouter un fichier `LICENSE` explicite
 - [ ] Publier le package sur npm pour disposer d'un badge de version valide
-- [ ] Mettre en place un rapport de couverture (Codecov ou Coveralls)
