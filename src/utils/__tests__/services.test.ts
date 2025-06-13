@@ -5,8 +5,10 @@ import type { FileData } from '../../types';
 import type { ValidationResult } from '../securityValidator';
 
 // Mock utility modules used by the services
-vi.mock('../parseStrategies', () => ({
-  defaultParseStrategy: vi.fn(),
+vi.mock('../parserFactory', () => ({
+  ParserFactory: {
+    getStrategy: vi.fn(),
+  },
 }));
 
 vi.mock('../fileParser', () => ({
@@ -20,7 +22,7 @@ vi.mock('../securityValidator', () => ({
 }));
 
 // Import the mocked functions for assertions
-import { defaultParseStrategy } from '../parseStrategies';
+import { ParserFactory } from '../parserFactory';
 import { generateJSONContent, downloadJSON } from '../fileParser';
 import { validateFileList, validateRateLimit } from '../securityValidator';
 
@@ -31,20 +33,25 @@ describe('FileParserService', () => {
     vi.clearAllMocks();
   });
 
-  it('parse uses default strategy when none provided', () => {
+  it('parse uses strategy from ParserFactory with default key', () => {
+    const strategy = vi.fn().mockReturnValue(['d']);
     (
-      defaultParseStrategy as unknown as ReturnType<typeof vi.fn>
-    ).mockReturnValue(['d']);
+      ParserFactory.getStrategy as unknown as ReturnType<typeof vi.fn>
+    ).mockReturnValue(strategy);
     const result = service.parse('content');
-    expect(defaultParseStrategy).toHaveBeenCalledWith('content');
+    expect(ParserFactory.getStrategy).toHaveBeenCalledWith('default');
+    expect(strategy).toHaveBeenCalledWith('content');
     expect(result).toEqual(['d']);
   });
 
-  it('parse uses provided strategy', () => {
-    const custom = vi.fn().mockReturnValue(['x']);
-    const result = service.parse('custom', custom);
-    expect(custom).toHaveBeenCalledWith('custom');
-    expect(defaultParseStrategy).not.toHaveBeenCalled();
+  it('parse uses strategy from ParserFactory with custom key', () => {
+    const strategy = vi.fn().mockReturnValue(['x']);
+    (
+      ParserFactory.getStrategy as unknown as ReturnType<typeof vi.fn>
+    ).mockReturnValue(strategy);
+    const result = service.parse('content', 'csv');
+    expect(ParserFactory.getStrategy).toHaveBeenCalledWith('csv');
+    expect(strategy).toHaveBeenCalledWith('content');
     expect(result).toEqual(['x']);
   });
 
