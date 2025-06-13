@@ -1,11 +1,11 @@
-# Tests Overview
+# Aperçu des tests
 
-Unit tests live in `src/utils/__tests__` and are executed with [Vitest](https://vitest.dev/).
+Les tests unitaires se trouvent dans `src/utils/__tests__` et sont exécutés avec [Vitest](https://vitest.dev/).
 
-To run the test suite:
+Pour lancer la suite de tests :
 
 ```bash
 npm test
 ```
 
-The tests cover the parsing and security validation utilities. When updating these utilities, please add or update tests to keep coverage high.
+Les tests couvrent les utilitaires d’analyse (parsing) et de validation de sécurité. Lors de la mise à jour de ces utilitaires, ajoutez ou modifiez les tests pour maintenir une couverture élevée.
