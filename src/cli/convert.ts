@@ -42,14 +42,26 @@ export async function run(files: string[]): Promise<void> {
   }
 }
 
-async function main(): Promise<void> {
-  await run(process.argv.slice(2));
+export async function main(
+  args: string[] = process.argv.slice(2),
+  runner: typeof run = run,
+): Promise<void> {
+  await runner(args);
 }
 
-if (import.meta.main) {
-  main().catch((err) => {
+export async function start(
+  args: string[] = process.argv.slice(2),
+  mainFn: typeof main = main,
+): Promise<void> {
+  try {
+    await mainFn(args);
+  } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(message);
     process.exit(1);
-  });
+  }
+}
+
+if (import.meta.main) {
+  start();
 }
