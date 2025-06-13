@@ -9,21 +9,66 @@ coverage:
   status:
     project:
       default:
-        target: 80%
-        threshold: 1%
-        base: auto
-        flags: []
-        paths: []
-        informational: false
-
+        target: 80%          # couverture globale attendue
+        threshold: 1%        # tolérance
     patch:
       default:
-        target: 80%
+        target: 80%          # couverture attendue sur chaque patch PR
         threshold: 0%
-        base: auto
-        flags: []
-        paths: []
+
+    # 🔐 Couvre chaque fichier individuellement
+    files:
+      default:
+        target: 70%          # chaque fichier doit atteindre 70%
+        threshold: 5%        # tolérance de baisse par fichier
+
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: true
+
+
+codecov:
+  require_ci_to_pass: yes
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+  status:
+    # 🔐 Couvre le projet
+    project:
+      unit:
+        # Tests unitaires (unit)
+        flags: [unit]
+        target: 85%           # couverture globale attendue
+        threshold: 1%         # tolérance
+        # si ce seuil est violé, ça fait échouer le build 
+        informational : false
+      # Tests end-to-end (e2e)
+      e2e:
+        flags: [e2e]
+        target: 70%           # couverture globale attendue
+        threshold: 2%         # tolérance
         informational: false
+        
+    # 🔐 Couvre chaque patch individuellement
+    patch:
+      unit:
+        flags: [unit]
+        target: 80%
+        informational: false
+      e2e:
+        flags: [e2e]
+        target: 65%
+        informational: false
+        
+    # 🔐 Couvre chaque fichier individuellement
+    files:
+      default:
+        target: 70%
+        threshold: 5%
 
 comment:
   layout: "reach, diff, flags, files"
