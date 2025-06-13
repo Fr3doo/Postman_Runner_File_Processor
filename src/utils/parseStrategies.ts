@@ -148,7 +148,10 @@ export const extractFileCount = (line: string): number | undefined => {
 };
 
 export const extractTeledemarche = (line: string): string | undefined => {
-  if (!line.includes('numeroTélédémarche') && !line.includes('numeroTeledemarche')) {
+  if (
+    !line.includes('numeroTélédémarche') &&
+    !line.includes('numeroTeledemarche')
+  ) {
     return undefined;
   }
   const match = line.match(/AUTO-([A-Z0-9-]+)/);
@@ -164,7 +167,9 @@ export const extractTeledemarche = (line: string): string | undefined => {
 
 export const extractProjectName = (line: string): string | undefined => {
   if (!line.includes('Nom de projet')) return undefined;
-  const match = line.match(/:\s*TRA\s*-\s*([A-Z0-9]+)\s*-\s*(.+?)\s*-\s*v([\d.]+)/);
+  const match = line.match(
+    /:\s*TRA\s*-\s*([A-Z0-9]+)\s*-\s*(.+?)\s*-\s*v([\d.]+)/,
+  );
   if (match) {
     const [, code, name, version] = match;
     if (!/^[A-Z0-9]+$/.test(code)) {

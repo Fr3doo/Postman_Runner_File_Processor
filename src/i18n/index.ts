@@ -12,7 +12,8 @@ const fr: Dictionary = {
   maxFilesCount: 'Maximum {count} fichiers par envoi',
   maxFileSize: 'Taille maximale {size} par fichier',
   maxTotalSize: 'Taille totale maximale {size}',
-  onlyTxtSupported: 'Seuls les fichiers .txt provenant de Postman Runner sont pris en charge',
+  onlyTxtSupported:
+    'Seuls les fichiers .txt provenant de Postman Runner sont pris en charge',
   dropFilesHere: 'Déposez les fichiers ici pour les traiter',
   validationErrorsTitle: 'Erreurs de validation',
   warningsTitle: 'Avertissements',

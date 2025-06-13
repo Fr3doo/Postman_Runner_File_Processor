@@ -102,7 +102,8 @@ export class FileProcessor {
         this.errorHandler,
         this.loggingService,
       );
-      return () => command.execute().then(() => new Promise((r) => setTimeout(r, 300)));
+      return () =>
+        command.execute().then(() => new Promise((r) => setTimeout(r, 300)));
     });
 
     const limit = configService.concurrencyLimit;
@@ -114,5 +115,4 @@ export class FileProcessor {
     setIsProcessing(false);
     this.loggingService.logInfo('All files processed');
   }
-
 }

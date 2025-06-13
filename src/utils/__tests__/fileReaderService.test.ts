@@ -2,7 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { FileReaderService } from '../../services/FileReaderService';
 import { FileReadError, FileReadTimeoutError } from '../errors';
 
-const createFile = (text: string): File => new File([text], 'f.txt', { type: 'text/plain' });
+const createFile = (text: string): File =>
+  new File([text], 'f.txt', { type: 'text/plain' });
 
 describe('FileReaderService', () => {
   let original: typeof FileReader;
@@ -59,7 +60,8 @@ describe('FileReaderService', () => {
     global.FileReader = MockReader;
     const service = new FileReaderService();
     const promise = service.readFileWithTimeout(createFile('slow'), 100);
-    const assertion = expect(promise).rejects.toBeInstanceOf(FileReadTimeoutError);
+    const assertion =
+      expect(promise).rejects.toBeInstanceOf(FileReadTimeoutError);
     await vi.runAllTimersAsync();
     await assertion;
   });

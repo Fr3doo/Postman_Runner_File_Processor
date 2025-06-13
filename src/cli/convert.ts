@@ -1,7 +1,10 @@
 #!/usr/bin/env ts-node
 import { promises as fs } from 'fs';
 import { basename, extname, resolve } from 'path';
-import { parseAllSummaryBlocks, generateJSONContent } from '../utils/fileParser';
+import {
+  parseAllSummaryBlocks,
+  generateJSONContent,
+} from '../utils/fileParser';
 import { validateAndSanitizeContent } from '../utils/securityValidator';
 
 async function convertFile(filePath: string): Promise<void> {

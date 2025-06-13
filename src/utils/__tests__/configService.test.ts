@@ -23,7 +23,10 @@ describe('configService environment overrides', () => {
     expect(configService.concurrencyLimit).toBe(8);
     expect(configService.fileReadTimeout).toBe(123);
     expect(configService.security.MAX_FILES_COUNT).toBe(3);
-    expect(configService.security.ALLOWED_FILE_EXTENSIONS).toEqual(['.txt', '.log']);
+    expect(configService.security.ALLOWED_FILE_EXTENSIONS).toEqual([
+      '.txt',
+      '.log',
+    ]);
   });
 
   it('falls back to defaults when env invalid or missing', async () => {
@@ -32,7 +35,11 @@ describe('configService environment overrides', () => {
     delete process.env.VITE_ALLOWED_MIME_TYPES;
     const configService = new ConfigService(process.env);
     expect(configService.fileReadTimeout).toBe(FILE_READ_TIMEOUT);
-    expect(configService.security.MAX_LINES_COUNT).toBe(SECURITY_CONFIG.MAX_LINES_COUNT);
-    expect(configService.security.ALLOWED_MIME_TYPES).toEqual(SECURITY_CONFIG.ALLOWED_MIME_TYPES);
+    expect(configService.security.MAX_LINES_COUNT).toBe(
+      SECURITY_CONFIG.MAX_LINES_COUNT,
+    );
+    expect(configService.security.ALLOWED_MIME_TYPES).toEqual(
+      SECURITY_CONFIG.ALLOWED_MIME_TYPES,
+    );
   });
 });

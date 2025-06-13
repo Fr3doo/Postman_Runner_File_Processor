@@ -20,9 +20,7 @@ describe('ProcessFileCommand', () => {
   beforeEach(() => {
     parseMock = vi.fn(() => [{} as FileData]);
     readMock = vi.fn(async () => 'content');
-    processed = [
-      { id: '1', filename: 'a.txt', status: 'processing' },
-    ];
+    processed = [{ id: '1', filename: 'a.txt', status: 'processing' }];
     setProcessed = (update) => {
       processed = typeof update === 'function' ? update(processed) : update;
     };

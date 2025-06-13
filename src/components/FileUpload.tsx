@@ -145,9 +145,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
               {t('uploadTitle')}
             </h3>
-            <p className="text-gray-600 mb-4">
-              {t('uploadSubtitle')}
-            </p>
+            <p className="text-gray-600 mb-4">{t('uploadSubtitle')}</p>
           </div>
 
           <div className="flex items-center space-x-4">
@@ -198,9 +196,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                   size: formatFileSize(configService.security.MAX_TOTAL_SIZE),
                 })}
               </div>
-              <div>
-                • {t('onlyTxtSupported')}
-              </div>
+              <div>• {t('onlyTxtSupported')}</div>
             </div>
           </div>
 
