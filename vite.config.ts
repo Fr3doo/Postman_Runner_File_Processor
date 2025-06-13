@@ -14,6 +14,7 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'lcov'],
       reportsDirectory: 'coverage',
+      exclude: ['src/cli/convert.ts'],
     },
   },
 });
