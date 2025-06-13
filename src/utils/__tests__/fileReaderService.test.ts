@@ -50,6 +50,22 @@ describe('FileReaderService', () => {
     ).rejects.toBeInstanceOf(FileReadError);
   });
 
+  it('rejects on abort', async () => {
+    class MockReader {
+      onabort: ((ev: ProgressEvent<FileReader>) => void) | null = null;
+      readAsText() {
+        if (this.onabort) this.onabort(new ProgressEvent('abort'));
+      }
+      abort() {}
+    }
+    // @ts-expect-error overriding DOM FileReader
+    global.FileReader = MockReader;
+    const service = new FileReaderService();
+    await expect(
+      service.readFileWithTimeout(createFile('abort'), 1000),
+    ).rejects.toBeInstanceOf(FileReadError);
+  });
+
   it('rejects on timeout', async () => {
     vi.useFakeTimers();
     class MockReader {
