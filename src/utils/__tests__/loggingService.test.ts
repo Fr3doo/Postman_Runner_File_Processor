@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { loggingService } from '../../services/LoggingService';
 
 describe('loggingService', () => {
@@ -52,5 +52,24 @@ describe('loggingService', () => {
     loggingService.logInfo('json');
     const data = loggingService.exportLogs();
     expect(data).toMatch(/json/);
+  });
+
+  it('handles localStorage errors gracefully', () => {
+    const setSpy = vi
+      .spyOn(window.localStorage, 'setItem')
+      .mockImplementation(() => {
+        throw new Error('fail');
+      });
+    const getSpy = vi
+      .spyOn(window.localStorage, 'getItem')
+      .mockImplementation(() => {
+        throw new Error('fail');
+      });
+
+    expect(() => loggingService.save()).not.toThrow();
+    expect(() => loggingService.load()).not.toThrow();
+
+    setSpy.mockRestore();
+    getSpy.mockRestore();
   });
 });
