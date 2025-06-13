@@ -2,7 +2,10 @@ import { Dispatch, SetStateAction } from 'react';
 import type { ProcessedFile } from '../types';
 import { FileParserService } from './FileParserService';
 import { ErrorHandler } from './ErrorHandler';
-import { loggingService } from './LoggingService';
+import {
+  loggingService as defaultLoggingService,
+  type ILoggingService,
+} from './LoggingService';
 
 export class ProcessFileCommand {
   constructor(
@@ -12,10 +15,11 @@ export class ProcessFileCommand {
     private readFile: (file: File) => Promise<string>,
     private setProcessedFiles: Dispatch<SetStateAction<ProcessedFile[]>>,
     private errorHandler: ErrorHandler = new ErrorHandler(),
+    private loggingService: ILoggingService = defaultLoggingService,
   ) {}
 
   async execute(): Promise<void> {
-    loggingService.logInfo(`Processing file: ${this.file.name}`);
+    this.loggingService.logInfo(`Processing file: ${this.file.name}`);
     try {
       const content = await this.readFile(this.file);
       if (!content || content.trim().length === 0) {
@@ -29,7 +33,7 @@ export class ProcessFileCommand {
             : f,
         ),
       );
-      loggingService.logInfo(`Processed ${this.file.name} successfully`);
+      this.loggingService.logInfo(`Processed ${this.file.name} successfully`);
     } catch (error) {
       const message = this.errorHandler.handle(error);
       this.setProcessedFiles((prev) =>
@@ -37,7 +41,9 @@ export class ProcessFileCommand {
           f.id === this.fileId ? { ...f, status: 'error', error: message } : f,
         ),
       );
-      loggingService.logError(`Failed processing ${this.file.name}: ${message}`);
+      this.loggingService.logError(
+        `Failed processing ${this.file.name}: ${message}`,
+      );
     }
   }
 }

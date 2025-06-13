@@ -4,6 +4,7 @@ import { ProcessFileCommand } from '../../services/ProcessFileCommand';
 import type { FileParserService } from '../../services/FileParserService';
 import type { ProcessedFile, FileData } from '../../types';
 import { ErrorHandler } from '../../services/ErrorHandler';
+import type { ILoggingService } from '../../services/LoggingService';
 
 const createFile = (name: string): File =>
   new File(['dummy'], name, { type: 'text/plain' });
@@ -14,6 +15,7 @@ describe('ProcessFileCommand', () => {
   let processed: ProcessedFile[];
   let setProcessed: Dispatch<SetStateAction<ProcessedFile[]>>;
   let command: ProcessFileCommand;
+  let logService: ILoggingService;
 
   beforeEach(() => {
     parseMock = vi.fn(() => [{} as FileData]);
@@ -24,6 +26,12 @@ describe('ProcessFileCommand', () => {
     setProcessed = (update) => {
       processed = typeof update === 'function' ? update(processed) : update;
     };
+    logService = {
+      logInfo: vi.fn(),
+      logError: vi.fn(),
+      getLogs: vi.fn(() => []),
+      clear: vi.fn(),
+    };
     command = new ProcessFileCommand(
       createFile('a.txt'),
       '1',
@@ -31,6 +39,7 @@ describe('ProcessFileCommand', () => {
       readMock,
       setProcessed,
       new ErrorHandler(),
+      logService,
     );
   });
 
