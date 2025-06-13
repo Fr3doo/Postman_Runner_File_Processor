@@ -3,6 +3,7 @@ import { promises as fs } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { run } from '../convert';
+import * as parser from '../../utils/fileParser';
 
 let cwd: string;
 let tempDir: string;
@@ -48,6 +49,36 @@ describe('run', () => {
       numero_dossier: '1',
       date_depot: '2024-01-01',
     });
+  });
+
+  it('creates multiple JSON files when multiple summaries found', async () => {
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const parseSpy = vi.spyOn(parser, 'parseAllSummaryBlocks').mockReturnValue([
+      {
+        nombre_fichiers_restants: 1,
+        numero_teledemarche: 'A',
+        nom_projet: 'P1',
+        numero_dossier: '1',
+        date_depot: '2024-01-01',
+      },
+      {
+        nombre_fichiers_restants: 2,
+        numero_teledemarche: 'B',
+        nom_projet: 'P2',
+        numero_dossier: '2',
+        date_depot: '2024-02-02',
+      },
+    ]);
+
+    await fs.writeFile('multi.txt', 'dummy', 'utf8');
+
+    await run(['multi.txt']);
+
+    expect(parseSpy).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalledWith('Converted multi.txt');
+    const files = await fs.readdir('.');
+    expect(files).toContain('multi-1.json');
+    expect(files).toContain('multi-2.json');
   });
 
   it('logs error when readFile fails', async () => {
