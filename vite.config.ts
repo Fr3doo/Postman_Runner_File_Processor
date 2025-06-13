@@ -14,7 +14,14 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'lcov'],
       reportsDirectory: 'coverage',
-      exclude: ['src/cli/convert.ts'],
+      exclude: [
+        'src/cli/**',             // Scripts CLI non testables ou à faible logique
+        'src/config/**',          // Fichiers de config (ex: app, security)
+        'src/types/**',           // Définitions TypeScript
+        'src/main.tsx',           // Point d’entrée React (souvent trivial)
+        'src/vite-env.d.ts',      // Fichier généré automatiquement
+        '**/*.d.ts',              // Tous les fichiers de type TS
+      ],
     },
   },
 });
