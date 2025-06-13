@@ -4,6 +4,7 @@ import { join } from 'path';
 import { tmpdir } from 'os';
 import { run } from '../convert';
 import * as parser from '../../utils/fileParser';
+import * as security from '../../utils/securityValidator';
 
 let cwd: string;
 let tempDir: string;
@@ -91,5 +92,25 @@ describe('run', () => {
     expect(errorSpy).toHaveBeenCalledWith('Error processing input.txt: fail');
     expect(logSpy).not.toHaveBeenCalled();
     expect(process.exitCode).toBeUndefined();
+  });
+
+  it('logs error when validation fails and no files created', async () => {
+    const error = new Error('invalid');
+    vi.spyOn(security, 'validateAndSanitizeContent').mockImplementation(() => {
+      throw error;
+    });
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+
+    await fs.writeFile('input.txt', 'dummy', 'utf8');
+
+    await run(['input.txt']);
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Error processing input.txt: invalid',
+    );
+    expect(logSpy).not.toHaveBeenCalled();
+    const files = await fs.readdir('.');
+    expect(files).not.toContain('input.json');
   });
 });
