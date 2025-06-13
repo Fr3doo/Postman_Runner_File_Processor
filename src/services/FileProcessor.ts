@@ -6,6 +6,7 @@ import {
   notificationService,
   type INotificationService,
 } from './NotificationService';
+import { FileReaderService } from './FileReaderService';
 import { loggingService } from './LoggingService';
 import { configService } from './ConfigService';
 import { ErrorHandler } from './ErrorHandler';
@@ -17,6 +18,7 @@ export class FileProcessor {
   constructor(
     private parserService: FileParserService,
     private validationService: FileValidationService,
+    private fileReaderService: FileReaderService = new FileReaderService(),
     private notifyService: INotificationService = notificationService,
     private errorHandler: ErrorHandler = new ErrorHandler(),
   ) {}
@@ -87,7 +89,11 @@ export class FileProcessor {
         file,
         initialFiles[index].id,
         this.parserService,
-        (f) => this.readFileWithTimeout(f, configService.fileReadTimeout),
+        (f) =>
+          this.fileReaderService.readFileWithTimeout(
+            f,
+            configService.fileReadTimeout,
+          ),
         setProcessedFiles,
         this.errorHandler,
       );
@@ -104,47 +110,4 @@ export class FileProcessor {
     loggingService.logInfo('All files processed');
   }
 
-  private readFileWithTimeout(file: File, timeout: number): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      const timeoutId = setTimeout(() => {
-        reader.abort();
-        reject(
-          new Error(
-            'Délai de lecture dépassé. Le fichier est peut-être corrompu ou trop volumineux.',
-          ),
-        );
-      }, timeout);
-
-      reader.onload = () => {
-        clearTimeout(timeoutId);
-        if (typeof reader.result === 'string') {
-          resolve(reader.result);
-        } else {
-          reject(new Error('Impossible de lire le fichier en texte.'));
-        }
-      };
-
-      reader.onerror = () => {
-        clearTimeout(timeoutId);
-        reject(
-          new Error(
-            'Impossible de lire le fichier. Il est peut-être corrompu.',
-          ),
-        );
-      };
-
-      reader.onabort = () => {
-        clearTimeout(timeoutId);
-        reject(new Error('La lecture du fichier a été annulée.'));
-      };
-
-      try {
-        reader.readAsText(file, 'utf-8');
-      } catch {
-        clearTimeout(timeoutId);
-        reject(new Error('Impossible de démarrer la lecture du fichier.'));
-      }
-    });
-  }
 }

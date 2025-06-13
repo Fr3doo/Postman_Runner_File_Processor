@@ -3,11 +3,13 @@ import { ProcessedFile, ProcessingStats } from '../types';
 import { FileParserService } from '../services/FileParserService';
 import { FileValidationService } from '../services/FileValidationService';
 import { FileProcessor } from '../services/FileProcessor';
+import { FileReaderService } from '../services/FileReaderService';
 
 export const useFileProcessor = (
   processor: FileProcessor = new FileProcessor(
     new FileParserService(),
     new FileValidationService(),
+    new FileReaderService(),
   ),
 ) => {
   const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([]);

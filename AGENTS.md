@@ -37,6 +37,7 @@ Référez-vous à [docs/guides/documentation-style.md](docs/guides/documentation
 | **FileProcessor**         | Orchestration du traitement des fichiers sélectionnés                                  | `src/services/FileProcessor.ts`         | `FileList`, setters React pour l'état | Met à jour la liste de `ProcessedFile` et déclenche la conversion JSON |
 | **FileParserService**     | Analyse le contenu d'un fichier texte pour extraire les données structurées            | `src/services/FileParserService.ts`     | Contenu texte brut                    | Tableau de `FileData`                                                  |
 | **FileValidationService** | Vérifie la taille, l'extension et le nombre de fichiers, applique les limites de débit | `src/services/FileValidationService.ts` | `FileList`                            | Résultat de validation ou exception                                    |
+| **FileReaderService**     | Lit le contenu d'un fichier texte avec un délai maximum | `src/services/FileReaderService.ts`   | `File`, durée de timeout                | Chaîne de texte ou erreur                                    |
 | **NotificationService**   | Centralise les avertissements et permet aux composants de s'abonner                    | `src/services/NotificationService.ts`   | Messages d'avertissement              | Notifications via `NotificationContext`                                |
 | **LoggingService**        | Enregistre les actions et erreurs importantes                                          | `src/services/LoggingService.ts`        | Chaînes de log                        | Liste des entrées de log                                               |
 | **ErrorHandler**          | Transforme les exceptions en messages utilisateur propres                              | `src/services/ErrorHandler.ts`          | `Error` capturées                     | Chaîne de message nettoyée                                             |
@@ -57,7 +58,7 @@ Référez-vous à [docs/guides/documentation-style.md](docs/guides/documentation
 - **Rôle** : Lit chaque fichier, invoque `FileParserService` et gère l'état d'avancement.
 - **Entrées** : `FileList`, `setProcessedFiles`, `setIsProcessing`.
 - **Sorties** : Met à jour un tableau de `ProcessedFile` avec réussite ou erreur.
-- **Dépendances** : `FileParserService`, `FileValidationService`, `notificationService`.
+- **Dépendances** : `FileParserService`, `FileValidationService`, `FileReaderService`, `notificationService`.
 
 ### `FileParserService`
 
@@ -72,6 +73,13 @@ Référez-vous à [docs/guides/documentation-style.md](docs/guides/documentation
 - **Entrées** : `FileList` ou appels de contrôle de débit.
 - **Sorties** : `ValidationResult` ou exceptions `ValidationError` / `RateLimitError`.
 - **Dépendances** : Fonctions de `src/utils/securityValidator`.
+
+### `FileReaderService`
+
+- **Rôle** : Lit le contenu d'un fichier texte en appliquant un délai maximal.
+- **Entrées** : `File` et durée de timeout.
+- **Sorties** : Chaîne de texte ou exception en cas d'erreur.
+- **Dépendances** : APIs navigateur `FileReader`.
 
 ### `NotificationService`
 
