@@ -30,3 +30,5 @@ if (import.meta.main) {
 
 Lors des tests, l'intégration modifie le fichier compilé pour appeler `start()` directement.
 Quand le module est importé par Vitest, `import.meta.main` vaut `false` et le CLI ne démarre pas.
+
+Consultez la section [Exclusions de couverture](../reference/tests-overview.md#exclusions-de-couverture) pour connaître les fichiers ignorés lors des tests.
