@@ -1,7 +1,7 @@
 # Postman Runner File Processor
 
 ![CI](https://img.shields.io/github/actions/workflow/status/Fr3doo/Postman_Runner_File_Processor/ci.yml?branch=main)
-![npm](https://img.shields.io/npm/v/vite-react-typescript-starter?color=blue)
+![npm](https://img.shields.io/npm/v/postman-runner-file-processor?color=blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## 🚀 Objectif du projet
@@ -119,13 +119,14 @@ Consultez [docs/guides/contributing.md](docs/guides/contributing.md) pour les é
 - [Changelog](docs/releases/changelog.md)
 - [Guide de configuration](docs/guides/configuration.md)
 
+## 📦 Publication sur npm
+
+1. Vérifiez le numéro de version dans `package.json`.
+2. Lancez `npm run build` pour générer `dist/`.
+3. Exécutez `npm publish`.
+
 ## 🛡️ Licence
 
 Ce projet est distribué sous licence MIT.
 
 ---
-
-### TODO
-
-- [x] Ajouter un fichier `LICENSE` explicite
-- [ ] Publier le package sur npm pour disposer d'un badge de version valide
