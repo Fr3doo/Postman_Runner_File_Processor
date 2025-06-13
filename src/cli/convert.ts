@@ -1,13 +1,14 @@
 #!/usr/bin/env ts-node
 import { promises as fs } from 'fs';
 import { basename, extname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import {
   parseAllSummaryBlocks,
   generateJSONContent,
 } from '../utils/fileParser';
 import { validateAndSanitizeContent } from '../utils/securityValidator';
 
-async function convertFile(filePath: string): Promise<void> {
+export async function convertFile(filePath: string): Promise<void> {
   const absPath = resolve(process.cwd(), filePath);
   const content = await fs.readFile(absPath, 'utf8');
   const { sanitizedContent } = validateAndSanitizeContent(content);
@@ -24,11 +25,11 @@ async function convertFile(filePath: string): Promise<void> {
   );
 }
 
-async function main(): Promise<void> {
-  const files = process.argv.slice(2);
+export async function run(files: string[]): Promise<void> {
   if (files.length === 0) {
     console.error('Usage: ts-node src/cli/convert.ts <files...>');
-    process.exit(1);
+    process.exitCode = 1;
+    return;
   }
 
   for (const file of files) {
@@ -42,8 +43,10 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((err) => {
-  const message = err instanceof Error ? err.message : String(err);
-  console.error(message);
-  process.exit(1);
-});
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  run(process.argv.slice(2)).catch((err) => {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(message);
+    process.exit(1);
+  });
+}
