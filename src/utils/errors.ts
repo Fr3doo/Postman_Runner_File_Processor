@@ -18,3 +18,17 @@ export class ParsingError extends Error {
     this.name = 'ParsingError';
   }
 }
+
+export class FileReadError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'FileReadError';
+  }
+}
+
+export class FileReadTimeoutError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'FileReadTimeoutError';
+  }
+}

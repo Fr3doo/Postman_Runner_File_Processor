@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { ErrorHandler } from '../../services/ErrorHandler';
-import { ParsingError } from '../errors';
+import { ParsingError, FileReadError, FileReadTimeoutError } from '../errors';
 
 describe('ErrorHandler', () => {
   const handler = new ErrorHandler();
@@ -25,5 +25,17 @@ describe('ErrorHandler', () => {
   it('handles string error input', () => {
     const msg = handler.handle('oops');
     expect(msg).toBe('oops');
+  });
+
+  it('returns message for FileReadError', () => {
+    const msg = handler.handle(new FileReadError('lecture impossible'));
+    expect(msg).toBe('lecture impossible');
+  });
+
+  it('returns message for FileReadTimeoutError', () => {
+    const msg = handler.handle(
+      new FileReadTimeoutError('d\u00e9lai de lecture d\u00e9pass\u00e9'),
+    );
+    expect(msg).toBe('d\u00e9lai de lecture d\u00e9pass\u00e9');
   });
 });
