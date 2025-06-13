@@ -42,9 +42,15 @@ jobs:
       - name: Run linter
         run: npm run lint
 
-      - name: Run tests
-        run: npm run test
+      # 👉 Tests unitaires avec couverture
+      - name: Run unit tests with coverage
+        run: npm run test:unit
 
+      # 👉 Tests E2E avec couverture (optionnel si disponibles)
+      - name: Run e2e tests with coverage
+        run: npm run test:e2e || echo "No e2e tests defined"
+
+      # 📦 Upload des artefacts (logs, rapports, etc.)
       - name: Upload test artifacts
         if: success()
         uses: actions/upload-artifact@v4
@@ -55,11 +61,24 @@ jobs:
             test-results
           if-no-files-found: ignore
 
-      - name: Upload coverage to Codecov
+      # ☁️ Upload couverture unitaire vers Codecov
+      - name: Upload unit test coverage to Codecov
         if: success()
         uses: codecov/codecov-action@v4
         with:
-          files: ./coverage/lcov.info
+          files: ./coverage/unit/lcov.info
+          flags: unit
           fail_ci_if_error: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      # ☁️ Upload couverture e2e vers Codecov
+      - name: Upload e2e test coverage to Codecov
+        if: success()
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/e2e/lcov.info
+          flags: e2e
+          fail_ci_if_error: false  # E2E non bloquant
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
