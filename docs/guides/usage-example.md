@@ -1,26 +1,27 @@
-# Usage Example
+# Exemple d’utilisation
 
-This guide walks through a basic workflow for processing Postman Runner `.txt` files.
+Ce guide présente un workflow de base pour traiter des fichiers `.txt` Postman Runner.
 
-## 1. Upload files
+## 1. Téléversez des fichiers
 
-Drag one or more `.txt` files onto the **Téléverser des fichiers Postman Runner** area or click **Choisir des fichiers** to browse from your computer. Validation errors or warnings appear below the drop zone if a file is not accepted.
+Glissez un ou plusieurs fichiers `.txt` dans la zone **Téléverser des fichiers Postman Runner** ou cliquez sur **Choisir des fichiers** pour les sélectionner depuis votre ordinateur.
+Les erreurs ou avertissements de validation s’affichent sous la zone de dépôt si un fichier est refusé.
 
-## 2. View results
+## 2. Consultez les résultats
 
-Each file shows up in the results grid with a status badge. When processing succeeds, key details are displayed:
+Chaque fichier apparaît dans la grille de résultats avec un badge de statut. Si le traitement réussit, les informations clés sont affichées :
 
-- Remaining files count
-- Télédémarche number
-- Project name
-- Dossier number
-- Deposit date
+* Nombre de fichiers restants
+* Numéro télédémarche
+* Nom du projet
+* Numéro de dossier
+* Date de dépôt
 
-If a file fails to parse, an error message is shown instead of the details.
+Si un fichier échoue à l’analyse, un message d’erreur s’affiche à la place des détails.
 
-## 3. Download the JSON output
+## 3. Téléchargez le JSON généré
 
-For successfully processed files, click **Télécharger le JSON** to save a structured output. A sample file looks like:
+Pour chaque fichier traité avec succès, cliquez sur **Télécharger le JSON** pour obtenir un fichier structuré. Exemple :
 
 ```json
 {
@@ -32,4 +33,4 @@ For successfully processed files, click **Télécharger le JSON** to save a stru
 }
 ```
 
-Use these JSON files in your own tools or scripts as needed.
+Utilisez ces fichiers JSON dans vos outils ou scripts selon vos besoins.
