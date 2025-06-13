@@ -132,4 +132,60 @@ describe('useFileProcessor', () => {
     const stats = result.current.getStats();
     expect(stats.failed).toBe(1);
   });
+
+  it('clears previous results', async () => {
+    vi.useFakeTimers();
+    const parseMock = vi.fn(() => [data]);
+    const validateFilesMock = vi.fn(() => ({
+      isValid: true,
+      errors: [],
+      warnings: [],
+    }));
+    const validateRateLimitMock = vi.fn(() => ({
+      isValid: true,
+      errors: [],
+      warnings: [],
+    }));
+    const parser = { parse: parseMock } as unknown as FileParserService;
+    const validator = {
+      validateFiles: validateFilesMock,
+      validateRateLimit: validateRateLimitMock,
+    } as unknown as FileValidationService;
+    const reader = new FileReaderService();
+    const logService: ILoggingService = {
+      logInfo: vi.fn(),
+      logError: vi.fn(),
+      getLogs: vi.fn(() => []),
+      clear: vi.fn(),
+      load: vi.fn(),
+      save: vi.fn(),
+      exportLogs: vi.fn(() => ''),
+    };
+    const processor = new FileProcessor(
+      parser,
+      validator,
+      reader,
+      undefined,
+      undefined,
+      logService,
+    );
+    vi.spyOn(reader, 'readFileWithTimeout').mockResolvedValue('content');
+
+    const { result } = renderHook(() => useFileProcessor(processor));
+    const files = [createFile('to-clear.txt')];
+
+    await act(async () => {
+      const promise = result.current.processFiles(files as unknown as FileList);
+      await vi.runAllTimersAsync();
+      await promise;
+    });
+
+    expect(result.current.processedFiles.length).toBe(1);
+
+    act(() => {
+      result.current.clearResults();
+    });
+
+    expect(result.current.processedFiles).toEqual([]);
+  });
 });
