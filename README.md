@@ -1,79 +1,90 @@
 # Postman Runner File Processor
 
-A small React + TypeScript application for converting Postman Runner `.txt` files into structured JSON. Files are processed entirely in the browser with built‑in validation and sanitisation routines. For a full table of contents see [docs/index.md](docs/index.md).
+Petite application React + TypeScript pour convertir les fichiers `.txt` Postman Runner en JSON structuré. Le traitement se fait entièrement dans le navigateur avec validation et assainissement intégrés. Pour la table des matières complète, voir [docs/index.md](docs/index.md).
 
-## Features
+## Fonctionnalités
 
-- Drag‑and‑drop file uploader with progress display
-- Parses Postman Runner output to extract:
-  - remaining files count
-  - télédémarche number
-  - project name
-  - dossier number
-  - deposit date
-- Download a JSON file for each successfully processed input
-- Displays success or error state for every file and shows overall statistics
-- Client‑side checks for file type, size limits and rate limiting
+* Téléversement par glisser-déposer avec affichage de progression
+* Analyse des fichiers pour extraire :
+
+  * nombre de fichiers restants
+  * numéro télédémarche
+  * nom du projet
+  * numéro de dossier
+  * date de dépôt
+* Téléchargement d’un fichier JSON pour chaque entrée traitée avec succès
+* Affichage du succès ou de l’erreur pour chaque fichier et des statistiques globales
+* Vérifications côté client : type, taille et limitation du débit
 
 ## Documentation
 
-See [docs/index.md](docs/index.md) for the full documentation index. How‑to guides live in `docs/guides`, API and architecture references are in `docs/reference`, and changelogs and release notes can be found under `docs/releases`.
+Voir [docs/index.md](docs/index.md) pour l’index complet de la documentation.
+Les guides sont dans `docs/guides`, les références API et architecture dans `docs/reference`, les notes de version dans `docs/releases`.
 
-- [docs/index.md](docs/index.md) – full documentation index.
-- [docs/overview/overview.md](docs/overview/overview.md) – project overview.
-- [docs/guides/contributing.md](docs/guides/contributing.md) – contribution guidelines.
-- [docs/reference/tests-overview.md](docs/reference/tests-overview.md) – running tests.
-- [docs/reference/architecture.md](docs/reference/architecture.md) – project architecture.
-- [docs/reference/api-reference.md](docs/reference/api-reference.md) – internal API reference.
-- [docs/releases/changelog.md](docs/releases/changelog.md) – changelog and release notes.
+* [docs/index.md](docs/index.md) – index de la documentation complète.
+* [docs/overview/overview.md](docs/overview/overview.md) – aperçu du projet.
+* [docs/guides/contributing.md](docs/guides/contributing.md) – guide de contribution.
+* [docs/reference/tests-overview.md](docs/reference/tests-overview.md) – exécution des tests.
+* [docs/reference/architecture.md](docs/reference/architecture.md) – architecture du projet.
+* [docs/reference/api-reference.md](docs/reference/api-reference.md) – référence API interne.
+* [docs/releases/changelog.md](docs/releases/changelog.md) – journal des modifications.
 
-Consultez également [AGENTS.md](AGENTS.md) pour les conventions de contribution.
+Consultez aussi [AGENTS.md](AGENTS.md) pour les conventions de contribution.
 Avant toute contribution, exécutez `npm run lint` puis `npm test`.
 
 ## Installation
 
-1. Check that Node.js 18 or newer is installed
+1. Vérifiez que Node.js 18 ou plus est installé
+
    ```bash
    node -v
    ```
-2. Install dependencies
+2. Installez les dépendances
+
    ```bash
    npm install
    ```
-   Run this before `npm run lint` or `npm test`.
-3. Start the development server
+
+   Lancez cette commande avant `npm run lint` ou `npm test`.
+3. Démarrez le serveur de développement
+
    ```bash
    npm run dev
    ```
-   The app will be served by Vite and reload on changes.
-4. Run the unit tests
+
+   L’application sera servie par Vite et rechargée à chaque modification.
+4. Exécutez les tests unitaires
+
    ```bash
    npm test
    ```
-5. Create a production build
+5. Générez la version production
+
    ```bash
    npm run build
    ```
-6. Preview the build locally
+6. Prévisualisez la build en local
+
    ```bash
    npm run preview
    ```
 
-## Security considerations and limitations
+## Sécurité et limitations
 
-The project validates and sanitises files before parsing but operates entirely in the browser. Security measures include:
+Le projet valide et assainit les fichiers avant analyse, mais fonctionne entièrement côté navigateur. Mesures de sécurité :
 
-- Maximum file count, size per file and total upload size
-- `.txt` extension and MIME type checks
-- Removal of dangerous patterns such as script tags from the file content
-- Rate limiting to avoid processing an excessive number of files in a short time
-- Sanitisation of downloaded file names
+* Nombre maximal de fichiers, taille par fichier et taille totale des téléversements
+* Contrôle de l’extension `.txt` et du type MIME
+* Suppression des motifs dangereux (ex. : balises `<script>`) du contenu
+* Limitation du débit pour éviter le traitement massif
+* Assainissement des noms de fichiers téléchargés
 
-Despite these defences, all checks are client‑side and cannot fully protect against malicious input. Do **not** use the tool with untrusted or sensitive data. Its validation rules are tailored for Postman Runner output and may reject other formats or miss edge cases.
+Malgré ces protections, tout contrôle reste côté client et ne peut garantir une sécurité totale. N’utilisez **jamais** cet outil avec des données sensibles ou non fiables. Les règles de validation sont adaptées à la sortie Postman Runner et peuvent rejeter d’autres formats ou manquer certains cas limites.
 
-## Customising the error fallback
+## Personnalisation de l’écran d’erreur
 
-The application is wrapped with an `ErrorBoundary` component. By default it displays a simple screen when an unhandled error occurs. You can extend this behaviour by passing a custom React element to the `fallback` prop:
+L’application utilise un composant `ErrorBoundary`. Par défaut, un écran simple s’affiche en cas d’erreur non gérée.
+Vous pouvez personnaliser ce comportement en passant un élément React au prop `fallback` :
 
 ```tsx
 <ErrorBoundary fallback={<MyErrorScreen />}>
@@ -81,4 +92,4 @@ The application is wrapped with an `ErrorBoundary` component. By default it disp
 </ErrorBoundary>
 ```
 
-Use this to add additional actions such as error reporting or navigation links.
+Utilisez ceci pour ajouter des actions supplémentaires, comme le rapport d’erreur ou des liens de navigation.
