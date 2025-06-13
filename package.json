@@ -1,7 +1,7 @@
 {
-  "name": "vite-react-typescript-starter",
-  "private": true,
-  "version": "0.0.0",
+  "name": "postman-runner-file-processor",
+  "version": "1.0.0",
+  "description": "Convertit les fichiers Postman Runner en JSON via un CLI et une application web.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "test": "vitest run --coverage",
     "cli": "ts-node src/cli/convert.ts",
-    "build:cli": "esbuild src/cli/convert.ts --bundle --platform=node --outfile=dist/convert.js --banner:node=\"#!/usr/bin/env node\"",
+    "build:cli": "esbuild src/cli/convert.ts --bundle --platform=node --outfile=dist/convert.js --banner:js=\"#!/usr/bin/env node\"",
     "format": "prettier --write .",
     "prepare": "husky install"
   },
@@ -50,5 +50,23 @@
     "esbuild": "^0.25.5",
     "nanoid": "^3.3.11"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "main": "dist/convert.js",
+  "bin": {
+    "prfp-convert": "dist/convert.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fr3doo/Postman_Runner_File_Processor.git"
+  },
+  "keywords": [
+    "postman",
+    "runner",
+    "cli",
+    "converter"
+  ],
+  "author": "Fr3doo"
 }
