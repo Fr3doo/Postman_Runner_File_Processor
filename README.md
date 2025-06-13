@@ -1,112 +1,120 @@
 # Postman Runner File Processor
 
-Petite application React + TypeScript pour convertir les fichiers `.txt` Postman Runner en JSON structuré. Le traitement se fait entièrement dans le navigateur avec validation et assainissement intégrés. Pour la table des matières complète, voir [docs/index.md](docs/index.md).
+![CI](https://img.shields.io/github/actions/workflow/status/USER/REPO/ci.yml?branch=main)
+![npm](https://img.shields.io/npm/v/vite-react-typescript-starter?color=blue)
+![License](https://img.shields.io/badge/license-TBD-lightgrey)
 
-## Fonctionnalités
+## 🚀 Objectif du projet
 
-- Téléversement par glisser-déposer avec affichage de progression
-- Analyse des fichiers pour extraire :
+Cette application convertit des fichiers `.txt` générés par **Postman Runner** en JSON structuré directement dans le navigateur. Toutes les validations et l'assainissement sont effectués côté client. Un outil CLI est également disponible pour les conversions rapides.
 
-  - nombre de fichiers restants
-  - numéro télédémarche
-  - nom du projet
-  - numéro de dossier
-  - date de dépôt
+## 🧰 Stack technologique
 
-- Téléchargement d’un fichier JSON pour chaque entrée traitée avec succès
-- Affichage du succès ou de l’erreur pour chaque fichier et des statistiques globales
-- Vérifications côté client : type, taille et limitation du débit
+- [React 18](https://react.dev/) et [TypeScript 5](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) pour le bundling et le serveur de développement
+- [Tailwind CSS](https://tailwindcss.com/) pour le style
+- [lucide-react](https://lucide.dev/) pour les icônes
+- [Vitest](https://vitest.dev/) et [Testing Library](https://testing-library.com/) pour les tests
+- [ESLint](https://eslint.org/) et [Prettier](https://prettier.io/) pour la qualité du code
 
-## Documentation
+## 🔧 Installation
 
-Voir [docs/index.md](docs/index.md) pour l’index complet de la documentation.
-Les guides sont dans `docs/guides`, les références API et architecture dans `docs/reference`, les notes de version dans `docs/releases`.
-
-- [docs/index.md](docs/index.md) – index de la documentation complète.
-- [docs/overview/overview.md](docs/overview/overview.md) – aperçu du projet.
-- [docs/overview/limitations.md](docs/overview/limitations.md) – limites connues de l’application.
-- [docs/guides/contributing.md](docs/guides/contributing.md) – guide de contribution.
-- [docs/reference/tests-overview.md](docs/reference/tests-overview.md) – exécution des tests.
-- [docs/reference/architecture.md](docs/reference/architecture.md) – architecture du projet.
-- [docs/reference/api-reference.md](docs/reference/api-reference.md) – référence API interne.
-- [docs/releases/changelog.md](docs/releases/changelog.md) – journal des modifications.
-
-Consultez aussi [AGENTS.md](AGENTS.md) pour les conventions de contribution.
-Avant toute contribution, exécutez `npm run lint` puis `npm test`.
-
-## Installation
-
-1. Vérifiez que Node.js 18 ou plus est installé
-
+1. Vérifiez que Node.js 18 ou plus est installé :
    ```bash
    node -v
    ```
-
-2. Installez les dépendances
-
+2. Installez les dépendances :
    ```bash
    npm install
    ```
-
-   Lancez cette commande avant `npm run lint` ou `npm test`.
-
-3. Démarrez le serveur de développement
-
+3. Démarrez le serveur de développement :
    ```bash
    npm run dev
    ```
-
-   L’application sera servie par Vite et rechargée à chaque modification.
-
-4. Exécutez les tests unitaires
-
+4. Exécutez la suite de tests :
    ```bash
    npm test
    ```
-
-5. Générez la version production
-
+5. Générez la version production :
    ```bash
    npm run build
    ```
-
-6. Prévisualisez la build en local
-
+6. Prévisualisez la build localement :
    ```bash
    npm run preview
    ```
 
-## Utilisation en ligne de commande
+## ▶️ Lancement en CLI
 
-Un petit outil CLI permet de convertir directement des fichiers texte en JSON.
+Convertissez des fichiers en passant leur chemin en argument :
 
 ```bash
 npm run cli -- fichier1.txt fichier2.txt
 ```
 
-Chaque fichier `.txt` donné en argument génère un fichier `.json` dans le même dossier.
+Chaque fichier `.txt` génère un fichier `.json` adjacent.
 
-## Sécurité et limitations
+## 📦 Utilisation
 
-Le projet valide et assainit les fichiers avant analyse, mais fonctionne entièrement côté navigateur. Mesures de sécurité :
+Glissez-déposez vos fichiers dans l'interface ou cliquez sur **Choisir des fichiers**. Consultez les résultats et téléchargez le JSON généré pour chaque fichier traité. Un exemple détaillé se trouve dans [docs/guides/usage-example.md](docs/guides/usage-example.md).
 
-- Nombre maximal de fichiers, taille par fichier et taille totale des téléversements
-- Contrôle de l’extension `.txt` et du type MIME
-- Suppression des motifs dangereux (ex. : balises `<script>`) du contenu
-- Limitation du débit pour éviter le traitement massif
-- Assainissement des noms de fichiers téléchargés
+## 🧠 Architecture
 
-Malgré ces protections, tout contrôle reste côté client et ne peut garantir une sécurité totale. N’utilisez **jamais** cet outil avec des données sensibles ou non fiables. Les règles de validation sont adaptées à la sortie Postman Runner et peuvent rejeter d’autres formats ou manquer certains cas limites.
-
-## Personnalisation de l’écran d’erreur
-
-L’application utilise un composant `ErrorBoundary`. Par défaut, un écran simple s’affiche en cas d’erreur non gérée.
-Vous pouvez personnaliser ce comportement en passant un élément React au prop `fallback` :
-
-```tsx
-<ErrorBoundary fallback={<MyErrorScreen />}>
-  <App />
-</ErrorBoundary>
+```mermaid
+graph TD
+  A[User] --> B(FileUpload)
+  B -->|valid files| C(FileProcessor)
+  C --> D(FileParserService)
+  C --> E(FileValidationService)
+  C --> F(NotificationService)
+  C --> G(LoggingService)
+  D --> H(ErrorHandler)
+  E --> H
+  H --> F
+  F --> I(NotificationContext)
 ```
 
-Utilisez ceci pour ajouter des actions supplémentaires, comme le rapport d’erreur ou des liens de navigation.
+## 📁 Structure du projet
+
+```
+├─ src/            # Code source React/TypeScript
+│  ├─ components/  # Composants UI
+│  ├─ services/    # Services et logique métier
+│  ├─ utils/       # Fonctions de parsing et validation
+│  └─ config/      # Constantes de configuration
+├─ docs/           # Documentation détaillée
+├─ .github/        # Workflows CI
+└─ README.md
+```
+
+## 🧪 Tests
+
+Les tests unitaires se trouvent dans `src/utils/__tests__` et s'exécutent avec Vitest :
+
+```bash
+npm test
+```
+
+Assurez-vous que les nouveaux utilitaires sont couverts par des tests avant toute contribution.
+
+## 🤝 Contribuer
+
+Consultez [docs/guides/contributing.md](docs/guides/contributing.md) pour les étapes de contribution et les hooks Git. Les règles spécifiques aux agents sont décrites dans [AGENTS.md](AGENTS.md).
+
+## 📚 Documentation liée
+
+- [Documentation complète](docs/index.md)
+- [Schémas d'architecture](docs/reference/architecture.md)
+- [Changelog](docs/releases/changelog.md)
+
+## 🛡️ Licence
+
+La licence n'est pas encore définie. [Ouvrez une issue](https://github.com/USER/REPO/issues) pour proposer une licence adaptée.
+
+---
+
+### TODO
+
+- [ ] Ajouter un fichier `LICENSE` explicite
+- [ ] Publier le package sur npm pour disposer d'un badge de version valide
+- [ ] Mettre en place un rapport de couverture (Codecov ou Coveralls)
