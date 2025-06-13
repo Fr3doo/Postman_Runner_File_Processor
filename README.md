@@ -1,6 +1,6 @@
 # Postman Runner File Processor
 
-![CI](https://img.shields.io/github/actions/workflow/status/USER/REPO/ci.yml?branch=main)
+![CI](https://img.shields.io/github/actions/workflow/status/Fr3doo/Postman_Runner_File_Processor/ci.yml?branch=main)
 ![npm](https://img.shields.io/npm/v/vite-react-typescript-starter?color=blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
