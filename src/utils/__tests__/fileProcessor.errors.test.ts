@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { FileProcessor } from '../../services/FileProcessor';
 import type { FileParserService } from '../../services/FileParserService';
 import type { FileValidationService } from '../../services/FileValidationService';
+import { FileReaderService } from '../../services/FileReaderService';
 import { notificationService } from '../../services/NotificationService';
 import { ParsingError, ValidationError, RateLimitError } from '../errors';
 import type { ProcessedFile } from '../../types';
@@ -14,6 +15,7 @@ describe('FileProcessor error handling', () => {
   let parseMock: ReturnType<typeof vi.fn>;
   let validateFilesMock: ReturnType<typeof vi.fn>;
   let validateRateLimitMock: ReturnType<typeof vi.fn>;
+  let fileReader: FileReaderService;
   let processor: FileProcessor;
   let processedFiles: ProcessedFile[];
   let setProcessedFiles: Dispatch<SetStateAction<ProcessedFile[]>>;
@@ -37,6 +39,7 @@ describe('FileProcessor error handling', () => {
         validateFiles: validateFilesMock,
         validateRateLimit: validateRateLimitMock,
       } as unknown as FileValidationService,
+      (fileReader = new FileReaderService()),
       notificationService,
     );
     processedFiles = [];
@@ -45,9 +48,9 @@ describe('FileProcessor error handling', () => {
         typeof update === 'function' ? update(processedFiles) : update;
     };
     setIsProcessing = vi.fn();
-    (
-      processor as unknown as { readFileWithTimeout: () => Promise<string> }
-    ).readFileWithTimeout = vi.fn(async () => 'content');
+    vi
+      .spyOn(fileReader, 'readFileWithTimeout')
+      .mockResolvedValue('content');
     notificationService.clearWarnings();
   });
 

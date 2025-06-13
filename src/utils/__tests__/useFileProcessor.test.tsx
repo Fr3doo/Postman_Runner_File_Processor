@@ -2,6 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { useFileProcessor } from '../../hooks/useFileProcessor';
 import { FileProcessor } from '../../services/FileProcessor';
+import { FileReaderService } from '../../services/FileReaderService';
 import type { FileParserService } from '../../services/FileParserService';
 import type { FileValidationService } from '../../services/FileValidationService';
 import type { FileData } from '../../types';
@@ -37,10 +38,9 @@ describe('useFileProcessor', () => {
       validateFiles: validateFilesMock,
       validateRateLimit: validateRateLimitMock,
     } as unknown as FileValidationService;
-    const processor = new FileProcessor(parser, validator);
-    (
-      processor as unknown as { readFileWithTimeout: () => Promise<string> }
-    ).readFileWithTimeout = vi.fn(async () => 'content');
+    const reader = new FileReaderService();
+    const processor = new FileProcessor(parser, validator, reader);
+    vi.spyOn(reader, 'readFileWithTimeout').mockResolvedValue('content');
 
     const { result } = renderHook(() => useFileProcessor(processor));
     const files = [createFile('good.txt')];
@@ -79,10 +79,9 @@ describe('useFileProcessor', () => {
       validateFiles: validateFilesMock,
       validateRateLimit: validateRateLimitMock,
     } as unknown as FileValidationService;
-    const processor = new FileProcessor(parser, validator);
-    (
-      processor as unknown as { readFileWithTimeout: () => Promise<string> }
-    ).readFileWithTimeout = vi.fn(async () => 'content');
+    const reader = new FileReaderService();
+    const processor = new FileProcessor(parser, validator, reader);
+    vi.spyOn(reader, 'readFileWithTimeout').mockResolvedValue('content');
 
     const { result } = renderHook(() => useFileProcessor(processor));
     const files = [createFile('bad.txt')];

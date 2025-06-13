@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { FileProcessor } from '../FileProcessor';
 import { FileParserService } from '../FileParserService';
 import { FileValidationService } from '../FileValidationService';
+import { FileReaderService } from '../FileReaderService';
 import { configService } from '../../services/ConfigService';
 import type { FileData, ProcessedFile } from '../../types';
 import { ParsingError } from '../../utils/errors';
@@ -14,6 +15,7 @@ describe('FileProcessor', () => {
   let parseMock: ReturnType<typeof vi.fn>;
   let validateFilesMock: ReturnType<typeof vi.fn>;
   let validateRateLimitMock: ReturnType<typeof vi.fn>;
+  let fileReader: FileReaderService;
   let processor: FileProcessor;
   let processedFiles: ProcessedFile[];
   let isProcessing: boolean;
@@ -38,8 +40,9 @@ describe('FileProcessor', () => {
       validateFiles: validateFilesMock,
       validateRateLimit: validateRateLimitMock,
     } as unknown as FileValidationService;
+    fileReader = new FileReaderService();
 
-    processor = new FileProcessor(parserService, validationService);
+    processor = new FileProcessor(parserService, validationService, fileReader);
 
     processedFiles = [];
     isProcessing = false;
@@ -61,11 +64,7 @@ describe('FileProcessor', () => {
     vi.useFakeTimers();
     let active = 0;
     let maxActive = 0;
-    (
-      processor as unknown as {
-        readFileWithTimeout: (file: File) => Promise<string>;
-      }
-    ).readFileWithTimeout = vi.fn(async () => {
+    vi.spyOn(fileReader, 'readFileWithTimeout').mockImplementation(async () => {
       active++;
       maxActive = Math.max(maxActive, active);
       await new Promise((resolve) => setTimeout(resolve, 10));
@@ -97,13 +96,11 @@ describe('FileProcessor', () => {
       if (content === 'bad') throw new ParsingError('fail');
       return [{} as FileData];
     });
-    (
-      processor as unknown as {
-        readFileWithTimeout: (file: File) => Promise<string>;
-      }
-    ).readFileWithTimeout = vi.fn(async (file: File) =>
-      file.name.includes('bad') ? 'bad' : 'good',
-    );
+    vi
+      .spyOn(fileReader, 'readFileWithTimeout')
+      .mockImplementation(async (file: File) =>
+        file.name.includes('bad') ? 'bad' : 'good',
+      );
 
     const files = [createFile('good.txt'), createFile('bad.txt')];
     const promise = processor.processFiles(
@@ -124,11 +121,7 @@ describe('FileProcessor', () => {
   it('stores all parsed summary blocks', async () => {
     vi.useFakeTimers();
     parseMock.mockReturnValue([{} as FileData, {} as FileData]);
-    (
-      processor as unknown as {
-        readFileWithTimeout: (file: File) => Promise<string>;
-      }
-    ).readFileWithTimeout = vi.fn(async () => 'good');
+    vi.spyOn(fileReader, 'readFileWithTimeout').mockResolvedValue('good');
 
     const files = [createFile('good.txt')];
     const promise = processor.processFiles(
