@@ -6,7 +6,7 @@ import { FileReaderService } from '../FileReaderService';
 import { configService } from '../../services/ConfigService';
 import { type ILoggingService } from '../LoggingService';
 import type { FileData, ProcessedFile } from '../../types';
-import { ParsingError } from '../../utils/errors';
+import { ParsingError, ValidationError, RateLimitError } from '../../utils/errors';
 import type { Dispatch, SetStateAction } from 'react';
 
 const createFile = (name: string): File =>
@@ -149,5 +149,33 @@ describe('FileProcessor', () => {
 
     const good = processedFiles.find((f) => f.filename === 'good.txt');
     expect(good?.summaries?.length).toBe(2);
+  });
+
+  it('records a validation error when validateFiles throws', async () => {
+    validateFilesMock.mockImplementation(() => {
+      throw new ValidationError('bad');
+    });
+    const files = [createFile('bad.txt')];
+    await processor.processFiles(
+      files as unknown as FileList,
+      setProcessedFiles,
+      setIsProcessing,
+    );
+    expect(processedFiles[0]?.status).toBe('error');
+    expect(processedFiles[0]?.filename).toBe('Validation Error');
+  });
+
+  it('records a rate limit error when validateRateLimit throws', async () => {
+    validateRateLimitMock.mockImplementation(() => {
+      throw new RateLimitError('slow down');
+    });
+    const files = [createFile('limit.txt')];
+    await processor.processFiles(
+      files as unknown as FileList,
+      setProcessedFiles,
+      setIsProcessing,
+    );
+    expect(processedFiles[0]?.status).toBe('error');
+    expect(processedFiles[0]?.filename).toBe('Rate Limit Error');
   });
 });
