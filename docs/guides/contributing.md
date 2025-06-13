@@ -22,6 +22,9 @@ Avant de soumettre une pull request, veuillez :
    npm test
    ```
 
+   Pour les tests du CLI, exécutez d'abord `npm run build:cli` puis relancez
+   `npm test`. Voir [cli-tests.md](cli-tests.md) pour plus de détails.
+
 3. Husky exécute automatiquement `npm run lint && npm run format` à chaque commit.
    Si le hook échoue, corrigez les problèmes signalés puis recommittez.
 

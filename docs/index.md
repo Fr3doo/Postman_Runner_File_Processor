@@ -28,6 +28,7 @@ La documentation est organisée dans les dossiers suivants :
 - [`guides/usage-example.md`](guides/usage-example.md) – Exemple de workflow pour téléverser des fichiers et obtenir les résultats.
 - [`guides/configuration.md`](guides/configuration.md) – Comment ajuster les paramètres de sécurité et d’exécution.
 - [`guides/logging-and-errors.md`](guides/logging-and-errors.md) – Journaliser les actions et afficher des messages d’erreur sûrs.
+- [`guides/cli-tests.md`](guides/cli-tests.md) – Exécuter les tests du convertisseur en ligne de commande.
   D’autres guides avancés sont les bienvenus.
 
 ### Reference
