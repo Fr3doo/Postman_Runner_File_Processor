@@ -7,36 +7,6 @@ coverage:
   range: "70...100"
 
   status:
-    project:
-      default:
-        target: 80%          # couverture globale attendue
-        threshold: 1%        # tolérance
-    patch:
-      default:
-        target: 80%          # couverture attendue sur chaque patch PR
-        threshold: 0%
-
-    # 🔐 Couvre chaque fichier individuellement
-    files:
-      default:
-        target: 70%          # chaque fichier doit atteindre 70%
-        threshold: 5%        # tolérance de baisse par fichier
-
-comment:
-  layout: "reach, diff, flags, files"
-  behavior: default
-  require_changes: true
-
-
-codecov:
-  require_ci_to_pass: yes
-
-coverage:
-  precision: 2
-  round: down
-  range: "70...100"
-
-  status:
     # 🔐 Couvre le projet
     project:
       unit:
