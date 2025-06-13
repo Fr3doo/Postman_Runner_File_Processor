@@ -1,9 +1,10 @@
-# Documentation Style Guide
+# Guide de style de documentation
 
-This project uses the following conventions for all documentation:
+Ce projet utilise les conventions suivantes pour toute la documentation :
 
-- **Language**: Write documentation in English.
-- **File names**: Use _kebab-case_ (lowercase with hyphens) for all markdown file names.
-- **Sentence length**: Prefer short sentences that are easy to read.
+* **Langue** : Rédiger la documentation en français.
+* **Noms de fichiers** : Utiliser le *kebab-case* (minuscules avec des traits d’union) pour tous les noms de fichiers markdown.
+* **Longueur des phrases** : Préférer des phrases courtes et faciles à lire.
 
-Keeping every file consistent makes the docs simple to navigate and maintain. When updating or adding documentation, follow these rules and keep the tone concise.
+La cohérence des fichiers facilite la navigation et la maintenance de la documentation. Lors de la mise à jour ou de l’ajout de documents, respecter ces règles et maintenir un ton concis.
+
