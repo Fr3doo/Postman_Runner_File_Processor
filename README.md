@@ -23,6 +23,7 @@ Les guides sont dans `docs/guides`, les références API et architecture dans `d
 
 * [docs/index.md](docs/index.md) – index de la documentation complète.
 * [docs/overview/overview.md](docs/overview/overview.md) – aperçu du projet.
+* [docs/overview/limitations.md](docs/overview/limitations.md) – limites connues de l’application.
 * [docs/guides/contributing.md](docs/guides/contributing.md) – guide de contribution.
 * [docs/reference/tests-overview.md](docs/reference/tests-overview.md) – exécution des tests.
 * [docs/reference/architecture.md](docs/reference/architecture.md) – architecture du projet.
