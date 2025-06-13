@@ -24,11 +24,11 @@ async function convertFile(filePath: string): Promise<void> {
   );
 }
 
-async function main(): Promise<void> {
-  const files = process.argv.slice(2);
+export async function run(files: string[]): Promise<void> {
   if (files.length === 0) {
     console.error('Usage: ts-node src/cli/convert.ts <files...>');
-    process.exit(1);
+    process.exitCode = 1;
+    return;
   }
 
   for (const file of files) {
@@ -42,8 +42,14 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((err) => {
-  const message = err instanceof Error ? err.message : String(err);
-  console.error(message);
-  process.exit(1);
-});
+async function main(): Promise<void> {
+  await run(process.argv.slice(2));
+}
+
+if (import.meta.main) {
+  main().catch((err) => {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(message);
+    process.exit(1);
+  });
+}
