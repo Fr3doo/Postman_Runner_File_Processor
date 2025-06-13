@@ -9,8 +9,8 @@ coverage:
   status:
     # 🔐 Couvre le projet
     project:
+      # Tests unitaires (unit)
       unit:
-        # Tests unitaires (unit)
         flags: [unit]
         target: 85%           # couverture globale attendue
         threshold: 1%         # tolérance
