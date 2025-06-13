@@ -14,6 +14,8 @@ loggingService.logInfo('Start processing');
 
 Utiliser `logError` pour les erreurs et appeler `getLogs()` pour consulter l’historique. Utiliser `clear()` pour réinitialiser la liste des journaux.
 
+Vous pouvez sauvegarder le journal dans `localStorage` avec `save()` et le restaurer plus tard avec `load()`. La méthode `exportLogs()` télécharge un fichier `logs.json` contenant toutes les entrées.
+
 ## ErrorHandler
 
 Convertir les erreurs inconnues en messages lisibles :
