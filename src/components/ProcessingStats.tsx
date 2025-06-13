@@ -2,6 +2,7 @@ import React from 'react';
 import { ProcessingStats } from '../types';
 import { CheckCircle, XCircle, Clock, FileText } from 'lucide-react';
 import { Card } from './ui/Card';
+import { t } from '../i18n';
 
 interface ProcessingStatsProps {
   stats: ProcessingStats;
@@ -19,13 +20,13 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
       <Card className="border border-gray-200">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-800">
-            Résumé du traitement
+            {t('processingSummary')}
           </h3>
           <button
             onClick={onClearResults}
             className="text-red-600 hover:text-red-700 text-sm font-medium transition-colors"
           >
-            Effacer les résultats
+            {t('clearResults')}
           </button>
         </div>
 
@@ -37,7 +38,7 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
             <div className="text-2xl font-bold text-gray-800">
               {stats.total}
             </div>
-            <div className="text-sm text-gray-600">Fichiers totaux</div>
+            <div className="text-sm text-gray-600">{t('totalFiles')}</div>
           </div>
 
           <div className="bg-blue-50 rounded-lg p-4 text-center">
@@ -47,7 +48,7 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
             <div className="text-2xl font-bold text-blue-600">
               {stats.processed}
             </div>
-            <div className="text-sm text-blue-600">Traités</div>
+            <div className="text-sm text-blue-600">{t('processed')}</div>
           </div>
 
           <div className="bg-green-50 rounded-lg p-4 text-center">
@@ -57,7 +58,7 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
             <div className="text-2xl font-bold text-green-600">
               {stats.successful}
             </div>
-            <div className="text-sm text-green-600">Réussis</div>
+            <div className="text-sm text-green-600">{t('successful')}</div>
           </div>
 
           <div className="bg-red-50 rounded-lg p-4 text-center">
@@ -67,14 +68,14 @@ export const ProcessingStatsComponent: React.FC<ProcessingStatsProps> = ({
             <div className="text-2xl font-bold text-red-600">
               {stats.failed}
             </div>
-            <div className="text-sm text-red-600">Échoués</div>
+            <div className="text-sm text-red-600">{t('failed')}</div>
           </div>
         </div>
 
         {stats.total > 0 && (
           <div className="mt-4">
             <div className="flex justify-between text-sm text-gray-600 mb-1">
-              <span>Avancement</span>
+              <span>{t('progress')}</span>
               <span>{Math.round((stats.processed / stats.total) * 100)}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">

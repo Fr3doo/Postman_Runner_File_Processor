@@ -67,3 +67,15 @@ Voici un extrait simplifié du code JSX générant la grille :
 
 Chaque carte contient les informations résumées du fichier et un bouton pour té
 lécharger le JSON.
+
+## 7. Changer la langue de l'interface
+
+La langue par défaut est le français. Pour afficher l'application en anglais, importez la fonction `setLanguage` depuis `src/i18n` et appelez :
+
+```ts
+import { setLanguage } from '../src/i18n';
+
+setLanguage('en');
+```
+
+Toutes les étiquettes et messages s'afficheront alors en anglais.
