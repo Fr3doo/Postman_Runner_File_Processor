@@ -55,78 +55,29 @@ const parseSummaryLines = (summaryLines: string[]): FileData => {
 
   for (const line of summaryLines) {
     try {
-      if (line.includes('Nombre de fichier(s) restant(s)')) {
-        const match = line.match(/:\s*(\d+)/);
-        if (match) {
-          const count = parseInt(match[1], 10);
-          if (count < 0 || count > 999999) {
-            throw new ParsingError('Invalid file count.');
-          }
-          data.nombre_fichiers_restants = count;
-        }
-      } else if (
-        line.includes('numeroTélédémarche') ||
-        line.includes('numeroTeledemarche')
-      ) {
-        const match = line.match(/AUTO-([A-Z0-9-]+)/);
-        if (match) {
-          const cleanNumber = match[1].replace(/[^A-Z0-9-]/g, '');
-          if (!/^[A-Z0-9-]+$/.test(cleanNumber)) {
-            throw new ParsingError('Invalid télédémarche number format.');
-          }
-          data.numero_teledemarche = cleanNumber;
-        }
-      } else if (line.includes('Nom de projet')) {
-        const match = line.match(
-          /:\s*TRA\s*-\s*([A-Z0-9]+)\s*-\s*(.+?)\s*-\s*v([\d.]+)/,
-        );
-        if (match) {
-          const [, code, name, version] = match;
-          if (!/^[A-Z0-9]+$/.test(code)) {
-            throw new ParsingError('Invalid project code format.');
-          }
-          const sanitizedName = name.replace(/[<>:"|?*\\/]/g, '_').trim();
-          if (sanitizedName.length === 0) {
-            throw new ParsingError('Project name is empty after sanitization');
-          }
-          if (!/^\d+(\.\d+)*$/.test(version)) {
-            throw new ParsingError('Invalid version format.');
-          }
-          data.nom_projet = `TRA - ${code} - ${sanitizedName} - v${version}`;
-        } else {
-          const fallbackMatch = line.match(/:\s*(.+)$/);
-          if (fallbackMatch) {
-            const projectName = fallbackMatch[1].trim();
-            if (projectName.includes('TRA')) {
-              const parts = projectName.split('-').map((p) => p.trim());
-              if (parts.length >= 2 && !/^[A-Z0-9]+$/.test(parts[1])) {
-                throw new ParsingError('Invalid project code format.');
-              }
-              data.nom_projet = projectName;
-            }
-          }
-        }
-      } else if (line.includes('Numero dossier')) {
-        const match = line.match(/D([A-Z0-9]+)/);
-        if (match) {
-          const dossierNumber = match[1];
-          if (!/^[A-Z0-9]+$/.test(dossierNumber)) {
-            throw new ParsingError('Invalid dossier number format.');
-          }
-          data.numero_dossier = dossierNumber;
-        }
-      } else if (
-        line.includes('Date de dépot') ||
-        line.includes('Date de depot')
-      ) {
-        const match = line.match(/:\s*(.+)$/);
-        if (match) {
-          const sanitizedDate = sanitizeDate(match[1].trim());
-          if (!sanitizedDate) {
-            throw new ParsingError('Invalid date format.');
-          }
-          data.date_depot = sanitizedDate;
-        }
+      if (data.nombre_fichiers_restants === undefined) {
+        const count = extractFileCount(line);
+        if (count !== undefined) data.nombre_fichiers_restants = count;
+      }
+
+      if (data.numero_teledemarche === undefined) {
+        const num = extractTeledemarche(line);
+        if (num !== undefined) data.numero_teledemarche = num;
+      }
+
+      if (data.nom_projet === undefined) {
+        const proj = extractProjectName(line);
+        if (proj !== undefined) data.nom_projet = proj;
+      }
+
+      if (data.numero_dossier === undefined) {
+        const dossier = extractDossierNumber(line);
+        if (dossier !== undefined) data.numero_dossier = dossier;
+      }
+
+      if (data.date_depot === undefined) {
+        const date = extractDateDepot(line);
+        if (date !== undefined) data.date_depot = date;
       }
     } catch (error) {
       const message =
@@ -182,3 +133,92 @@ const sanitizeDate = (dateStr: string): string | null => {
 
   return sanitized;
 };
+
+export const extractFileCount = (line: string): number | undefined => {
+  if (!line.includes('Nombre de fichier(s) restant(s)')) return undefined;
+  const match = line.match(/:\s*(\d+)/);
+  if (match) {
+    const count = parseInt(match[1], 10);
+    if (count < 0 || count > 999999) {
+      throw new ParsingError('Invalid file count.');
+    }
+    return count;
+  }
+  return undefined;
+};
+
+export const extractTeledemarche = (line: string): string | undefined => {
+  if (!line.includes('numeroTélédémarche') && !line.includes('numeroTeledemarche')) {
+    return undefined;
+  }
+  const match = line.match(/AUTO-([A-Z0-9-]+)/);
+  if (match) {
+    const cleanNumber = match[1].replace(/[^A-Z0-9-]/g, '');
+    if (!/^[A-Z0-9-]+$/.test(cleanNumber)) {
+      throw new ParsingError('Invalid télédémarche number format.');
+    }
+    return cleanNumber;
+  }
+  return undefined;
+};
+
+export const extractProjectName = (line: string): string | undefined => {
+  if (!line.includes('Nom de projet')) return undefined;
+  const match = line.match(/:\s*TRA\s*-\s*([A-Z0-9]+)\s*-\s*(.+?)\s*-\s*v([\d.]+)/);
+  if (match) {
+    const [, code, name, version] = match;
+    if (!/^[A-Z0-9]+$/.test(code)) {
+      throw new ParsingError('Invalid project code format.');
+    }
+    const sanitizedName = name.replace(/[<>:"|?*\\/]/g, '_').trim();
+    if (sanitizedName.length === 0) {
+      throw new ParsingError('Project name is empty after sanitization');
+    }
+    if (!/^\d+(\.\d+)*$/.test(version)) {
+      throw new ParsingError('Invalid version format.');
+    }
+    return `TRA - ${code} - ${sanitizedName} - v${version}`;
+  }
+  const fallbackMatch = line.match(/:\s*(.+)$/);
+  if (fallbackMatch) {
+    const projectName = fallbackMatch[1].trim();
+    if (projectName.includes('TRA')) {
+      const parts = projectName.split('-').map((p) => p.trim());
+      if (parts.length >= 2 && !/^[A-Z0-9]+$/.test(parts[1])) {
+        throw new ParsingError('Invalid project code format.');
+      }
+      return projectName;
+    }
+  }
+  return undefined;
+};
+
+export const extractDossierNumber = (line: string): string | undefined => {
+  if (!line.includes('Numero dossier')) return undefined;
+  const match = line.match(/D([A-Z0-9]+)/);
+  if (match) {
+    const dossierNumber = match[1];
+    if (!/^[A-Z0-9]+$/.test(dossierNumber)) {
+      throw new ParsingError('Invalid dossier number format.');
+    }
+    return dossierNumber;
+  }
+  return undefined;
+};
+
+export const extractDateDepot = (line: string): string | undefined => {
+  if (!line.includes('Date de dépot') && !line.includes('Date de depot')) {
+    return undefined;
+  }
+  const match = line.match(/:\s*(.+)$/);
+  if (match) {
+    const sanitizedDate = sanitizeDate(match[1].trim());
+    if (!sanitizedDate) {
+      throw new ParsingError('Invalid date format.');
+    }
+    return sanitizedDate;
+  }
+  return undefined;
+};
+
+export { sanitizeDate };
