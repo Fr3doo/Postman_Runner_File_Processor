@@ -13,6 +13,8 @@ describe('downloadJSON', () => {
     };
 
     const createElementSpy = vi.spyOn(document, 'createElement');
+    const appendChildSpy = vi.spyOn(document.body, 'appendChild');
+    const removeChildSpy = vi.spyOn(document.body, 'removeChild');
 
     Object.defineProperty(URL, 'createObjectURL', {
       writable: true,
@@ -32,8 +34,10 @@ describe('downloadJSON', () => {
     const anchor = createElementSpy.mock.results[0].value as HTMLAnchorElement;
     expect(createElementSpy).toHaveBeenCalledWith('a');
     expect(createObjectURLSpy).toHaveBeenCalled();
-    expect(anchor.download).toBe('un_safe_name_.json');
+    expect(appendChildSpy).toHaveBeenCalledWith(anchor);
+    expect(removeChildSpy).toHaveBeenCalledWith(anchor);
     expect(document.body.contains(anchor)).toBe(false);
+    expect(anchor.download).toBe('un_safe_name_.json');
 
     createElementSpy.mockRestore();
     createObjectURLSpy.mockRestore();
