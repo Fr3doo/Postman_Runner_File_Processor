@@ -1,31 +1,33 @@
-# Installation Guide
+# Guide d’installation
 
-Follow these steps to get the Postman Runner File Processor running locally.
+Suivez ces étapes pour exécuter localement le Postman Runner File Processor.
 
-1. **Check your Node version**
+1. **Vérifiez votre version de Node**
 
-   Make sure Node.js 18 or newer is installed:
+   Assurez-vous que Node.js 18 ou une version plus récente est installé :
 
    ```bash
    node -v
    ```
 
-2. **Install dependencies**
+2. **Installez les dépendances**
 
    ```bash
    npm install
    ```
 
-3. **Start the development server**
+3. **Démarrez le serveur de développement**
 
    ```bash
    npm run dev
    ```
 
-   Vite will start the app and reload whenever you make changes.
+   Vite démarre l’application et recharge automatiquement à chaque modification.
 
-4. **Run the tests**
+4. **Exécutez les tests**
+
    ```bash
    npm test
    ```
-   This executes the Vitest test suite to verify that utilities work as expected.
+
+   Cette commande lance la suite de tests Vitest pour vérifier le bon fonctionnement des utilitaires.
