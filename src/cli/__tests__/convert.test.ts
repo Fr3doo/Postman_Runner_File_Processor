@@ -92,6 +92,35 @@ describe('run', () => {
     expect(files).toContain('multi-2.json');
   });
 
+  it('creates JSON files for each provided input', async () => {
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const sanitizeSpy = vi
+      .spyOn(parser, 'sanitizeFileData')
+      .mockImplementation((d) => d);
+
+    const content = `Block one\n📂 Nombre de fichier(s) restant(s) : 1\n➡️ Le dossier au numeroTélédémarche: AUTO-A est déposé\n➡️ Nom de projet : TRA - X - One - v1\n➡️ Numero dossier : D1\n➡️ Date de dépot : 2024-01-01`;
+    await fs.writeFile('first.txt', content, 'utf8');
+    await fs.writeFile('second.txt', content, 'utf8');
+
+    await run(['first.txt', 'second.txt']);
+
+    expect(sanitizeSpy).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalledWith('Converted first.txt');
+    expect(logSpy).toHaveBeenCalledWith('Converted second.txt');
+
+    const out1 = await fs.readFile('first.json', 'utf8');
+    const out2 = await fs.readFile('second.json', 'utf8');
+    const expected = {
+      nombre_fichiers_restants: 1,
+      numero_teledemarche: 'A',
+      nom_projet: 'TRA - X - One - v1',
+      numero_dossier: '1',
+      date_depot: '2024-01-01',
+    };
+    expect(JSON.parse(out1)).toEqual(expected);
+    expect(JSON.parse(out2)).toEqual(expected);
+  });
+
   it('logs error when readFile fails', async () => {
     vi.spyOn(fs, 'readFile').mockRejectedValue(new Error('fail'));
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
