@@ -46,13 +46,20 @@ Cette application convertit des fichiers `.txt` générés par **Postman Runner*
 
 ## ▶️ Lancement en CLI
 
-Convertissez des fichiers en passant leur chemin en argument :
+Générez d'abord le script autonome :
 
 ```bash
-npm run cli -- fichier1.txt fichier2.txt
+npm run build:cli
 ```
 
-Chaque fichier `.txt` génère un fichier `.json` adjacent.
+Un fichier `dist/convert.js` est créé. Exécutez-le avec Node en lui passant des
+fichiers :
+
+```bash
+node dist/convert.js fichier1.txt fichier2.txt
+```
+
+Chaque fichier `.txt` produit un fichier `.json` adjacent dans le même dossier.
 
 ## 📦 Utilisation
 
