@@ -1,7 +1,7 @@
-# Changelog
+# Journal des modifications
 
-All notable changes to this project will be documented in this file.
+Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
-## Unreleased
+## Non publié
 
-- Added initial project documentation.
+* Ajout de la documentation initiale du projet.
