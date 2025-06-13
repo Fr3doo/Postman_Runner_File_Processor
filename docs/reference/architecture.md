@@ -1,34 +1,34 @@
 # Architecture
 
-The project is a Vite powered React application written in TypeScript.
+Le projet est une application React propulsée par Vite et écrite en TypeScript.
 
 ```
 src/
-├─ components/          React UI components
-├─ config/              Configuration constants
-├─ hooks/               Custom React hooks
-├─ services/            Helper services
-├─ utils/               Parsing and validation logic
-└─ types/               Shared TypeScript types
+├─ components/          Composants UI React
+├─ config/              Constantes de configuration
+├─ hooks/               Hooks React personnalisés
+├─ services/            Services utilitaires
+├─ utils/               Logique de parsing et validation
+└─ types/               Types TypeScript partagés
 ```
 
-Unit tests reside in `src/utils/__tests__` and are executed with Vitest. Styling is done with Tailwind CSS and icons come from `lucide-react`.
+Les tests unitaires se trouvent dans `src/utils/__tests__` et sont exécutés avec Vitest. Le style est géré avec Tailwind CSS et les icônes proviennent de `lucide-react`.
 
-## Key services
+## Services clés
 
 ### LoggingService
 
-Keeps a list of log entries with a level (`info` or `error`), a message and a timestamp. Use `logInfo` or `logError` to add entries and `getLogs` to inspect them.
+Maintient une liste d’entrées de journal avec un niveau (`info` ou `error`), un message et un timestamp. Utilisez `logInfo` ou `logError` pour ajouter une entrée et `getLogs` pour les consulter.
 
 ### ConfigService
 
-Reads environment variables and exposes runtime constants. Access it via `configService` to retrieve limits such as `concurrencyLimit` or the nested `security` settings.
+Lit les variables d’environnement et expose des constantes d’exécution. Accédez-y via `configService` pour obtenir des limites comme `concurrencyLimit` ou les paramètres imbriqués de `security`.
 
 ### ErrorHandler
 
-Transforms unknown errors into short user-friendly strings. Call `errorHandler.handle(value)` before displaying an error message to the user.
+Transforme les erreurs inconnues en chaînes courtes et lisibles. Appelez `errorHandler.handle(value)` avant d’afficher un message d’erreur à l’utilisateur.
 
-## Component overview
+## Vue d’ensemble des composants
 
 ```mermaid
 graph TD
