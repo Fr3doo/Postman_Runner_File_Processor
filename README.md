@@ -1,6 +1,7 @@
 # Postman Runner File Processor
 
 ![CI](https://img.shields.io/github/actions/workflow/status/USER/REPO/ci.yml?branch=main)
+![Coverage](https://codecov.io/gh/USER/REPO/branch/main/graph/badge.svg)
 ![npm](https://img.shields.io/npm/v/vite-react-typescript-starter?color=blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -117,4 +118,4 @@ Ce projet est distribué sous licence MIT.
 
 - [x] Ajouter un fichier `LICENSE` explicite
 - [ ] Publier le package sur npm pour disposer d'un badge de version valide
-- [ ] Mettre en place un rapport de couverture (Codecov ou Coveralls)
+- [x] Mettre en place un rapport de couverture (Codecov ou Coveralls)

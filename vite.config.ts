@@ -11,5 +11,10 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    coverage: {
+      reporter: ['text', 'lcov'],
+      enabled: true,
+      provider: 'v8',
+    },
   },
 });
