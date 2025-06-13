@@ -34,7 +34,13 @@ class LoggingService implements ILoggingService {
 
   load(): void {
     if (typeof localStorage === 'undefined') return;
-    const data = localStorage.getItem(this.storageKey);
+    let data: string | null = null;
+    try {
+      data = localStorage.getItem(this.storageKey);
+    } catch (err) {
+      console.error('Failed to read logs from localStorage', err);
+      return;
+    }
     if (!data) return;
     try {
       const parsed: LogEntry[] = JSON.parse(data);
@@ -49,7 +55,11 @@ class LoggingService implements ILoggingService {
 
   save(): void {
     if (typeof localStorage === 'undefined') return;
-    localStorage.setItem(this.storageKey, JSON.stringify(this.logs));
+    try {
+      localStorage.setItem(this.storageKey, JSON.stringify(this.logs));
+    } catch (err) {
+      console.error('Failed to save logs to localStorage', err);
+    }
   }
 
   exportLogs(): string {
