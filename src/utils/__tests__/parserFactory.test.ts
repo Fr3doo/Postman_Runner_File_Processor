@@ -19,4 +19,14 @@ describe('ParserFactory', () => {
     const strat = ParserFactory.getStrategy('csv');
     expect(strat).toBe(dummyStrategy);
   });
+
+  it('supports multiple strategies', () => {
+    const stratA = () => ['a'];
+    const stratB = () => ['b'];
+    ParserFactory.register('a', stratA);
+    ParserFactory.register('b', stratB);
+    expect(ParserFactory.getStrategy('a')).toBe(stratA);
+    expect(ParserFactory.getStrategy('b')).toBe(stratB);
+    expect(ParserFactory.getStrategy('other')).toBe(defaultParseStrategy);
+  });
 });
