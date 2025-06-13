@@ -65,6 +65,10 @@ Chaque fichier `.txt` produit un fichier `.json` adjacent dans le même dossier.
 
 Glissez-déposez vos fichiers dans l'interface ou cliquez sur **Choisir des fichiers**. Consultez les résultats et téléchargez le JSON généré pour chaque fichier traité. Un exemple détaillé se trouve dans [docs/guides/usage-example.md](docs/guides/usage-example.md).
 
+## ⚙️ Configuration
+
+Vous pouvez ajuster les limites de traitement dans un fichier `.env`. Le guide [docs/guides/configuration.md](docs/guides/configuration.md) liste les variables disponibles.
+
 ## 🧠 Architecture
 
 ```mermaid
@@ -113,6 +117,7 @@ Consultez [docs/guides/contributing.md](docs/guides/contributing.md) pour les é
 - [Documentation complète](docs/index.md)
 - [Schémas d'architecture](docs/reference/architecture.md)
 - [Changelog](docs/releases/changelog.md)
+- [Guide de configuration](docs/guides/configuration.md)
 
 ## 🛡️ Licence
 
