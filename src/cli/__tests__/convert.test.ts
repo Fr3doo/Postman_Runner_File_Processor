@@ -49,4 +49,16 @@ describe('run', () => {
       date_depot: '2024-01-01',
     });
   });
+
+  it('logs error when readFile fails', async () => {
+    vi.spyOn(fs, 'readFile').mockRejectedValue(new Error('fail'));
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+
+    await run(['input.txt']);
+
+    expect(errorSpy).toHaveBeenCalledWith('Error processing input.txt: fail');
+    expect(logSpy).not.toHaveBeenCalled();
+    expect(process.exitCode).toBeUndefined();
+  });
 });
