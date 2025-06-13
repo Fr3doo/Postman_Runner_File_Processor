@@ -27,3 +27,19 @@ Reads environment variables and exposes runtime constants. Access it via `config
 ### ErrorHandler
 
 Transforms unknown errors into short user-friendly strings. Call `errorHandler.handle(value)` before displaying an error message to the user.
+
+## Component overview
+
+```mermaid
+graph TD
+  A[User] --> B(FileUpload)
+  B -->|valid files| C(FileProcessor)
+  C --> D(FileParserService)
+  C --> E(FileValidationService)
+  C --> F(NotificationService)
+  C --> G(LoggingService)
+  D --> H(ErrorHandler)
+  E --> H
+  H --> F
+  F --> I(NotificationContext)
+```
