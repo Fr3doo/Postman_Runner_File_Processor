@@ -125,4 +125,74 @@ describe('FileProcessor error handling', () => {
     expect(listener).toHaveBeenCalledWith(['warn']);
     unsubscribe();
   });
+
+  it('does not set processing state when validation fails', async () => {
+    validateFilesMock.mockImplementation(() => {
+      throw new ValidationError('bad');
+    });
+    const files = [createFile('v.txt')];
+    await processor.processFiles(
+      files as unknown as FileList,
+      setProcessedFiles,
+      setIsProcessing,
+    );
+    expect(setIsProcessing).not.toHaveBeenCalled();
+  });
+
+  it('does not set processing state when rate limited', async () => {
+    validateRateLimitMock.mockImplementation(() => {
+      throw new RateLimitError('oops');
+    });
+    const files = [createFile('r.txt')];
+    await processor.processFiles(
+      files as unknown as FileList,
+      setProcessedFiles,
+      setIsProcessing,
+    );
+    expect(setIsProcessing).not.toHaveBeenCalled();
+  });
+
+  it('rethrows unexpected error from rate limit check', async () => {
+    const err = new Error('boom');
+    validateRateLimitMock.mockImplementation(() => {
+      throw err;
+    });
+    const files = [createFile('e.txt')];
+    await expect(
+      processor.processFiles(
+        files as unknown as FileList,
+        setProcessedFiles,
+        setIsProcessing,
+      ),
+    ).rejects.toThrow('boom');
+  });
+
+  it('rethrows unexpected error from file validation', async () => {
+    const err = new Error('weird');
+    validateFilesMock.mockImplementation(() => {
+      throw err;
+    });
+    const files = [createFile('e2.txt')];
+    await expect(
+      processor.processFiles(
+        files as unknown as FileList,
+        setProcessedFiles,
+        setIsProcessing,
+      ),
+    ).rejects.toThrow('weird');
+  });
+
+  it('toggles processing state around successful run', async () => {
+    vi.useFakeTimers();
+    const files = [createFile('a.txt')];
+    const promise = processor.processFiles(
+      files as unknown as FileList,
+      setProcessedFiles,
+      setIsProcessing,
+    );
+    await vi.runAllTimersAsync();
+    await promise;
+    expect(setIsProcessing).toHaveBeenNthCalledWith(1, true);
+    expect(setIsProcessing).toHaveBeenLastCalledWith(false);
+  });
 });
