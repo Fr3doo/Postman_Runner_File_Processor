@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { ConfigService } from '../ConfigService';
+import { CONCURRENCY_LIMIT, FILE_READ_TIMEOUT } from '../../config/app';
 import { SECURITY_CONFIG } from '../../config/security';
 
 // ensure environment isolation
@@ -38,5 +39,14 @@ describe('ConfigService env overrides', () => {
       RATE_LIMIT_WINDOW: 60,
       RATE_LIMIT_MAX_FILES: 5,
     });
+  });
+});
+
+describe('ConfigService defaults', () => {
+  it('returns constants when env is empty', () => {
+    const svc = new ConfigService({});
+    expect(svc.concurrencyLimit).toBe(CONCURRENCY_LIMIT);
+    expect(svc.fileReadTimeout).toBe(FILE_READ_TIMEOUT);
+    expect(svc.security).toEqual(SECURITY_CONFIG);
   });
 });
