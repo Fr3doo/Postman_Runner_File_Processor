@@ -34,3 +34,36 @@ Pour chaque fichier traité avec succès, cliquez sur **Télécharger le JSON** 
 ```
 
 Utilisez ces fichiers JSON dans vos outils ou scripts selon vos besoins.
+
+## 4. Traiter plusieurs fichiers simultanément
+
+Vous pouvez déposer plusieurs fichiers en une seule action. Le traitement s’effe
+ctue fichier par fichier. La grille se met à jour au fur et à mesure et affiche
+un badge pour chaque résultat.
+
+## 5. Interpréter les avertissements et les messages d’erreur
+
+Les avertissements s’affichent sous la zone de dépôt lorsqu’un fichier n’est pa
+s valide ou dépasse la limite de taille. Un message explicite est aussi visible
+dans la carte du fichier concerné. Exemple :
+
+```
+Fichier trop volumineux : fichier1.txt
+```
+
+En cas d’erreur d’analyse, le détail apparaît directement dans la grille.
+
+## 6. Exemple de grille de résultats
+
+Voici un extrait simplifié du code JSX générant la grille :
+
+```tsx
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {files.map((file) => (
+    <ResultCard key={file.id} file={file} />
+  ))}
+</div>
+```
+
+Chaque carte contient les informations résumées du fichier et un bouton pour té
+lécharger le JSON.
