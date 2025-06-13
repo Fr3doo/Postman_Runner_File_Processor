@@ -5,6 +5,7 @@ import { ProcessingStatsComponent } from './components/ProcessingStats';
 import { NotificationProvider } from './components/NotificationContext';
 import { useFileProcessor } from './hooks/useFileProcessor';
 import { FileText, Zap } from 'lucide-react';
+import { t } from './i18n';
 
 function App() {
   const { processedFiles, isProcessing, processFiles, clearResults, getStats } =
@@ -25,12 +26,10 @@ function App() {
               </div>
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Convertisseur de fichiers Postman Runner
+              {t('appTitle')}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Téléchargez et traitez vos fichiers .txt issus de Postman Runner
-              afin d'extraire des données structurées et de générer des fichiers
-              JSON téléchargeables avec une gestion complète des erreurs.
+              {t('appSubtitle')}
             </p>
           </div>
 
@@ -55,10 +54,7 @@ function App() {
               <div className="p-4 bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <FileText className="text-gray-400" size={32} />
               </div>
-              <p className="text-gray-500 text-lg">
-                Aucun fichier traité pour l'instant. Importez des fichiers .txt
-                pour commencer !
-              </p>
+              <p className="text-gray-500 text-lg">{t('emptyState')}</p>
             </div>
           )}
         </div>

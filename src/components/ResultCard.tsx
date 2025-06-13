@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { downloadJSON } from '../utils/fileParser';
 import { Card } from './ui/Card';
+import { t } from '../i18n';
 
 interface ResultCardProps {
   file: ProcessedFile;
@@ -40,19 +41,19 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
       case 'success':
         return (
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-            ✅ Réussi
+            {t('statusSuccess')}
           </span>
         );
       case 'error':
         return (
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-            ⛔️ Erreur
+            {t('statusError')}
           </span>
         );
       case 'processing':
         return (
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-            🔄 Traitement
+            {t('statusProcessing')}
           </span>
         );
       default:
@@ -77,7 +78,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
           <div className="flex items-center space-x-2">
             <XCircle className="text-red-500" size={16} />
             <p className="text-sm font-medium text-red-800">
-              Erreur de traitement
+              {t('processingError')}
             </p>
           </div>
           <p className="text-sm text-red-700 mt-1">{file.error}</p>
@@ -89,7 +90,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
           <div className="flex items-center space-x-2">
             <Clock className="text-blue-500 animate-pulse" size={16} />
             <p className="text-sm font-medium text-blue-800">
-              Traitement du fichier...
+              {t('fileProcessing')}
             </p>
           </div>
         </div>
@@ -107,7 +108,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
                   <div className="flex items-center space-x-2 mb-2">
                     <FileText className="text-gray-600" size={16} />
                     <span className="text-sm font-medium text-gray-700">
-                      Fichiers restants
+                      {t('remainingFiles')}
                     </span>
                   </div>
                   <p className="text-lg font-semibold text-gray-900">
@@ -119,7 +120,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
                   <div className="flex items-center space-x-2 mb-2">
                     <Hash className="text-gray-600" size={16} />
                     <span className="text-sm font-medium text-gray-700">
-                      Télédémarche
+                      {t('teledemarche')}
                     </span>
                   </div>
                   <p className="text-lg font-semibold text-gray-900">
@@ -131,7 +132,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
                   <div className="flex items-center space-x-2 mb-2">
                     <FolderOpen className="text-gray-600" size={16} />
                     <span className="text-sm font-medium text-gray-700">
-                      Nom du projet
+                      {t('projectName')}
                     </span>
                   </div>
                   <p className="text-lg font-semibold text-gray-900">
@@ -143,7 +144,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
                   <div className="flex items-center space-x-2 mb-2">
                     <Hash className="text-gray-600" size={16} />
                     <span className="text-sm font-medium text-gray-700">
-                      Numéro de dossier
+                      {t('folderNumber')}
                     </span>
                   </div>
                   <p className="text-lg font-semibold text-gray-900">
@@ -155,7 +156,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
                   <div className="flex items-center space-x-2 mb-2">
                     <Calendar className="text-gray-600" size={16} />
                     <span className="text-sm font-medium text-gray-700">
-                      Date de dépôt
+                      {t('depositDate')}
                     </span>
                   </div>
                   <p className="text-lg font-semibold text-gray-900">
@@ -170,7 +171,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ file }) => {
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
                   <Download size={16} />
-                  <span>Télécharger le JSON</span>
+                  <span>{t('downloadJson')}</span>
                 </button>
               </div>
             </div>

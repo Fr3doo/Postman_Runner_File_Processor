@@ -5,6 +5,7 @@ import { configService } from '../services/ConfigService';
 import { formatFileSize } from '../utils/format';
 import { useNotifications } from './NotificationContext';
 import { Card } from './ui/Card';
+import { t } from '../i18n';
 
 interface FileUploadProps {
   onFilesSelected: (files: FileList) => void;
@@ -142,10 +143,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
           <div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              Téléverser des fichiers Postman Runner
+              {t('uploadTitle')}
             </h3>
             <p className="text-gray-600 mb-4">
-              Déposez vos fichiers .txt ici ou cliquez pour parcourir
+              {t('uploadSubtitle')}
             </p>
           </div>
 
@@ -158,7 +159,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
             "
             >
               <FileText size={20} />
-              <span>Choisir des fichiers</span>
+              <span>{t('chooseFiles')}</span>
               <input
                 type="file"
                 multiple
@@ -175,26 +176,30 @@ export const FileUpload: React.FC<FileUploadProps> = ({
             <div className="flex items-center space-x-2 mb-2">
               <Shield className="text-blue-600" size={16} />
               <span className="text-sm font-medium text-blue-800">
-                Limites de sécurité
+                {t('securityLimits')}
               </span>
             </div>
             <div className="text-xs text-blue-700 space-y-1">
               <div>
-                • Maximum {configService.security.MAX_FILES_COUNT} fichiers par
-                envoi
+                •
+                {t('maxFilesCount', {
+                  count: configService.security.MAX_FILES_COUNT,
+                })}
               </div>
               <div>
-                • Taille maximale{' '}
-                {formatFileSize(configService.security.MAX_FILE_SIZE)} par
-                fichier
+                •
+                {t('maxFileSize', {
+                  size: formatFileSize(configService.security.MAX_FILE_SIZE),
+                })}
               </div>
               <div>
-                • Taille totale maximale{' '}
-                {formatFileSize(configService.security.MAX_TOTAL_SIZE)}
+                •
+                {t('maxTotalSize', {
+                  size: formatFileSize(configService.security.MAX_TOTAL_SIZE),
+                })}
               </div>
               <div>
-                • Seuls les fichiers .txt provenant de Postman Runner sont pris
-                en charge
+                • {t('onlyTxtSupported')}
               </div>
             </div>
           </div>
@@ -202,7 +207,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           {isDragOver && (
             <div className="absolute inset-0 bg-blue-500 bg-opacity-10 rounded-xl flex items-center justify-center">
               <div className="text-blue-600 font-semibold text-lg">
-                Déposez les fichiers ici pour les traiter
+                {t('dropFilesHere')}
               </div>
             </div>
           )}
@@ -215,7 +220,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           <div className="flex items-center space-x-2 mb-2">
             <AlertCircle className="text-red-500" size={16} />
             <span className="text-sm font-medium text-red-800">
-              Erreurs de validation
+              {t('validationErrorsTitle')}
             </span>
           </div>
           <ul className="text-sm text-red-700 space-y-1">
@@ -232,7 +237,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           <div className="flex items-center space-x-2 mb-2">
             <Info className="text-yellow-600" size={16} />
             <span className="text-sm font-medium text-yellow-800">
-              Avertissements
+              {t('warningsTitle')}
             </span>
           </div>
           <ul className="text-sm text-yellow-700 space-y-1">
