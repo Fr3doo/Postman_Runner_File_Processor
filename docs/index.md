@@ -18,6 +18,7 @@ La documentation est organisée dans les dossiers suivants :
 ### Overview
 
 * [`overview/overview.md`](overview/overview.md) – Présentation générale du fonctionnement de l’application.
+* [`overview/limitations.md`](overview/limitations.md) – Limitations connues de l’application.
 
 ### Guides
 
