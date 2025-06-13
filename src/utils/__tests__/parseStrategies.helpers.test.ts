@@ -22,6 +22,11 @@ describe('extractFileCount', () => {
     const line = '📂 Nombre de fichier(s) restant(s) : -1';
     expect(extractFileCount(line)).toBeUndefined();
   });
+
+  it('throws when count exceeds limit', () => {
+    const line = '📂 Nombre de fichier(s) restant(s) : 1000000';
+    expect(() => extractFileCount(line)).toThrow(ParsingError);
+  });
 });
 
 describe('extractTeledemarche', () => {
@@ -55,6 +60,16 @@ describe('extractProjectName', () => {
     const line = '➡️ Nom de projet : TRA - bad - Example - v1';
     expect(() => extractProjectName(line)).toThrow(ParsingError);
   });
+
+  it('uses fallback parsing when format is unexpected', () => {
+    const line = '➡️ Nom de projet : Prefix TRA - CODE - Example - v1';
+    expect(extractProjectName(line)).toBe('Prefix TRA - CODE - Example - v1');
+  });
+
+  it('throws for invalid code with missing version', () => {
+    const line = '➡️ Nom de projet : TRA - bad - Example';
+    expect(() => extractProjectName(line)).toThrow(ParsingError);
+  });
 });
 
 describe('extractDossierNumber', () => {
@@ -85,6 +100,12 @@ describe('extractDateDepot', () => {
 
   it('throws for invalid format', () => {
     const line = '➡️ Date de dépot : n/a';
+    expect(() => extractDateDepot(line)).toThrow(ParsingError);
+  });
+
+  it('throws for excessively long date strings', () => {
+    const longDate = '1'.repeat(60);
+    const line = `➡️ Date de dépot : ${longDate}`;
     expect(() => extractDateDepot(line)).toThrow(ParsingError);
   });
 });
