@@ -3,6 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { useFileProcessor } from '../../hooks/useFileProcessor';
 import { FileProcessor } from '../../services/FileProcessor';
 import { FileReaderService } from '../../services/FileReaderService';
+import { type ILoggingService } from '../../services/LoggingService';
 import type { FileParserService } from '../../services/FileParserService';
 import type { FileValidationService } from '../../services/FileValidationService';
 import type { FileData } from '../../types';
@@ -39,7 +40,20 @@ describe('useFileProcessor', () => {
       validateRateLimit: validateRateLimitMock,
     } as unknown as FileValidationService;
     const reader = new FileReaderService();
-    const processor = new FileProcessor(parser, validator, reader);
+    const logService: ILoggingService = {
+      logInfo: vi.fn(),
+      logError: vi.fn(),
+      getLogs: vi.fn(() => []),
+      clear: vi.fn(),
+    };
+    const processor = new FileProcessor(
+      parser,
+      validator,
+      reader,
+      undefined,
+      undefined,
+      logService,
+    );
     vi.spyOn(reader, 'readFileWithTimeout').mockResolvedValue('content');
 
     const { result } = renderHook(() => useFileProcessor(processor));
@@ -80,7 +94,20 @@ describe('useFileProcessor', () => {
       validateRateLimit: validateRateLimitMock,
     } as unknown as FileValidationService;
     const reader = new FileReaderService();
-    const processor = new FileProcessor(parser, validator, reader);
+    const logService: ILoggingService = {
+      logInfo: vi.fn(),
+      logError: vi.fn(),
+      getLogs: vi.fn(() => []),
+      clear: vi.fn(),
+    };
+    const processor = new FileProcessor(
+      parser,
+      validator,
+      reader,
+      undefined,
+      undefined,
+      logService,
+    );
     vi.spyOn(reader, 'readFileWithTimeout').mockResolvedValue('content');
 
     const { result } = renderHook(() => useFileProcessor(processor));
