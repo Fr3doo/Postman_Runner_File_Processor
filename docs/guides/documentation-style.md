@@ -5,8 +5,8 @@ Ce projet utilise les conventions suivantes pour toute la documentation :
 * **Langue** :
   * Documentation : Rédiger la documentation en français.
   * Ecriture de code :  Rédiger le code en anglais.
-  * nom des variables : Rédiger les noms des variables en anglais.
-  * messages d'erreurs : Rédiger les messages d'erreurs en français.
+  * Noms des variables : Rédiger les noms des variables en anglais.
+  * Messages d'erreurs : Rédiger les messages d'erreurs en français.
   
   L'application est destinée a un public français. toutefois le code et variable doivent rester en anglais.
     
