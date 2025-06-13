@@ -1,5 +1,9 @@
 import { FileData } from '../types';
-import { generateJSONContent, downloadJSON } from '../utils/fileParser';
+import {
+  generateJSONContent,
+  downloadJSON,
+  sanitizeFileData,
+} from '../utils/fileParser';
 import { getParseStrategy } from '../utils/parseStrategyRegistry';
 
 export class FileParserService {
@@ -9,7 +13,8 @@ export class FileParserService {
   }
 
   toJSON(data: FileData): string {
-    return generateJSONContent(data);
+    const sanitized = sanitizeFileData(data);
+    return generateJSONContent(sanitized);
   }
 
   download(data: FileData, filename: string): void {

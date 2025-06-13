@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateJSONContent } from '../fileParser';
+import { generateJSONContent, sanitizeFileData } from '../fileParser';
 import type { FileData } from '../../types';
 
 describe('generateJSONContent', () => {
@@ -12,7 +12,8 @@ describe('generateJSONContent', () => {
       date_depot: '2024-05-01' + '!'.repeat(60),
     };
 
-    const json = generateJSONContent(data);
+    const sanitized = sanitizeFileData(data);
+    const json = generateJSONContent(sanitized);
     const result = JSON.parse(json);
 
     expect(result).toEqual({
