@@ -1,24 +1,27 @@
-# Contributing
+# Contribution
 
-Thank you for contributing to this project! To set up the development environment:
+Merci de contribuer à ce projet ! Pour configurer l’environnement de développement :
 
 ```bash
 npm install
 ```
 
-This automatically installs Git hooks via [husky](https://typicode.github.io/husky).
+Cela installe automatiquement les hooks Git via [husky](https://typicode.github.io/husky).
 
-Before submitting a pull request, please make sure to:
+Avant de soumettre une pull request, veuillez :
 
-1. Run the linter
+1. Lancer le linter
+
    ```bash
    npm run lint
    ```
-2. Run the tests
+2. Lancer les tests
+
    ```bash
    npm test
    ```
-3. Husky will automatically run `npm run lint && npm run format` on every commit.
-   If the hook fails, fix the reported issues and recommit.
+3. Husky exécute automatiquement `npm run lint && npm run format` à chaque commit.
+   Si le hook échoue, corrigez les problèmes signalés puis recommittez.
 
-The project uses React with TypeScript, Tailwind CSS and icons from `lucide-react`. Please follow the existing code style and avoid adding additional UI libraries.
+Le projet utilise React avec TypeScript, Tailwind CSS et des icônes de `lucide-react`.
+Veuillez suivre le style de code existant et éviter d’ajouter d’autres bibliothèques d’UI.
