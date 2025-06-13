@@ -5,7 +5,14 @@ export interface LogEntry {
   timestamp: Date;
 }
 
-class LoggingService {
+export interface ILoggingService {
+  logInfo(message: string): void;
+  logError(message: string): void;
+  getLogs(): LogEntry[];
+  clear(): void;
+}
+
+class LoggingService implements ILoggingService {
   private logs: LogEntry[] = [];
 
   logInfo(message: string): void {
@@ -29,4 +36,4 @@ class LoggingService {
   }
 }
 
-export const loggingService = new LoggingService();
+export const loggingService: ILoggingService = new LoggingService();

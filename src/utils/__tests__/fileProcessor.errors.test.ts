@@ -4,6 +4,7 @@ import type { FileParserService } from '../../services/FileParserService';
 import type { FileValidationService } from '../../services/FileValidationService';
 import { FileReaderService } from '../../services/FileReaderService';
 import { notificationService } from '../../services/NotificationService';
+import { type ILoggingService } from '../../services/LoggingService';
 import { ParsingError, ValidationError, RateLimitError } from '../errors';
 import type { ProcessedFile } from '../../types';
 import type { Dispatch, SetStateAction } from 'react';
@@ -33,6 +34,12 @@ describe('FileProcessor error handling', () => {
       errors: [],
       warnings: [],
     }));
+    const logService: ILoggingService = {
+      logInfo: vi.fn(),
+      logError: vi.fn(),
+      getLogs: vi.fn(() => []),
+      clear: vi.fn(),
+    };
     processor = new FileProcessor(
       { parse: parseMock } as unknown as FileParserService,
       {
@@ -41,6 +48,8 @@ describe('FileProcessor error handling', () => {
       } as unknown as FileValidationService,
       (fileReader = new FileReaderService()),
       notificationService,
+      undefined,
+      logService,
     );
     processedFiles = [];
     setProcessedFiles = (update) => {

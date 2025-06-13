@@ -7,7 +7,10 @@ import {
   type INotificationService,
 } from './NotificationService';
 import { FileReaderService } from './FileReaderService';
-import { loggingService } from './LoggingService';
+import {
+  loggingService as defaultLoggingService,
+  type ILoggingService,
+} from './LoggingService';
 import { configService } from './ConfigService';
 import { ErrorHandler } from './ErrorHandler';
 import { RateLimitError, ValidationError } from '../utils/errors';
@@ -21,6 +24,7 @@ export class FileProcessor {
     private fileReaderService: FileReaderService = new FileReaderService(),
     private notifyService: INotificationService = notificationService,
     private errorHandler: ErrorHandler = new ErrorHandler(),
+    private loggingService: ILoggingService = defaultLoggingService,
   ) {}
 
   async processFiles(
@@ -28,13 +32,13 @@ export class FileProcessor {
     setProcessedFiles: Dispatch<SetStateAction<ProcessedFile[]>>,
     setIsProcessing: Dispatch<SetStateAction<boolean>>,
   ): Promise<void> {
-    loggingService.logInfo(`Start processing ${files.length} file(s)`);
+    this.loggingService.logInfo(`Start processing ${files.length} file(s)`);
     try {
       this.validationService.validateRateLimit();
     } catch (error) {
       if (error instanceof RateLimitError) {
         const message = this.errorHandler.handle(error);
-        loggingService.logError(`Rate limit exceeded: ${message}`);
+        this.loggingService.logError(`Rate limit exceeded: ${message}`);
         const errorFile: ProcessedFile = {
           id: crypto.randomUUID(),
           filename: 'Rate Limit Error',
@@ -53,7 +57,7 @@ export class FileProcessor {
     } catch (error) {
       if (error instanceof ValidationError) {
         const message = this.errorHandler.handle(error);
-        loggingService.logError(`Validation failed: ${message}`);
+        this.loggingService.logError(`Validation failed: ${message}`);
         const errorFile: ProcessedFile = {
           id: crypto.randomUUID(),
           filename: 'Validation Error',
@@ -69,7 +73,7 @@ export class FileProcessor {
     if (validation.warnings.length > 0) {
       validation.warnings.forEach((w) => this.notifyService.addWarning(w));
       validation.warnings.forEach((w) =>
-        loggingService.logInfo(`Warning: ${w}`),
+        this.loggingService.logInfo(`Warning: ${w}`),
       );
     }
 
@@ -107,7 +111,7 @@ export class FileProcessor {
     }
 
     setIsProcessing(false);
-    loggingService.logInfo('All files processed');
+    this.loggingService.logInfo('All files processed');
   }
 
 }
