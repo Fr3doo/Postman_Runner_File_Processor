@@ -1,10 +1,10 @@
-# Logging and Error Handling
+# Journalisation et gestion des erreurs
 
-This guide explains how to record actions and display safe error messages.
+Ce guide explique comment enregistrer des actions et afficher des messages d’erreur sûrs.
 
 ## LoggingService
 
-Import `loggingService` to add log entries:
+Importer `loggingService` pour ajouter des entrées au journal :
 
 ```ts
 import { loggingService } from '../services/LoggingService';
@@ -12,11 +12,11 @@ import { loggingService } from '../services/LoggingService';
 loggingService.logInfo('Start processing');
 ```
 
-Use `logError` for errors and call `getLogs()` to review the history. Use `clear()` to reset the log list.
+Utiliser `logError` pour les erreurs et appeler `getLogs()` pour consulter l’historique. Utiliser `clear()` pour réinitialiser la liste des journaux.
 
 ## ErrorHandler
 
-Convert unknown errors into readable messages:
+Convertir les erreurs inconnues en messages lisibles :
 
 ```ts
 import { errorHandler } from '../services/ErrorHandler';
@@ -29,4 +29,4 @@ try {
 }
 ```
 
-The `handle` method returns a sanitized string that you can show to the user.
+La méthode `handle` renvoie une chaîne de caractères nettoyée que vous pouvez afficher à l’utilisateur.
