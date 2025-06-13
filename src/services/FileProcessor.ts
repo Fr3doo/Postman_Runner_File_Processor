@@ -11,6 +11,7 @@ import { configService } from './ConfigService';
 import { ErrorHandler } from './ErrorHandler';
 import { RateLimitError, ValidationError } from '../utils/errors';
 import { ValidationResult } from '../utils/securityValidator';
+import { ProcessFileCommand } from './ProcessFileCommand';
 
 export class FileProcessor {
   constructor(
@@ -81,40 +82,16 @@ export class FileProcessor {
 
     setProcessedFiles((prev) => [...initialFiles, ...prev]);
 
-    const tasks = fileArray.map((file, index) => async () => {
-      loggingService.logInfo(`Processing file: ${file.name}`);
-      const fileId = initialFiles[index].id;
-
-      try {
-        const content = await this.readFileWithTimeout(
-          file,
-          configService.fileReadTimeout,
-        );
-        if (!content || content.trim().length === 0) {
-          throw new Error("Le fichier est vide ou n'a pas pu être lu.");
-        }
-
-        const summaries = this.parserService.parse(content);
-
-        setProcessedFiles((prev) =>
-          prev.map((f) =>
-            f.id === fileId
-              ? { ...f, status: 'success', summaries, originalContent: content }
-              : f,
-          ),
-        );
-        loggingService.logInfo(`Processed ${file.name} successfully`);
-      } catch (error) {
-        const message = this.errorHandler.handle(error);
-        setProcessedFiles((prev) =>
-          prev.map((f) =>
-            f.id === fileId ? { ...f, status: 'error', error: message } : f,
-          ),
-        );
-        loggingService.logError(`Failed processing ${file.name}: ${message}`);
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 300));
+    const tasks = fileArray.map((file, index) => {
+      const command = new ProcessFileCommand(
+        file,
+        initialFiles[index].id,
+        this.parserService,
+        (f) => this.readFileWithTimeout(f, configService.fileReadTimeout),
+        setProcessedFiles,
+        this.errorHandler,
+      );
+      return () => command.execute().then(() => new Promise((r) => setTimeout(r, 300)));
     });
 
     const limit = configService.concurrencyLimit;
