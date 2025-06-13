@@ -100,6 +100,7 @@ export class FileProcessor {
           ),
         setProcessedFiles,
         this.errorHandler,
+        this.loggingService,
       );
       return () => command.execute().then(() => new Promise((r) => setTimeout(r, 300)));
     });

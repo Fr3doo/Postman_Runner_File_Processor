@@ -10,9 +10,6 @@ export interface ILoggingService {
   logError(message: string): void;
   getLogs(): LogEntry[];
   clear(): void;
-  load(): void;
-  save(): void;
-  exportLogs(): string;
 }
 
 class LoggingService implements ILoggingService {
@@ -78,4 +75,4 @@ class LoggingService implements ILoggingService {
   }
 }
 
-export const loggingService: ILoggingService = new LoggingService();
+export const loggingService = new LoggingService();
