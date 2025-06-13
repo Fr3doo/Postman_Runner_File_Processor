@@ -33,9 +33,9 @@ describe('FileParserService', () => {
 
   it('parse uses strategy from registry with default key', () => {
     const strategy = vi.fn().mockReturnValue(['d']);
-    (
-      getParseStrategy as unknown as ReturnType<typeof vi.fn>
-    ).mockReturnValue(strategy);
+    (getParseStrategy as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
+      strategy,
+    );
     const result = service.parse('content');
     expect(getParseStrategy).toHaveBeenCalledWith('default');
     expect(strategy).toHaveBeenCalledWith('content');
@@ -44,9 +44,9 @@ describe('FileParserService', () => {
 
   it('parse uses strategy from registry with custom key', () => {
     const strategy = vi.fn().mockReturnValue(['x']);
-    (
-      getParseStrategy as unknown as ReturnType<typeof vi.fn>
-    ).mockReturnValue(strategy);
+    (getParseStrategy as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
+      strategy,
+    );
     const result = service.parse('content', 'csv');
     expect(getParseStrategy).toHaveBeenCalledWith('csv');
     expect(strategy).toHaveBeenCalledWith('content');

@@ -60,9 +60,7 @@ describe('FileProcessor error handling', () => {
         typeof update === 'function' ? update(processedFiles) : update;
     };
     setIsProcessing = vi.fn();
-    vi
-      .spyOn(fileReader, 'readFileWithTimeout')
-      .mockResolvedValue('content');
+    vi.spyOn(fileReader, 'readFileWithTimeout').mockResolvedValue('content');
     notificationService.clearWarnings();
   });
 

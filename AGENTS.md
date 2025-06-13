@@ -17,15 +17,14 @@ Les tests unitaires sont dans `src/utils/__tests__`. Mettez à jour ou ajoutez d
 
 La documentation du projet se trouve dans le dossier `docs/` avec la structure suivante :
 
-* `docs/overview` – aperçu du projet
-* `docs/guides` – guides pratiques et informations de contribution
-* `docs/reference` – références API et architecture
-* `docs/releases` – journal des modifications et notes de versions
+- `docs/overview` – aperçu du projet
+- `docs/guides` – guides pratiques et informations de contribution
+- `docs/reference` – références API et architecture
+- `docs/releases` – journal des modifications et notes de versions
 
 Commencez par [docs/index.md](docs/index.md) et consultez
 [docs/guides/contributing.md](docs/guides/contributing.md) pour les règles du contributeur.
 Référez-vous à [docs/guides/documentation-style.md](docs/guides/documentation-style.md) pour les conventions de rédaction documentaire, de code, de noms de variables et de l'affichage des messages d'erreurs.
-
 
 ---
 
@@ -37,7 +36,7 @@ Référez-vous à [docs/guides/documentation-style.md](docs/guides/documentation
 | **FileProcessor**         | Orchestration du traitement des fichiers sélectionnés                                  | `src/services/FileProcessor.ts`         | `FileList`, setters React pour l'état | Met à jour la liste de `ProcessedFile` et déclenche la conversion JSON |
 | **FileParserService**     | Analyse le contenu d'un fichier texte pour extraire les données structurées            | `src/services/FileParserService.ts`     | Contenu texte brut                    | Tableau de `FileData`                                                  |
 | **FileValidationService** | Vérifie la taille, l'extension et le nombre de fichiers, applique les limites de débit | `src/services/FileValidationService.ts` | `FileList`                            | Résultat de validation ou exception                                    |
-| **FileReaderService**     | Lit le contenu d'un fichier texte avec un délai maximum | `src/services/FileReaderService.ts`   | `File`, durée de timeout                | Chaîne de texte ou erreur                                    |
+| **FileReaderService**     | Lit le contenu d'un fichier texte avec un délai maximum                                | `src/services/FileReaderService.ts`     | `File`, durée de timeout              | Chaîne de texte ou erreur                                              |
 | **NotificationService**   | Centralise les avertissements et permet aux composants de s'abonner                    | `src/services/NotificationService.ts`   | Messages d'avertissement              | Notifications via `NotificationContext`                                |
 | **LoggingService**        | Enregistre les actions et erreurs importantes                                          | `src/services/LoggingService.ts`        | Chaînes de log                        | Liste des entrées de log                                               |
 | **ErrorHandler**          | Transforme les exceptions en messages utilisateur propres                              | `src/services/ErrorHandler.ts`          | `Error` capturées                     | Chaîne de message nettoyée                                             |

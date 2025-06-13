@@ -25,20 +25,30 @@ export class FileReaderService {
       reader.onerror = () => {
         clearTimeout(timeoutId);
         reject(
-          new FileReadError('Impossible de lire le fichier. Il est peut-\u00eatre corrompu.'),
+          new FileReadError(
+            'Impossible de lire le fichier. Il est peut-\u00eatre corrompu.',
+          ),
         );
       };
 
       reader.onabort = () => {
         clearTimeout(timeoutId);
-        reject(new FileReadError('La lecture du fichier a \u00e9t\u00e9 annul\u00e9e.'));
+        reject(
+          new FileReadError(
+            'La lecture du fichier a \u00e9t\u00e9 annul\u00e9e.',
+          ),
+        );
       };
 
       try {
         reader.readAsText(file, 'utf-8');
       } catch {
         clearTimeout(timeoutId);
-        reject(new FileReadError('Impossible de d\u00e9marrer la lecture du fichier.'));
+        reject(
+          new FileReadError(
+            'Impossible de d\u00e9marrer la lecture du fichier.',
+          ),
+        );
       }
     });
   }

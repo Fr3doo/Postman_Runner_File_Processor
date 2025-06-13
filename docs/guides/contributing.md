@@ -15,11 +15,13 @@ Avant de soumettre une pull request, veuillez :
    ```bash
    npm run lint
    ```
+
 2. Lancer les tests
 
    ```bash
    npm test
    ```
+
 3. Husky exécute automatiquement `npm run lint && npm run format` à chaque commit.
    Si le hook échoue, corrigez les problèmes signalés puis recommittez.
 

@@ -113,11 +113,9 @@ describe('FileProcessor', () => {
       if (content === 'bad') throw new ParsingError('fail');
       return [{} as FileData];
     });
-    vi
-      .spyOn(fileReader, 'readFileWithTimeout')
-      .mockImplementation(async (file: File) =>
-        file.name.includes('bad') ? 'bad' : 'good',
-      );
+    vi.spyOn(fileReader, 'readFileWithTimeout').mockImplementation(
+      async (file: File) => (file.name.includes('bad') ? 'bad' : 'good'),
+    );
 
     const files = [createFile('good.txt'), createFile('bad.txt')];
     const promise = processor.processFiles(

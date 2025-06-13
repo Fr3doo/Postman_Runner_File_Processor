@@ -31,7 +31,8 @@ describe('extractFileCount', () => {
 
 describe('extractTeledemarche', () => {
   it('parses a valid number', () => {
-    const line = '➡️ Le dossier au numeroTélédémarche: AUTO-CKK3-FQ- est déposé';
+    const line =
+      '➡️ Le dossier au numeroTélédémarche: AUTO-CKK3-FQ- est déposé';
     expect(extractTeledemarche(line)).toBe('CKK3-FQ-');
   });
 

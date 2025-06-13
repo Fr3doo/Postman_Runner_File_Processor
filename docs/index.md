@@ -6,10 +6,10 @@ Pour l’installation et l’utilisation de base, voir [README.md](../README.md)
 
 La documentation est organisée dans les dossiers suivants :
 
-* `overview/` – aperçu du projet
-* `guides/` – guides pratiques
-* `reference/` – références API et architecture
-* `releases/` – notes de versions
+- `overview/` – aperçu du projet
+- `guides/` – guides pratiques
+- `reference/` – références API et architecture
+- `releases/` – notes de versions
 
 ---
 
@@ -17,29 +17,29 @@ La documentation est organisée dans les dossiers suivants :
 
 ### Overview
 
-* [`overview/overview.md`](overview/overview.md) – Présentation générale du fonctionnement de l’application.
-* [`overview/limitations.md`](overview/limitations.md) – Limitations connues de l’application.
+- [`overview/overview.md`](overview/overview.md) – Présentation générale du fonctionnement de l’application.
+- [`overview/limitations.md`](overview/limitations.md) – Limitations connues de l’application.
 
 ### Guides
 
-* [`guides/installation.md`](guides/installation.md) – Instructions d’installation locale.
-* [`guides/contributing.md`](guides/contributing.md) – Étapes pour configurer le projet et soumettre des modifications.
-* [`guides/documentation-style.md`](guides/documentation-style.md) – Guide de style documentaire.
-* [`guides/usage-example.md`](guides/usage-example.md) – Exemple de workflow pour téléverser des fichiers et obtenir les résultats.
-* [`guides/configuration.md`](guides/configuration.md) – Comment ajuster les paramètres de sécurité et d’exécution.
-* [`guides/logging-and-errors.md`](guides/logging-and-errors.md) – Journaliser les actions et afficher des messages d’erreur sûrs.
+- [`guides/installation.md`](guides/installation.md) – Instructions d’installation locale.
+- [`guides/contributing.md`](guides/contributing.md) – Étapes pour configurer le projet et soumettre des modifications.
+- [`guides/documentation-style.md`](guides/documentation-style.md) – Guide de style documentaire.
+- [`guides/usage-example.md`](guides/usage-example.md) – Exemple de workflow pour téléverser des fichiers et obtenir les résultats.
+- [`guides/configuration.md`](guides/configuration.md) – Comment ajuster les paramètres de sécurité et d’exécution.
+- [`guides/logging-and-errors.md`](guides/logging-and-errors.md) – Journaliser les actions et afficher des messages d’erreur sûrs.
   D’autres guides avancés sont les bienvenus.
 
 ### Reference
 
-* [`reference/api-reference.md`](reference/api-reference.md) – Documentation des fonctions utilitaires et modules.
-* [`reference/architecture.md`](reference/architecture.md) – Détails sur la structure des dossiers et l’architecture.
-* [`reference/tests-overview.md`](reference/tests-overview.md) – Aperçu des tests et instructions d’exécution.
-* [`reference/security-config.md`](reference/security-config.md) – Explication des constantes de sécurité.
+- [`reference/api-reference.md`](reference/api-reference.md) – Documentation des fonctions utilitaires et modules.
+- [`reference/architecture.md`](reference/architecture.md) – Détails sur la structure des dossiers et l’architecture.
+- [`reference/tests-overview.md`](reference/tests-overview.md) – Aperçu des tests et instructions d’exécution.
+- [`reference/security-config.md`](reference/security-config.md) – Explication des constantes de sécurité.
 
 ### Releases
 
-* [`releases/changelog.md`](releases/changelog.md) – Historique du projet et notes de versions.
+- [`releases/changelog.md`](releases/changelog.md) – Historique du projet et notes de versions.
 
 ---
 

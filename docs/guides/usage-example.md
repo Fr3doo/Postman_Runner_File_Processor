@@ -11,11 +11,11 @@ Les erreurs ou avertissements de validation s’affichent sous la zone de dépô
 
 Chaque fichier apparaît dans la grille de résultats avec un badge de statut. Si le traitement réussit, les informations clés sont affichées :
 
-* Nombre de fichiers restants
-* Numéro télédémarche
-* Nom du projet
-* Numéro de dossier
-* Date de dépôt
+- Nombre de fichiers restants
+- Numéro télédémarche
+- Nom du projet
+- Numéro de dossier
+- Date de dépôt
 
 Si un fichier échoue à l’analyse, un message d’erreur s’affiche à la place des détails.
 

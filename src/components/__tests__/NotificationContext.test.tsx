@@ -2,9 +2,14 @@ import React from 'react';
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { NotificationProvider, useNotifications } from '../NotificationContext';
-import type { WarningListener, INotificationService } from '../../services/NotificationService';
+import type {
+  WarningListener,
+  INotificationService,
+} from '../../services/NotificationService';
 
-const createMockService = (): INotificationService & { getListenerCount(): number } => {
+const createMockService = (): INotificationService & {
+  getListenerCount(): number;
+} => {
   let warnings: string[] = [];
   let listeners: WarningListener[] = [];
   return {
@@ -39,7 +44,9 @@ describe('NotificationProvider', () => {
       <NotificationProvider service={service}>{children}</NotificationProvider>
     );
 
-    const { result, unmount } = renderHook(() => useNotifications(), { wrapper });
+    const { result, unmount } = renderHook(() => useNotifications(), {
+      wrapper,
+    });
 
     expect(result.current.warnings).toEqual([]);
 
