@@ -6,25 +6,28 @@ on:
   pull_request:
     branches: [main, develop]
 
+permissions:
+  contents: write
+  checks: write
+
 jobs:
   build:
     name: Lint, Test, Audit
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node-version: [18.x, 20.x]
+
     steps:
-      # Checkout repository code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Set up the requested Node.js version
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Cache npm dependencies to speed up installs
       - name: Cache node modules
         uses: actions/cache@v3
         with:
@@ -33,19 +36,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-${{ matrix.node-version }}-
 
-      # Install project dependencies using a clean npm install
       - name: Install dependencies
         run: npm ci
 
-      # Run ESLint to ensure code style and quality
       - name: Run linter
         run: npm run lint
 
-      # Execute the test suite with Vitest
       - name: Run tests
         run: npm run test
 
-      # Upload test coverage or results if generated
       - name: Upload test artifacts
         if: success()
         uses: actions/upload-artifact@v4
@@ -57,6 +56,10 @@ jobs:
           if-no-files-found: ignore
 
       - name: Upload coverage to Codecov
+        if: success()
         uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: true
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
