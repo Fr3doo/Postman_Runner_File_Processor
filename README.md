@@ -2,7 +2,7 @@
 
 ![CI](https://img.shields.io/github/actions/workflow/status/USER/REPO/ci.yml?branch=main)
 ![npm](https://img.shields.io/npm/v/vite-react-typescript-starter?color=blue)
-![License](https://img.shields.io/badge/license-TBD-lightgrey)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ## 🚀 Objectif du projet
 
@@ -109,12 +109,12 @@ Consultez [docs/guides/contributing.md](docs/guides/contributing.md) pour les é
 
 ## 🛡️ Licence
 
-La licence n'est pas encore définie. [Ouvrez une issue](https://github.com/USER/REPO/issues) pour proposer une licence adaptée.
+Ce projet est distribué sous licence MIT.
 
 ---
 
 ### TODO
 
-- [ ] Ajouter un fichier `LICENSE` explicite
+- [x] Ajouter un fichier `LICENSE` explicite
 - [ ] Publier le package sur npm pour disposer d'un badge de version valide
 - [ ] Mettre en place un rapport de couverture (Codecov ou Coveralls)
