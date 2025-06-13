@@ -25,3 +25,7 @@ Valide le contenu textuel et supprime les motifs dangereux. Retourne le contenu 
 ## `validateRateLimit(): ValidationResult`
 
 Vérifie que le traitement des fichiers ne dépasse pas les limites de débit configurées.
+
+## Enregistrer une stratégie de parsing
+
+Les stratégies d'analyse sont stockées dans un registre. Utilisez `registerParseStrategy('csv', maFonction)` pour ajouter une nouvelle stratégie. Appelez ensuite `FileParserService.parse(contenu, 'csv')` pour l'utiliser.

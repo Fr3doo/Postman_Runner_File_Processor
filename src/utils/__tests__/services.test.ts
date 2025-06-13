@@ -5,10 +5,8 @@ import type { FileData } from '../../types';
 import type { ValidationResult } from '../securityValidator';
 
 // Mock utility modules used by the services
-vi.mock('../parserFactory', () => ({
-  ParserFactory: {
-    getStrategy: vi.fn(),
-  },
+vi.mock('../parseStrategyRegistry', () => ({
+  getParseStrategy: vi.fn(),
 }));
 
 vi.mock('../fileParser', () => ({
@@ -22,7 +20,7 @@ vi.mock('../securityValidator', () => ({
 }));
 
 // Import the mocked functions for assertions
-import { ParserFactory } from '../parserFactory';
+import { getParseStrategy } from '../parseStrategyRegistry';
 import { generateJSONContent, downloadJSON } from '../fileParser';
 import { validateFileList, validateRateLimit } from '../securityValidator';
 
@@ -33,24 +31,24 @@ describe('FileParserService', () => {
     vi.clearAllMocks();
   });
 
-  it('parse uses strategy from ParserFactory with default key', () => {
+  it('parse uses strategy from registry with default key', () => {
     const strategy = vi.fn().mockReturnValue(['d']);
     (
-      ParserFactory.getStrategy as unknown as ReturnType<typeof vi.fn>
+      getParseStrategy as unknown as ReturnType<typeof vi.fn>
     ).mockReturnValue(strategy);
     const result = service.parse('content');
-    expect(ParserFactory.getStrategy).toHaveBeenCalledWith('default');
+    expect(getParseStrategy).toHaveBeenCalledWith('default');
     expect(strategy).toHaveBeenCalledWith('content');
     expect(result).toEqual(['d']);
   });
 
-  it('parse uses strategy from ParserFactory with custom key', () => {
+  it('parse uses strategy from registry with custom key', () => {
     const strategy = vi.fn().mockReturnValue(['x']);
     (
-      ParserFactory.getStrategy as unknown as ReturnType<typeof vi.fn>
+      getParseStrategy as unknown as ReturnType<typeof vi.fn>
     ).mockReturnValue(strategy);
     const result = service.parse('content', 'csv');
-    expect(ParserFactory.getStrategy).toHaveBeenCalledWith('csv');
+    expect(getParseStrategy).toHaveBeenCalledWith('csv');
     expect(strategy).toHaveBeenCalledWith('content');
     expect(result).toEqual(['x']);
   });
