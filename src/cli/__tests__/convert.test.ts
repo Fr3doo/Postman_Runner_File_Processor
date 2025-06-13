@@ -152,4 +152,21 @@ describe('run', () => {
     const files = await fs.readdir('.');
     expect(files).not.toContain('input.json');
   });
+
+  it('warns when no summary blocks found', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    vi.spyOn(parser, 'parseAllSummaryBlocks').mockReturnValue([]);
+
+    await fs.writeFile('input.txt', 'dummy', 'utf8');
+
+    await run(['input.txt']);
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      'No summary blocks found in input.txt',
+    );
+    expect(logSpy).not.toHaveBeenCalled();
+    const files = await fs.readdir('.');
+    expect(files).not.toContain('input.json');
+  });
 });
