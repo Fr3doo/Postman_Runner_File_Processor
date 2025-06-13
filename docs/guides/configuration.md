@@ -1,24 +1,25 @@
-# Configuration Guide
+# Guide de configuration
 
-This guide explains how to adjust runtime limits and processing options.
+Ce guide explique comment ajuster les limites d’exécution et les options de traitement.
 
-## Security limits
+## Limites de sécurité
 
-`ConfigService` reads the security limits from environment variables or falls back to `src/config/security.ts` defaults. Use the following variable names to adjust the rules:
+`ConfigService` lit les limites de sécurité à partir des variables d’environnement ou utilise les valeurs par défaut de `src/config/security.ts`. Utilisez les noms de variables suivants pour modifier les règles :
 
-- `MAX_FILE_SIZE` sets the largest allowed file.
-- `MAX_TOTAL_SIZE` controls the combined size of all uploads.
-- `MAX_FILES_COUNT` limits how many files can be processed at once.
-- `MAX_LINE_LENGTH` and `MAX_LINES_COUNT` guard against extremely long files.
-- `ALLOWED_FILE_EXTENSIONS` and `ALLOWED_MIME_TYPES` restrict accepted file types.
-- `DANGEROUS_PATTERNS` strips unwanted scripts and HTML.
-- `RATE_LIMIT_WINDOW` and `RATE_LIMIT_MAX_FILES` control rate limiting.
+* `MAX_FILE_SIZE` définit la taille maximale autorisée pour un fichier.
+* `MAX_TOTAL_SIZE` contrôle la taille combinée de tous les fichiers téléchargés.
+* `MAX_FILES_COUNT` limite le nombre de fichiers pouvant être traités simultanément.
+* `MAX_LINE_LENGTH` et `MAX_LINES_COUNT` protègent contre les fichiers extrêmement longs.
+* `ALLOWED_FILE_EXTENSIONS` et `ALLOWED_MIME_TYPES` restreignent les types de fichiers acceptés.
+* `DANGEROUS_PATTERNS` supprime les scripts et HTML indésirables.
+* `RATE_LIMIT_WINDOW` et `RATE_LIMIT_MAX_FILES` contrôlent la limitation du débit.
 
-## Application constants
+## Constantes d’application
 
-`ConfigService` also exposes application constants:
+`ConfigService` expose également des constantes applicatives :
 
-- `CONCURRENCY_LIMIT` sets how many files are parsed in parallel.
-- `FILE_READ_TIMEOUT` specifies the time in milliseconds allowed to read each file.
+* `CONCURRENCY_LIMIT` définit combien de fichiers sont analysés en parallèle.
+* `FILE_READ_TIMEOUT` spécifie le temps (en millisecondes) autorisé pour lire chaque fichier.
 
-Define these variables in your `.env` file (prefix each with `VITE_` when running in the browser) to override the defaults. This allows different limits per environment.
+Définissez ces variables dans votre fichier `.env` (ajoutez le préfixe `VITE_` pour une utilisation côté navigateur) pour remplacer les valeurs par défaut. Ceci permet d’appliquer des limites différentes selon l’environnement.
+
