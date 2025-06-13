@@ -1,53 +1,53 @@
-# Documentation Index - Postman Runner File Processor
+# Index de la documentation – Postman Runner File Processor
 
-Welcome to the documentation hub. This page lists all available documents to help you understand, use and contribute to the project.
+Bienvenue dans le centre de documentation. Cette page liste tous les documents disponibles pour comprendre, utiliser et contribuer au projet.
 
-For installation and basic usage see [README.md](../README.md). Contributors should also read [AGENTS.md](../AGENTS.md).
+Pour l’installation et l’utilisation de base, voir [README.md](../README.md). Les contributeurs doivent également lire [AGENTS.md](../AGENTS.md).
 
-The documentation hierarchy is organised into the following folders:
+La documentation est organisée dans les dossiers suivants :
 
-- `overview/` – project overview
-- `guides/` – how-to guides
-- `reference/` – API and architecture references
-- `releases/` – changelog and release notes
+* `overview/` – aperçu du projet
+* `guides/` – guides pratiques
+* `reference/` – références API et architecture
+* `releases/` – notes de versions
 
 ---
 
-## Available Documents
+## Documents disponibles
 
 ### Overview
 
-- [`overview/overview.md`](overview/overview.md) – High-level explanation of how the application works.
+* [`overview/overview.md`](overview/overview.md) – Présentation générale du fonctionnement de l’application.
 
 ### Guides
 
-- [`guides/installation.md`](guides/installation.md) – Local setup instructions.
-- [`guides/contributing.md`](guides/contributing.md) – Steps for setting up the project and submitting changes.
-- [`guides/documentation-style.md`](guides/documentation-style.md) – Documentation style guide.
-- [`guides/usage-example.md`](guides/usage-example.md) – Example workflow for uploading files and getting results.
-- [`guides/configuration.md`](guides/configuration.md) – How to adjust security and runtime settings.
-- [`guides/logging-and-errors.md`](guides/logging-and-errors.md) – How to log actions and display safe error messages.
-  Additional advanced guides are welcome.
+* [`guides/installation.md`](guides/installation.md) – Instructions d’installation locale.
+* [`guides/contributing.md`](guides/contributing.md) – Étapes pour configurer le projet et soumettre des modifications.
+* [`guides/documentation-style.md`](guides/documentation-style.md) – Guide de style documentaire.
+* [`guides/usage-example.md`](guides/usage-example.md) – Exemple de workflow pour téléverser des fichiers et obtenir les résultats.
+* [`guides/configuration.md`](guides/configuration.md) – Comment ajuster les paramètres de sécurité et d’exécution.
+* [`guides/logging-and-errors.md`](guides/logging-and-errors.md) – Journaliser les actions et afficher des messages d’erreur sûrs.
+  D’autres guides avancés sont les bienvenus.
 
 ### Reference
 
-- [`reference/api-reference.md`](reference/api-reference.md) – Documentation of utility functions and modules.
-- [`reference/architecture.md`](reference/architecture.md) – Folder structure and architecture details.
-- [`reference/tests-overview.md`](reference/tests-overview.md) – Overview of tests and how to run them.
-- [`reference/security-config.md`](reference/security-config.md) – Explanation of security constants.
+* [`reference/api-reference.md`](reference/api-reference.md) – Documentation des fonctions utilitaires et modules.
+* [`reference/architecture.md`](reference/architecture.md) – Détails sur la structure des dossiers et l’architecture.
+* [`reference/tests-overview.md`](reference/tests-overview.md) – Aperçu des tests et instructions d’exécution.
+* [`reference/security-config.md`](reference/security-config.md) – Explication des constantes de sécurité.
 
 ### Releases
 
-- [`releases/changelog.md`](releases/changelog.md) – Project history and version notes.
+* [`releases/changelog.md`](releases/changelog.md) – Historique du projet et notes de versions.
 
 ---
 
-## Generating the documentation (optional)
+## Générer la documentation (optionnel)
 
-If you wish to generate static documentation, consider using [MkDocs](https://www.mkdocs.org/) or [Sphinx](https://www.sphinx-doc.org/).
+Pour générer une documentation statique, vous pouvez utiliser [MkDocs](https://www.mkdocs.org/) ou [Sphinx](https://www.sphinx-doc.org/).
 
 ---
 
 ## Contact
 
-For questions or suggestions, open an Issue or send a message to the project team.
+Pour toute question ou suggestion, ouvrez une Issue ou contactez l’équipe du projet.
