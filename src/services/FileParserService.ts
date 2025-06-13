@@ -1,10 +1,10 @@
 import { FileData } from '../types';
 import { generateJSONContent, downloadJSON } from '../utils/fileParser';
-import { ParserFactory } from '../utils/parserFactory';
+import { getParseStrategy } from '../utils/parseStrategyRegistry';
 
 export class FileParserService {
-  parse(content: string, format: string = 'default'): FileData[] {
-    const strategy = ParserFactory.getStrategy(format);
+  parse(content: string, strategyKey: string = 'default'): FileData[] {
+    const strategy = getParseStrategy(strategyKey);
     return strategy(content);
   }
 
