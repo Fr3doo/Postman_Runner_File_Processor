@@ -2,6 +2,8 @@
 
 Le Postman Runner File Processor convertit les fichiers `.txt` issus de Postman Runner en JSON structuré. L’application fonctionne entièrement dans le navigateur avec React et TypeScript.
 
+![Aperçu de l’interface](ui-screenshot.png)
+
 ## Fonctionnalités principales
 
 - Téléversement de fichiers par glisser-déposer avec retour de progression
