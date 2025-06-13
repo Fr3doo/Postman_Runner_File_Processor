@@ -70,6 +70,16 @@ Avant toute contribution, exécutez `npm run lint` puis `npm test`.
    npm run preview
    ```
 
+## Utilisation en ligne de commande
+
+Un petit outil CLI permet de convertir directement des fichiers texte en JSON.
+
+```bash
+npm run cli -- fichier1.txt fichier2.txt
+```
+
+Chaque fichier `.txt` donné en argument génère un fichier `.json` dans le même dossier.
+
 ## Sécurité et limitations
 
 Le projet valide et assainit les fichiers avant analyse, mais fonctionne entièrement côté navigateur. Mesures de sécurité :
