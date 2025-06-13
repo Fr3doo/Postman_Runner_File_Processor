@@ -4,6 +4,7 @@ import { basename, extname, resolve } from 'path';
 import {
   parseAllSummaryBlocks,
   generateJSONContent,
+  sanitizeFileData,
 } from '../utils/fileParser';
 import { validateAndSanitizeContent } from '../utils/securityValidator';
 
@@ -16,7 +17,8 @@ async function convertFile(filePath: string): Promise<void> {
 
   await Promise.all(
     summaries.map((summary, idx) => {
-      const json = generateJSONContent(summary);
+      const sanitized = sanitizeFileData(summary);
+      const json = generateJSONContent(sanitized);
       const suffix = summaries.length === 1 ? '' : `-${idx + 1}`;
       const outPath = resolve(process.cwd(), `${base}${suffix}.json`);
       return fs.writeFile(outPath, json, 'utf8');

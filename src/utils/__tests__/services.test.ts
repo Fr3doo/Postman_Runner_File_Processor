@@ -12,6 +12,7 @@ vi.mock('../parseStrategyRegistry', () => ({
 vi.mock('../fileParser', () => ({
   generateJSONContent: vi.fn(),
   downloadJSON: vi.fn(),
+  sanitizeFileData: vi.fn((d) => d),
 }));
 
 vi.mock('../securityValidator', () => ({
@@ -21,7 +22,7 @@ vi.mock('../securityValidator', () => ({
 
 // Import the mocked functions for assertions
 import { getParseStrategy } from '../parseStrategyRegistry';
-import { generateJSONContent, downloadJSON } from '../fileParser';
+import { generateJSONContent, downloadJSON, sanitizeFileData } from '../fileParser';
 import { validateFileList, validateRateLimit } from '../securityValidator';
 
 describe('FileParserService', () => {
@@ -53,20 +54,30 @@ describe('FileParserService', () => {
     expect(result).toEqual(['x']);
   });
 
-  it('toJSON calls generateJSONContent and returns its result', () => {
+  it('toJSON sanitizes data then calls generateJSONContent', () => {
+    const sanitized = {} as unknown as FileData;
+    (
+      sanitizeFileData as unknown as ReturnType<typeof vi.fn>
+    ).mockReturnValue(sanitized);
     (
       generateJSONContent as unknown as ReturnType<typeof vi.fn>
     ).mockReturnValue('json');
     const data = {} as unknown as FileData;
     const result = service.toJSON(data);
-    expect(generateJSONContent).toHaveBeenCalledWith(data);
+    expect(sanitizeFileData).toHaveBeenCalledWith(data);
+    expect(generateJSONContent).toHaveBeenCalledWith(sanitized);
     expect(result).toBe('json');
   });
 
-  it('download calls downloadJSON', () => {
+  it('download sanitizes data then calls downloadJSON', () => {
+    const sanitized = {} as unknown as FileData;
+    (
+      sanitizeFileData as unknown as ReturnType<typeof vi.fn>
+    ).mockReturnValue(sanitized);
     const data = {} as unknown as FileData;
     service.download(data, 'file.txt');
-    expect(downloadJSON).toHaveBeenCalledWith(data, 'file.txt');
+    expect(sanitizeFileData).toHaveBeenCalledWith(data);
+    expect(downloadJSON).toHaveBeenCalledWith(sanitized, 'file.txt');
   });
 });
 

@@ -35,11 +35,16 @@ describe('run', () => {
 
   it('creates JSON file in working directory', async () => {
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const sanitizeSpy = vi
+      .spyOn(parser, 'sanitizeFileData')
+      .mockImplementation((d) => d);
 
     const content = `Block one\n📂 Nombre de fichier(s) restant(s) : 1\n➡️ Le dossier au numeroTélédémarche: AUTO-A est déposé\n➡️ Nom de projet : TRA - X - One - v1\n➡️ Numero dossier : D1\n➡️ Date de dépot : 2024-01-01`;
     await fs.writeFile('input.txt', content, 'utf8');
 
     await run(['input.txt']);
+
+    expect(sanitizeSpy).toHaveBeenCalled();
 
     expect(logSpy).toHaveBeenCalledWith('Converted input.txt');
     const out = await fs.readFile('input.json', 'utf8');
@@ -54,6 +59,9 @@ describe('run', () => {
 
   it('creates multiple JSON files when multiple summaries found', async () => {
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const sanitizeSpy = vi
+      .spyOn(parser, 'sanitizeFileData')
+      .mockImplementation((d) => d);
     const parseSpy = vi.spyOn(parser, 'parseAllSummaryBlocks').mockReturnValue([
       {
         nombre_fichiers_restants: 1,
@@ -74,6 +82,8 @@ describe('run', () => {
     await fs.writeFile('multi.txt', 'dummy', 'utf8');
 
     await run(['multi.txt']);
+
+    expect(sanitizeSpy).toHaveBeenCalled();
 
     expect(parseSpy).toHaveBeenCalled();
     expect(logSpy).toHaveBeenCalledWith('Converted multi.txt');
