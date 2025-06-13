@@ -36,4 +36,21 @@ describe('loggingService', () => {
     logs.push({ level: 'info', message: 'b', timestamp: new Date() });
     expect(loggingService.getLogs().length).toBe(1);
   });
+
+  it('saves and loads logs from localStorage', () => {
+    loggingService.logInfo('persist');
+    loggingService.save();
+    loggingService.clear();
+    expect(loggingService.getLogs().length).toBe(0);
+    loggingService.load();
+    const logs = loggingService.getLogs();
+    expect(logs.length).toBe(1);
+    expect(logs[0].message).toBe('persist');
+  });
+
+  it('exportLogs returns JSON string', () => {
+    loggingService.logInfo('json');
+    const data = loggingService.exportLogs();
+    expect(data).toMatch(/json/);
+  });
 });

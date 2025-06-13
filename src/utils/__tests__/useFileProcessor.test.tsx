@@ -45,6 +45,9 @@ describe('useFileProcessor', () => {
       logError: vi.fn(),
       getLogs: vi.fn(() => []),
       clear: vi.fn(),
+      load: vi.fn(),
+      save: vi.fn(),
+      exportLogs: vi.fn(() => ''),
     };
     const processor = new FileProcessor(
       parser,
@@ -99,6 +102,9 @@ describe('useFileProcessor', () => {
       logError: vi.fn(),
       getLogs: vi.fn(() => []),
       clear: vi.fn(),
+      load: vi.fn(),
+      save: vi.fn(),
+      exportLogs: vi.fn(() => ''),
     };
     const processor = new FileProcessor(
       parser,

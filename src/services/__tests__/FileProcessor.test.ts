@@ -47,6 +47,9 @@ describe('FileProcessor', () => {
       logError: vi.fn(),
       getLogs: vi.fn(() => []),
       clear: vi.fn(),
+      load: vi.fn(),
+      save: vi.fn(),
+      exportLogs: vi.fn(() => ''),
     };
 
     processor = new FileProcessor(
