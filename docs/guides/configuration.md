@@ -22,3 +22,18 @@ Ce guide explique comment ajuster les limites d’exécution et les options de t
 - `FILE_READ_TIMEOUT` spécifie le temps (en millisecondes) autorisé pour lire chaque fichier.
 
 Définissez ces variables dans votre fichier `.env` (ajoutez le préfixe `VITE_` pour une utilisation côté navigateur) pour remplacer les valeurs par défaut. Ceci permet d’appliquer des limites différentes selon l’environnement.
+
+## Exemple de fichier `.env`
+
+Créez un fichier `.env` à la racine du projet :
+
+```env
+# Limites adaptées à un environnement de test
+VITE_MAX_FILE_SIZE=1048576
+VITE_MAX_TOTAL_SIZE=5242880
+VITE_MAX_FILES_COUNT=3
+VITE_CONCURRENCY_LIMIT=2
+VITE_FILE_READ_TIMEOUT=60000
+```
+
+`ConfigService` charge ces variables au démarrage. Pour l’outil CLI, retirez le préfixe `VITE_`.
