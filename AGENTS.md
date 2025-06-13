@@ -1,30 +1,31 @@
-# Agents and Contribution Guide
+# Agents et guide de contribution
 
-All code and documentation changes must pass linting and tests by running:
+Toute modification de code ou de documentation doit passer le lint et les tests en lançant :
 
 ```
 npm run lint
 npm test
 ```
 
-This project is built with React and TypeScript. UI components should use Tailwind CSS for styling and icons from `lucide-react`. Avoid adding other UI or icon libraries unless specifically requested.
+Ce projet utilise React et TypeScript. Les composants UI doivent utiliser Tailwind CSS pour le style et les icônes de `lucide-react`. N’ajoutez pas d’autres bibliothèques UI ou d’icônes sauf demande spécifique.
 
-When implementing interfaces, produce polished, production-ready designs as described in `.bolt/prompt`.
+Pour les interfaces, produisez des designs soignés et prêts pour la production.
 
-Unit tests live in `src/utils/__tests__`. Update or add tests there whenever modifying utility code.
+Les tests unitaires sont dans `src/utils/__tests__`. Mettez à jour ou ajoutez des tests lors de toute modification des utilitaires.
 
 ## Documentation
 
-Project docs are stored in the `docs/` directory with the following structure:
+La documentation du projet se trouve dans le dossier `docs/` avec la structure suivante :
 
-- `docs/overview` – project overview
-- `docs/guides` – how‑to guides and contribution info
-- `docs/reference` – API and architecture references
-- `docs/releases` – changelog and release notes
+* `docs/overview` – aperçu du projet
+* `docs/guides` – guides pratiques et informations de contribution
+* `docs/reference` – références API et architecture
+* `docs/releases` – journal des modifications et notes de versions
 
-Start from [docs/index.md](docs/index.md) and see
-[docs/guides/contributing.md](docs/guides/contributing.md) for contributor guidelines.
-Refer to [docs/guides/documentation-style.md](docs/guides/documentation-style.md) for documentation conventions.
+Commencez par [docs/index.md](docs/index.md) et consultez
+[docs/guides/contributing.md](docs/guides/contributing.md) pour les règles du contributeur.
+Référez-vous à [docs/guides/documentation-style.md](docs/guides/documentation-style.md) pour les conventions de rédaction documentaire, de code, de noms de variables et de l'affichage des messages d'erreurs.
+
 
 ---
 
