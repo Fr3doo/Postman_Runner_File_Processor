@@ -1,28 +1,28 @@
-# Security Configuration
+# Configuration de sécurité
 
-The `SECURITY_CONFIG` constant in `src/config/security.ts` defines validation and rate limiting rules for file processing.
+La constante `SECURITY_CONFIG` dans `src/config/security.ts` définit les règles de validation et de limitation du débit pour le traitement des fichiers.
 
-## File Size Limits
+## Limites de taille de fichier
 
-- `MAX_FILE_SIZE` – maximum size for a single file (100MB).
-- `MAX_TOTAL_SIZE` – maximum combined size when uploading multiple files (500MB).
-- `MAX_FILES_COUNT` – number of files allowed in one batch (20).
+* `MAX_FILE_SIZE` – taille maximale pour un fichier unique (100 Mo).
+* `MAX_TOTAL_SIZE` – taille totale maximale lors du téléversement de plusieurs fichiers (500 Mo).
+* `MAX_FILES_COUNT` – nombre de fichiers autorisés par lot (20).
 
-## Content Validation
+## Validation du contenu
 
-- `MAX_LINE_LENGTH` – maximum characters allowed per line (50000).
-- `MAX_LINES_COUNT` – maximum lines allowed in each file (100000).
+* `MAX_LINE_LENGTH` – nombre maximal de caractères par ligne (50 000).
+* `MAX_LINES_COUNT` – nombre maximal de lignes par fichier (100 000).
 
-## Allowed Extensions and Types
+## Extensions et types autorisés
 
-- `ALLOWED_FILE_EXTENSIONS` – list of accepted file extensions (`.txt`).
-- `ALLOWED_MIME_TYPES` – accepted MIME types for upload.
+* `ALLOWED_FILE_EXTENSIONS` – liste des extensions acceptées (`.txt`).
+* `ALLOWED_MIME_TYPES` – types MIME autorisés pour le téléversement.
 
-## Content Sanitization
+## Assainissement du contenu
 
-- `DANGEROUS_PATTERNS` – regular expressions removed from uploaded text to prevent script execution and other injections.
+* `DANGEROUS_PATTERNS` – expressions régulières supprimées du texte téléversé pour éviter l’exécution de scripts et autres injections.
 
-## Rate Limiting
+## Limitation de débit
 
-- `RATE_LIMIT_WINDOW` – time window in milliseconds used to throttle uploads (60,000ms).
-- `RATE_LIMIT_MAX_FILES` – number of files permitted per window (100).
+* `RATE_LIMIT_WINDOW` – fenêtre temporelle en millisecondes utilisée pour limiter les téléversements (60 000 ms).
+* `RATE_LIMIT_MAX_FILES` – nombre de fichiers autorisés par fenêtre (100).
