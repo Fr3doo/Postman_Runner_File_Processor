@@ -18,17 +18,19 @@ const metaEnv: ImportMetaEnv | undefined =
   typeof import.meta !== 'undefined'
     ? (import.meta as ImportMeta).env
     : undefined;
-const env = metaEnv ?? process.env;
+const defaultEnv = metaEnv ?? process.env;
 
 class ConfigService {
+  constructor(private readonly env: Record<string, unknown> = defaultEnv) {}
+
   private getNumber(key: string, fallback: number): number {
-    const value = env[`VITE_${key}`] ?? env[key];
+    const value = this.env[`VITE_${key}`] ?? this.env[key];
     const num = Number(value);
     return Number.isFinite(num) ? num : fallback;
   }
 
   private getStringArray(key: string, fallback: string[]): string[] {
-    const value = env[`VITE_${key}`] ?? env[key];
+    const value = this.env[`VITE_${key}`] ?? this.env[key];
     if (typeof value !== 'string') return fallback;
     return value
       .split(',')
@@ -89,3 +91,4 @@ class ConfigService {
 
 export const configService = new ConfigService();
 export type IConfigService = ConfigService;
+export { ConfigService };
