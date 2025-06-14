@@ -1,7 +1,16 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { validateFile, validateFileList } from '../securityValidator';
 import { ValidationError } from '../errors';
 import { configService } from '../../services/ConfigService';
+import { SECURITY_CONFIG } from '../../config/security';
+
+beforeEach(() => {
+  vi.spyOn(configService, 'security', 'get').mockReturnValue(SECURITY_CONFIG);
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 const createMockFile = (name: string, size: number, type: string): File =>
   ({ name, size, type }) as unknown as File;
