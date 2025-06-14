@@ -69,4 +69,9 @@ describe('NotificationProvider', () => {
     });
     expect(result.current.warnings).toEqual(['first', 'second']);
   });
+
+  it('throws when used outside NotificationProvider', () => {
+    const fn = () => renderHook(() => useNotifications());
+    expect(fn).toThrow('useNotifications must be used within a NotificationProvider');
+  });
 });
