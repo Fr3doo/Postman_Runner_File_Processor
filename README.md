@@ -1,15 +1,7 @@
 # Postman Runner File Processor
 
-![CI](https://img.shields.io/github/actions/workflow/status/Fr3doo/Postman_Runner_File_Processor/ci.yml?branch=main)
-[![codecov](https://codecov.io/gh/Fr3doo/Postman_Runner_File_Processor/branch/main/graph/badge.svg)](https://codecov.io/gh/Fr3doo/Postman_Runner_File_Processor)
-![npm](https://img.shields.io/npm/v/postman-runner-file-processor?color=blue)
-![npm](https://img.shields.io/npm/v/postman-runner-file-processor)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![CI](https://github.com/Fr3doo/Postman_Runner_File_Processor/actions/workflows/ci.yml/badge.svg?branch=main)
-[![codecov](https://codecov.io/gh/Fr3doo/Postman_Runner_File_Processor/branch/main/graph/badge.svg)](https://codecov.io/gh/Fr3doo/Postman_Runner_File_Processor)
-[![codecov](https://codecov.io/gh/Fr3doo/Postman_Runner_File_Processor/branch/main/graph/badge.svg?token=TON_TOKEN_ICI)](https://codecov.io/gh/Fr3doo/Postman_Runner_File_Processor)
-
-
 
 
 ## 🚀 Objectif du projet
