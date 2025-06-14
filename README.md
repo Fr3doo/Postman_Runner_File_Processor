@@ -100,13 +100,13 @@ graph TD
 
 ## 🧪 Tests
 
-Les tests unitaires se trouvent dans `src/utils/__tests__` et s'exécutent avec Vitest :
+Les tests unitaires se trouvent dans `src/utils/__tests__`. La commande suivante exécute Vitest et produit un rapport de couverture :
 
 ```bash
 npm test
 ```
 
-Assurez-vous que les nouveaux utilitaires sont couverts par des tests avant toute contribution.
+Certaines parties du code sont exclues, comme indiqué dans [docs/reference/tests-overview.md](docs/reference/tests-overview.md). Veillez à couvrir les nouveaux utilitaires avant toute contribution.
 
 ## 🤝 Contribuer
 
