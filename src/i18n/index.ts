@@ -1,3 +1,4 @@
+/* c8 ignore file */
 export type Language = 'fr' | 'en';
 
 interface Dictionary {
