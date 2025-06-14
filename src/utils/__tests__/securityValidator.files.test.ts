@@ -25,11 +25,26 @@ describe('validateFile', () => {
     expect(result.warnings.length).toBeGreaterThan(0);
   });
 
+  it('accepts file without mime type', () => {
+    const file = createMockFile('safe.txt', 10, '');
+    const result = validateFile(file);
+    expect(result.isValid).toBe(true);
+    expect(result.warnings).toHaveLength(0);
+  });
+
   it('accepts valid file', () => {
     const file = createMockFile('good.txt', 10, 'text/plain');
     const result = validateFile(file);
     expect(result.isValid).toBe(true);
     expect(result.errors).toHaveLength(0);
+  });
+
+  it('rejects suspicious file names', () => {
+    const names = ['../evil.txt', 'bad<name>.txt', '.hidden.txt', 'con'];
+    for (const name of names) {
+      const file = createMockFile(name, 10, 'text/plain');
+      expect(() => validateFile(file)).toThrow(/motifs suspects/);
+    }
   });
 });
 
@@ -49,5 +64,23 @@ describe('validateFileList', () => {
       createMockFile(`f${i}.txt`, perFileSize, 'text/plain'),
     );
     expect(() => validateFileList(files)).toThrow(ValidationError);
+  });
+
+  it('throws when any file in list is invalid', () => {
+    const files = [
+      createMockFile('good.txt', 10, 'text/plain'),
+      createMockFile('../bad.txt', 10, 'text/plain'),
+    ];
+    expect(() => validateFileList(files)).toThrow(ValidationError);
+  });
+
+  it('accepts a list of valid files', () => {
+    const files = [
+      createMockFile('a.txt', 10, 'text/plain'),
+      createMockFile('b.txt', 20, 'text/plain'),
+    ];
+    const result = validateFileList(files);
+    expect(result.isValid).toBe(true);
+    expect(result.errors).toHaveLength(0);
   });
 });
