@@ -147,6 +147,23 @@ describe('ResultCard', () => {
     );
     expect(screen.getByText(/Traitement du fichier/)).toBeTruthy();
   });
+
+  it('renders no icon or badge for unknown status', () => {
+    const { container } = render(
+      <ResultCard
+        file={{
+          id: '4',
+          filename: 'weird.txt',
+          status: 'weird' as unknown as ProcessedFile['status'],
+        }}
+      />,
+    );
+
+    expect(container.querySelector('svg')).toBeNull();
+    expect(screen.queryByText('✅ Réussi')).toBeNull();
+    expect(screen.queryByText('⛔️ Erreur')).toBeNull();
+    expect(screen.queryByText('🔄 Traitement')).toBeNull();
+  });
 });
 
 describe('ResultsGrid', () => {
