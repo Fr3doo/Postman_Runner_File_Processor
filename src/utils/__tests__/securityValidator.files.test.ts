@@ -83,6 +83,14 @@ describe('validateFileList', () => {
     expect(() => validateFileList(files)).toThrow(ValidationError);
   });
 
+  it('aggregates errors from a suspicious and invalid file', () => {
+    const files = [createMockFile('../bad.exe', 10, 'text/plain')];
+
+    expect(() => validateFileList(files)).toThrow(
+      /Extension de fichier invalide.*motifs suspects/,
+    );
+  });
+
   it('accepts a list of valid files', () => {
     const files = [
       createMockFile('a.txt', 10, 'text/plain'),
