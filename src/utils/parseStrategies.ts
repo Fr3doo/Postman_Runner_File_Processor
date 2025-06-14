@@ -50,33 +50,50 @@ export const defaultParseStrategy: ParseStrategy = (
   return summaries;
 };
 
-const parseSummaryLines = (summaryLines: string[]): FileData => {
+export const parseSummaryLines = (
+  summaryLines: string[],
+  helpers: {
+    extractFileCount?: typeof extractFileCount;
+    extractTeledemarche?: typeof extractTeledemarche;
+    extractProjectName?: typeof extractProjectName;
+    extractDossierNumber?: typeof extractDossierNumber;
+    extractDateDepot?: typeof extractDateDepot;
+  } = {},
+): FileData => {
   const data: Partial<FileData> = {};
+
+  const {
+    extractFileCount: efc = extractFileCount,
+    extractTeledemarche: etd = extractTeledemarche,
+    extractProjectName: epn = extractProjectName,
+    extractDossierNumber: edn = extractDossierNumber,
+    extractDateDepot: edd = extractDateDepot,
+  } = helpers;
 
   for (const line of summaryLines) {
     try {
       if (data.nombre_fichiers_restants === undefined) {
-        const count = extractFileCount(line);
+        const count = efc(line);
         if (count !== undefined) data.nombre_fichiers_restants = count;
       }
 
       if (data.numero_teledemarche === undefined) {
-        const num = extractTeledemarche(line);
+        const num = etd(line);
         if (num !== undefined) data.numero_teledemarche = num;
       }
 
       if (data.nom_projet === undefined) {
-        const proj = extractProjectName(line);
+        const proj = epn(line);
         if (proj !== undefined) data.nom_projet = proj;
       }
 
       if (data.numero_dossier === undefined) {
-        const dossier = extractDossierNumber(line);
+        const dossier = edn(line);
         if (dossier !== undefined) data.numero_dossier = dossier;
       }
 
       if (data.date_depot === undefined) {
-        const date = extractDateDepot(line);
+        const date = edd(line);
         if (date !== undefined) data.date_depot = date;
       }
     } catch (error) {
