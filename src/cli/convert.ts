@@ -71,6 +71,7 @@ export async function start(
   }
 }
 
+/* c8 ignore next */
 if (import.meta.main) {
   start();
 }
