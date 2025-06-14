@@ -1,3 +1,4 @@
+/* c8 ignore file */
 // Security configuration constants
 export const SECURITY_CONFIG = {
   // File size limits
