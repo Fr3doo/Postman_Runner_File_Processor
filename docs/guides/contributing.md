@@ -47,7 +47,7 @@ Cela installe automatiquement les hooks Git via [Husky](https://typicode.github.
 
 ---
 
-## 🌱 Bonnes pratiques Git
+## 🌱 Nommage PR
 
 ### ➕ Création de branche
 
