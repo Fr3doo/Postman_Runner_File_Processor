@@ -52,6 +52,16 @@ describe('validateAndSanitizeContent', () => {
     expect(result.sanitizedContent).toBe('helloworld\n\tend');
   });
 
+  it('throws when sanitizeTextContent removes over 20% of text', () => {
+    const ctrl = '\x00'.repeat(100);
+    const content = `start${ctrl}end`;
+    const fn = () => validateAndSanitizeContent(content);
+    expect(fn).toThrow(ValidationError);
+    expect(fn).toThrow(
+      'Le contenu du fichier a été fortement modifié lors de la sanitisation.',
+    );
+  });
+
   it('returns identical content when no issues found', () => {
     const content = 'just some safe text';
     const result = validateAndSanitizeContent(content);
