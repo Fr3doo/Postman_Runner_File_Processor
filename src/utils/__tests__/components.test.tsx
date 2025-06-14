@@ -105,7 +105,7 @@ describe('FileUpload', () => {
 });
 
 describe('ResultCard', () => {
-  const data = {
+  const base = {
     nombre_fichiers_restants: 1,
     numero_teledemarche: 'T',
     nom_projet: 'Project',
@@ -113,20 +113,34 @@ describe('ResultCard', () => {
     date_depot: '2024-01-01',
   };
 
-  it('displays success information', () => {
+  it('displays summary details for success status', () => {
+    const summary1 = { ...base };
+    const summary2 = {
+      ...base,
+      nom_projet: 'Project 2',
+      numero_teledemarche: 'X',
+      numero_dossier: 'Z',
+      date_depot: '2024-02-01',
+    };
     render(
       <ResultCard
         file={{
           id: '1',
           filename: 'file.txt',
           status: 'success',
-          summaries: [data],
+          summaries: [summary1, summary2],
         }}
       />,
     );
+
     expect(screen.getByText('file.txt')).toBeTruthy();
-    expect(screen.getByText(/Télécharger le JSON/)).toBeTruthy();
+    expect(screen.getByText('✅ Réussi')).toBeTruthy();
+    expect(screen.getAllByText(/Télécharger le JSON/)).toHaveLength(2);
     expect(screen.getByText('Project')).toBeTruthy();
+    expect(screen.getByText('Project 2')).toBeTruthy();
+    expect(screen.getByText('AUTO-X')).toBeTruthy();
+    expect(screen.getByText('DZ')).toBeTruthy();
+    expect(screen.getByText('2024-02-01')).toBeTruthy();
   });
 
   it('shows error message', () => {
@@ -135,8 +149,10 @@ describe('ResultCard', () => {
         file={{ id: '2', filename: 'bad.txt', status: 'error', error: 'oops' }}
       />,
     );
+    expect(screen.getByText('⛔️ Erreur')).toBeTruthy();
     expect(screen.getByText(/Erreur de traitement/)).toBeTruthy();
     expect(screen.getByText('oops')).toBeTruthy();
+    expect(screen.queryByText(/Télécharger le JSON/)).toBeNull();
   });
 
   it('indicates processing state', () => {
@@ -145,7 +161,10 @@ describe('ResultCard', () => {
         file={{ id: '3', filename: 'proc.txt', status: 'processing' }}
       />,
     );
+    expect(screen.getByText('🔄 Traitement')).toBeTruthy();
     expect(screen.getByText(/Traitement du fichier/)).toBeTruthy();
+    expect(screen.queryByText(/Télécharger le JSON/)).toBeNull();
+    expect(screen.queryByText(/Erreur de traitement/)).toBeNull();
   });
 
   it('renders no icon or badge for unknown status', () => {
