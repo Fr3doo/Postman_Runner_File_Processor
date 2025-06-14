@@ -2,10 +2,6 @@
 
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![CI](https://github.com/Fr3doo/Postman_Runner_File_Processor/actions/workflows/ci.yml/badge.svg?branch=main)
-[![codecov](https://codecov.io/gh/Fr3doo/Postman_Runner_File_Processor/branch/main/graph/badge.svg)](https://codecov.io/gh/Fr3doo/Postman_Runner_File_Processor)
-
-
-
 
 
 
