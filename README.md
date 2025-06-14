@@ -103,13 +103,10 @@ graph TD
 
 ## 🧪 Tests
 
-Les tests unitaires se trouvent dans `src/utils/__tests__`. La commande suivante exécute Vitest et produit un rapport de couverture :
-
-```bash
-npm test
-```
-
-Certaines parties du code sont exclues, comme indiqué dans [docs/reference/tests-overview.md](docs/reference/tests-overview.md). Veillez à couvrir les nouveaux utilitaires avant toute contribution.
+Les tests unitaires se trouvent dans `src/utils/__tests__`.
+Lancez `npm test` pour exécuter la suite avec Vitest et obtenir un rapport de couverture.
+Plusieurs fichiers sont exclus de l'analyse : consultez [docs/reference/tests-overview.md](docs/reference/tests-overview.md) pour la liste complète.
+Veillez à couvrir les nouveaux utilitaires avant toute contribution.
 
 ## 🤝 Contribuer
 
