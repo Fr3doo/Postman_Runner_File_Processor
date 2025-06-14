@@ -43,4 +43,52 @@ describe('downloadJSON', () => {
     createObjectURLSpy.mockRestore();
     vi.restoreAllMocks();
   });
+
+  it('throws when Blob construction fails', () => {
+    const data: FileData = {
+      nombre_fichiers_restants: 1,
+      numero_teledemarche: 'T123',
+      nom_projet: 'Project',
+      numero_dossier: 'D1',
+      date_depot: '2024-05-01',
+    };
+
+    const originalBlob = global.Blob;
+    class FailingBlob {
+      constructor() {
+        throw new Error('blob fail');
+      }
+    }
+    // @ts-expect-error override constructor for test
+    global.Blob = FailingBlob as unknown as typeof Blob;
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    expect(() => downloadJSON(data, 'f.txt')).toThrow(
+      'Failed to download JSON file. Please try again.',
+    );
+    errorSpy.mockRestore();
+    global.Blob = originalBlob;
+  });
+
+  it('throws when createElement fails', () => {
+    const data: FileData = {
+      nombre_fichiers_restants: 1,
+      numero_teledemarche: 'T123',
+      nom_projet: 'Project',
+      numero_dossier: 'D1',
+      date_depot: '2024-05-01',
+    };
+
+    const originalCreate = document.createElement;
+    document.createElement = vi.fn(() => {
+      throw new Error('dom fail');
+    }) as unknown as typeof document.createElement;
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    expect(() => downloadJSON(data, 'f.txt')).toThrow(
+      'Failed to download JSON file. Please try again.',
+    );
+    errorSpy.mockRestore();
+    document.createElement = originalCreate;
+  });
 });
