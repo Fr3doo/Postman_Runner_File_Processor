@@ -38,4 +38,21 @@ describe('ErrorBoundary', () => {
 
     (console.error as unknown as vi.Mock).mockRestore();
   });
+
+  it('renders fallback element when provided', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(
+      <ErrorBoundary fallback={<div>fallback ui</div>}>
+        <Problem />
+      </ErrorBoundary>,
+    );
+
+    expect(screen.getByText('fallback ui')).toBeTruthy();
+    expect(
+      screen.queryByText(/Une erreur est survenue\./i),
+    ).toBeNull();
+
+    (console.error as unknown as vi.Mock).mockRestore();
+  });
 });
