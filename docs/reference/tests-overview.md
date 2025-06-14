@@ -31,7 +31,17 @@ Certains fichiers ou portions de code sont **exclus des rapports de couverture**
 | `eslint.config.js`                 | Configuration ESLint sans logique testable.                                                                             |
 | `tsconfig.json`, `tsconfig.*.json` | Fichiers de configuration TypeScript (ajoutés pour documentation, non mesurés par la couverture).                       |
 
-
 ### 🌐 Cas spécifiques
 
-* Des utilitaires très dépendants du **DOM** (ex. : fonctions déclenchant des téléchargements via `<a>` ou `URL.createObjectURL`) sont exclus des tests unitaires. Leur comportement dépend de l’environnement navigateur et sera validé via des **tests end-to-end (E2E)** dans un second temps.
+- Des utilitaires très dépendants du **DOM** (ex. : fonctions déclenchant des téléchargements via `<a>` ou `URL.createObjectURL`) sont exclus des tests unitaires. Leur comportement dépend de l’environnement navigateur et sera validé via des **tests end-to-end (E2E)** dans un second temps.
+
+### 📑 Fichiers ignorés des tests et de la couverture
+
+Les tests unitaires et les rapports de couverture omettent plusieurs fichiers sans logique métier :
+
+- **Entrées CLI** : `src/cli/convert.ts` (et `src/cli/index.ts` s'il existe) servent uniquement à lancer la ligne de commande.
+- **Dictionnaires de traduction** : le dossier `src/i18n/**` contient les chaînes localisées et est annoté `/* c8 ignore file */`.
+- **Déclarations de types** : `src/types/**`, `src/vite-env.d.ts` et tous les fichiers `*.d.ts`.
+- **Fichiers de configuration** : `src/config/**`, `vite.config.ts`, `tailwind.config.js`, `postcss.config.js`, `eslint.config.js`, `tsconfig.json` et ses variantes.
+
+Ces éléments sont volontairement ignorés afin de concentrer la couverture sur la logique applicative réellement testable.
