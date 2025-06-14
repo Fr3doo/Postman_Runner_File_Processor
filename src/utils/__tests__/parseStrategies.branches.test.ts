@@ -120,6 +120,31 @@ describe('additional helper branches', () => {
     expect(extractProjectName(line)).toBeUndefined();
   });
 
+  it('extractProjectName throws when code fails final regex', () => {
+    const originalMatch = String.prototype.match;
+    String.prototype.match = function (pattern: RegExp) {
+      if (
+        pattern.source ===
+        ':\\s*TRA\\s*-\\s*([A-Z0-9]+)\\s*-\\s*(.+?)\\s*-\\s*v([\\d.]+)'
+      ) {
+        return [
+          'TRA - BAD_CODE! - Example - v1',
+          'BAD_CODE!',
+          'Example',
+          '1',
+        ] as unknown as RegExpMatchArray;
+      }
+      // @ts-expect-error -- call original with dynamic this
+      return originalMatch.call(this, pattern);
+    };
+    try {
+      const line = '➡️ Nom de projet : TRA - BAD_CODE! - Example - v1';
+      expect(() => extractProjectName(line)).toThrow(ParsingError);
+    } finally {
+      String.prototype.match = originalMatch;
+    }
+  });
+
   it('extractDossierNumber throws for invalid match result', () => {
     const originalMatch = String.prototype.match;
     String.prototype.match = function () {
