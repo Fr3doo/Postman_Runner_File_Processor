@@ -18,17 +18,19 @@ Certains fichiers ou portions de code sont **exclus des rapports de couverture**
 
 ### 🗂️ Fichiers et dossiers exclus
 
-* `src/main.tsx` : se limite au montage initial de l’application React via `createRoot()`.
-* `src/cli/**` : contient les scripts CLI, comme `convert.ts`, qui orchestrent des fonctions déjà testées. Le bloc `import.meta.main` y sert uniquement d’entrée CLI.
-* `src/config/**` : fichiers de configuration applicative, statiques ou constants.
-* `src/types/**` et tous les fichiers `*.d.ts` : définitions de types TypeScript sans comportement exécutable.
-* `src/vite-env.d.ts` : généré automatiquement par Vite.
-* Fichiers de configuration à la racine :
+| Chemin                             | Justification                                                                                                           |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `src/main.tsx`                     | Point d’entrée React (`createRoot`) sans logique métier.                                                                |
+| `src/cli/**`                       | Scripts CLI qui orchestrent des fonctions testées ailleurs. Le bloc `import.meta.main` ne fait que lancer le programme. |
+| `src/config/**`                    | Fichiers de configuration applicative sans logique exécutable.                                                          |
+| `src/types/**`, `**/*.d.ts`        | Déclarations de types uniquement, sans comportement à tester.                                                           |
+| `src/vite-env.d.ts`                | Fichier généré automatiquement par Vite.                                                                                |
+| `vite.config.ts`                   | Configuration Vite non exécutable dans les tests.                                                                       |
+| `tailwind.config.js`               | Configuration Tailwind CSS.                                                                                             |
+| `postcss.config.js`                | Configuration PostCSS.                                                                                                  |
+| `eslint.config.js`                 | Configuration ESLint sans logique testable.                                                                             |
+| `tsconfig.json`, `tsconfig.*.json` | Fichiers de configuration TypeScript (ajoutés pour documentation, non mesurés par la couverture).                       |
 
-  * `vite.config.ts`
-  * `tailwind.config.js`
-  * `postcss.config.js`
-  * `eslint.config.js`
 
 ### 🌐 Cas spécifiques
 
