@@ -74,6 +74,34 @@ describe('FileUpload', () => {
     expect(screen.getByText(/Invalid extension/)).toBeTruthy();
     vi.restoreAllMocks();
   });
+
+  it('toggles drag state on drag events', () => {
+    const handler = vi.fn();
+    render(<FileUpload onFilesSelected={handler} isProcessing={false} />);
+    const dropZone = screen
+      .getByText(/Téléverser des fichiers Postman Runner/i)
+      .parentElement!.parentElement!.parentElement! as HTMLElement;
+
+    expect(dropZone.className).not.toContain('border-blue-500');
+    expect(
+      screen.queryByText(/Déposez les fichiers ici pour les traiter/i),
+    ).toBeNull();
+
+    fireEvent.dragEnter(dropZone);
+    expect(dropZone.className).toContain('border-blue-500');
+    expect(
+      screen.getByText(/Déposez les fichiers ici pour les traiter/i),
+    ).toBeTruthy();
+
+    fireEvent.dragLeave(dropZone);
+    expect(dropZone.className).not.toContain('border-blue-500');
+    expect(
+      screen.queryByText(/Déposez les fichiers ici pour les traiter/i),
+    ).toBeNull();
+
+    fireEvent.dragOver(dropZone);
+    expect(dropZone.className).toContain('border-blue-500');
+  });
 });
 
 describe('ResultCard', () => {
