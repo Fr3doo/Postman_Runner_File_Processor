@@ -4,6 +4,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { ErrorBoundary } from '../../components/ErrorBoundary';
 import type { ErrorHandler } from '../../services/ErrorHandler';
 import type { ILoggingService } from '../../services/LoggingService';
+import { loggingService as defaultLoggingService } from '../../services/LoggingService';
 
 const Problem: React.FC = () => {
   throw new Error('<bad>');
@@ -53,6 +54,23 @@ describe('ErrorBoundary', () => {
       screen.queryByText(/Une erreur est survenue\./i),
     ).toBeNull();
 
+    (console.error as unknown as vi.Mock).mockRestore();
+  });
+
+  it('assigns default services when none are provided', () => {
+    defaultLoggingService.clear();
+    const logSpy = vi.spyOn(defaultLoggingService, 'logError');
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(
+      <ErrorBoundary>
+        <Problem />
+      </ErrorBoundary>,
+    );
+
+    expect(logSpy).toHaveBeenCalled();
+
+    logSpy.mockRestore();
     (console.error as unknown as vi.Mock).mockRestore();
   });
 });
