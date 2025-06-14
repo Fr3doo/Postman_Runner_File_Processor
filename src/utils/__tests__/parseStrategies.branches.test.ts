@@ -115,6 +115,11 @@ describe('additional helper branches', () => {
     expect(extractProjectName(line)).toBeUndefined();
   });
 
+  it('extractProjectName returns undefined with empty value', () => {
+    const line = '➡️ Nom de projet :';
+    expect(extractProjectName(line)).toBeUndefined();
+  });
+
   it('extractDossierNumber throws for invalid match result', () => {
     const originalMatch = String.prototype.match;
     String.prototype.match = function () {
