@@ -32,7 +32,7 @@ Certains fichiers ou portions de code sont **exclus des rapports de couverture**
 | `tsconfig.json`, `tsconfig.*.json` | Fichiers de configuration TypeScript (ajoutés pour documentation, non mesurés par la couverture).                       |
 
 
-# Les tests unitaires et les rapports de couverture omettent plusieurs fichiers sans logique métier :
+#### Les tests unitaires et les rapports de couverture omettent plusieurs fichiers sans logique métier :
 
 - **Entrées CLI** : `src/cli/convert.ts` (et `src/cli/index.ts` s'il existe) servent uniquement à lancer la ligne de commande.
 - **Dictionnaires de traduction** : le dossier `src/i18n/**` contient les chaînes localisées et est annoté `/* c8 ignore file */`.
