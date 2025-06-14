@@ -1,7 +1,16 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { validateAndSanitizeContent, rateLimiter } from '../securityValidator';
 import { ValidationError } from '../errors';
 import { configService } from '../../services/ConfigService';
+import { SECURITY_CONFIG } from '../../config/security';
+
+beforeEach(() => {
+  vi.spyOn(configService, 'security', 'get').mockReturnValue(SECURITY_CONFIG);
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('validateAndSanitizeContent', () => {
   it('flags empty content', () => {

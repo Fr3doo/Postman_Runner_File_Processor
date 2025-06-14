@@ -1,7 +1,16 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { validateRateLimit, rateLimiter } from '../securityValidator';
 import { RateLimitError } from '../errors';
 import { configService } from '../../services/ConfigService';
+import { SECURITY_CONFIG } from '../../config/security';
+
+beforeEach(() => {
+  vi.spyOn(configService, 'security', 'get').mockReturnValue(SECURITY_CONFIG);
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('validateRateLimit', () => {
   afterEach(() => {
