@@ -1,3 +1,4 @@
+/* c8 ignore file */
 export interface FileData {
   nombre_fichiers_restants: number;
   numero_teledemarche: string;
