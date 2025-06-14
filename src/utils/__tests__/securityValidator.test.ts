@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { validateAndSanitizeContent, rateLimiter } from '../securityValidator';
 import { ValidationError } from '../errors';
+import { configService } from '../../services/ConfigService';
 
 describe('validateAndSanitizeContent', () => {
   it('flags empty content', () => {
@@ -23,6 +24,23 @@ describe('validateAndSanitizeContent', () => {
     expect(fn).toThrow(
       'Le contenu du fichier a été fortement modifié lors de la sanitisation.',
     );
+  });
+
+  it('detects too many lines', () => {
+    const lines = Array.from({ length: configService.security.MAX_LINES_COUNT + 1 }).join('\n');
+    expect(() => validateAndSanitizeContent(lines)).toThrow(ValidationError);
+  });
+
+  it('warns for long lines', () => {
+    const longLine = 'a'.repeat(configService.security.MAX_LINE_LENGTH + 1);
+    const result = validateAndSanitizeContent(longLine);
+    expect(result.warnings.length).toBeGreaterThan(0);
+  });
+
+  it('sanitizes control characters', () => {
+    const content = `hello\x00world\n\tend`;
+    const result = validateAndSanitizeContent(content);
+    expect(result.sanitizedContent).toBe('helloworld\n\tend');
   });
 
   it('returns identical content when no issues found', () => {
