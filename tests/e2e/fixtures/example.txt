@@ -1,0 +1,5 @@
+📂 Nombre de fichier(s) restant(s): 5
+numeroTélédémarche: AUTO-TEST-001
+Nom de projet: TRA - CODE - Example - v1.0
+Numero dossier: DABC123
+Date de depot: 2024-05-01

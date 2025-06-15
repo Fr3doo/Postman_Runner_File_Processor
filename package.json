@@ -13,7 +13,7 @@
     "format": "prettier --write .",
     "prepare": "husky install",
     "test:unit": "vitest run --coverage --outputFile=coverage/unit/lcov.info",
-    "test:e2e": "echo 'Add your e2e test runner here'",
+    "test:e2e": "playwright test --reporter=line",
     "test": "npm run test:unit && npm run test:e2e"
   },
   "dependencies": {
@@ -23,12 +23,14 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "@playwright/test": "^1.53.0",
     "@testing-library/react": "^14.2.2",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^3.2.3",
     "autoprefixer": "^10.4.18",
+    "esbuild": "^0.25.5",
     "eslint": "^9.9.1",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.11",
@@ -42,8 +44,7 @@
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
     "vite": "^5.4.2",
-    "vitest": "^3.2.3",
-    "esbuild": "^0.25.5"
+    "vitest": "^3.2.3"
   },
   "overrides": {
     "@babel/helpers": "^7.27.6",
