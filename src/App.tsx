@@ -1,5 +1,4 @@
 import React from 'react';
-import { Header } from './components/Header';
 import { FileUpload } from './components/FileUpload';
 import { ResultsGrid } from './components/ResultsGrid';
 import { ProcessingStatsComponent } from './components/ProcessingStats';
@@ -15,11 +14,8 @@ function App() {
   return (
     <NotificationProvider>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        {/* Header avec message local */}
-        <Header />
-        
         <div className="container mx-auto px-4 py-8">
-          {/* Section principale */}
+          {/* Header */}
           <div className="text-center mb-12">
             <div className="flex items-center justify-center space-x-3 mb-4">
               <div className="p-3 bg-blue-600 rounded-full">
@@ -29,10 +25,10 @@ function App() {
                 <Zap className="text-white" size={32} />
               </div>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
               {t('appTitle')}
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            </h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               {t('appSubtitle')}
             </p>
           </div>
