@@ -38,6 +38,7 @@ La documentation est organisée dans les dossiers suivants :
 - [`reference/architecture.md`](reference/architecture.md) – Détails sur la structure des dossiers et l’architecture.
 - [`reference/tests-overview.md`](reference/tests-overview.md) – Aperçu des tests et instructions d’exécution.
 - [`reference/security-config.md`](reference/security-config.md) – Explication des constantes de sécurité.
+- [`reference/events.md`](reference/events.md) – Cycle des logs et des messages.
 
 ### Releases
 
