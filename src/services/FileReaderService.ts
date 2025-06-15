@@ -1,6 +1,10 @@
 import { FileReadError, FileReadTimeoutError } from '../utils/errors';
 
-export class FileReaderService {
+export interface IFileReaderService {
+  readFileWithTimeout(file: File, timeout: number): Promise<string>;
+}
+
+export class FileReaderService implements IFileReaderService {
   readFileWithTimeout(file: File, timeout: number): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

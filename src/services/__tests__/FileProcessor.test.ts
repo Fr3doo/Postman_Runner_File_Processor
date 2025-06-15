@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { FileProcessor } from '../FileProcessor';
 import { FileParserService } from '../FileParserService';
 import { FileValidationService } from '../FileValidationService';
-import { FileReaderService } from '../FileReaderService';
+import { FileReaderService, type IFileReaderService } from '../FileReaderService';
 import { configService } from '../../services/ConfigService';
 import { type ILoggingService } from '../LoggingService';
 import type { FileData, ProcessedFile } from '../../types';
@@ -16,7 +16,7 @@ describe('FileProcessor', () => {
   let parseMock: ReturnType<typeof vi.fn>;
   let validateFilesMock: ReturnType<typeof vi.fn>;
   let validateRateLimitMock: ReturnType<typeof vi.fn>;
-  let fileReader: FileReaderService;
+  let fileReader: IFileReaderService;
   let processor: FileProcessor;
   let processedFiles: ProcessedFile[];
   let isProcessing: boolean;

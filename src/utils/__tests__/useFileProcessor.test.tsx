@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { useFileProcessor } from '../../hooks/useFileProcessor';
 import { FileProcessor } from '../../services/FileProcessor';
-import { FileReaderService } from '../../services/FileReaderService';
+import { FileReaderService, type IFileReaderService } from '../../services/FileReaderService';
 import { type ILoggingService } from '../../services/LoggingService';
 import type { FileParserService } from '../../services/FileParserService';
 import type { FileValidationService } from '../../services/FileValidationService';
@@ -39,7 +39,7 @@ describe('useFileProcessor', () => {
       validateFiles: validateFilesMock,
       validateRateLimit: validateRateLimitMock,
     } as unknown as FileValidationService;
-    const reader = new FileReaderService();
+    const reader: IFileReaderService = new FileReaderService();
     const logService: ILoggingService = {
       logInfo: vi.fn(),
       logError: vi.fn(),
@@ -96,7 +96,7 @@ describe('useFileProcessor', () => {
       validateFiles: validateFilesMock,
       validateRateLimit: validateRateLimitMock,
     } as unknown as FileValidationService;
-    const reader = new FileReaderService();
+    const reader: IFileReaderService = new FileReaderService();
     const logService: ILoggingService = {
       logInfo: vi.fn(),
       logError: vi.fn(),
@@ -151,7 +151,7 @@ describe('useFileProcessor', () => {
       validateFiles: validateFilesMock,
       validateRateLimit: validateRateLimitMock,
     } as unknown as FileValidationService;
-    const reader = new FileReaderService();
+    const reader: IFileReaderService = new FileReaderService();
     const logService: ILoggingService = {
       logInfo: vi.fn(),
       logError: vi.fn(),
