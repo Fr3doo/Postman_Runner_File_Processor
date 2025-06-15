@@ -87,7 +87,7 @@ Les interfaces utilisent React + TypeScript, avec Tailwind CSS et `lucide-react`
 | **FileValidationService**| Vérification de la taille, du type et du quota de fichiers       | `src/services/FileValidationService.ts` | `FileList`                             | `ValidationResult` ou exceptions          |
 | **FileReaderService**   | Lecture du fichier avec délai maximal                             | `src/services/FileReaderService.ts`     | `File`, durée de timeout               | Texte ou erreur                           |
 | **NotificationService** | Gestion des avertissements et abonnements                         | `src/services/NotificationService.ts`   | Messages d’avertissement               | Notifications via `NotificationContext`   |
-| **LoggingService**      | Journalisation des actions et erreurs                             | `src/services/LoggingService.ts`        | Chaînes de log                         | Liste de logs                             |
+| **LoggingService**      | Journalisation des actions et erreurs ([cycle des logs](docs/reference/events.md)) | `src/services/LoggingService.ts`        | Chaînes de log                         | Liste de logs                             |
 | **ErrorHandler**        | Normalisation des messages d’erreur pour l’utilisateur            | `src/services/ErrorHandler.ts`          | `Error`                                | Chaîne nettoyée                           |
 | **ProcessFileCommand**  | Traitement unitaire d’un fichier (command pattern)                | `src/services/ProcessFileCommand.ts`    | `File`, services de parsing/lecture    | Mise à jour de `ProcessedFile`            |
 
