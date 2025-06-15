@@ -6,11 +6,8 @@ import {
   notificationService,
   type INotificationService,
 } from './NotificationService';
-import { FileReaderService, type IFileReaderService } from './FileReaderService';
-import {
-  loggingService as defaultLoggingService,
-  type ILoggingService,
-} from './LoggingService';
+import type { IFileReaderService } from './FileReaderService';
+import { type ILoggingService } from './LoggingService';
 import { configService } from './ConfigService';
 import { ErrorHandler } from './ErrorHandler';
 import { RateLimitError, ValidationError } from '../utils/errors';
@@ -21,10 +18,10 @@ export class FileProcessor {
   constructor(
     private parserService: FileParserService,
     private validationService: FileValidationService,
-    private fileReaderService: IFileReaderService = new FileReaderService(),
+    private fileReaderService: IFileReaderService,
     private notifyService: INotificationService = notificationService,
-    private errorHandler: ErrorHandler = new ErrorHandler(),
-    private loggingService: ILoggingService = defaultLoggingService,
+    private errorHandler: ErrorHandler,
+    private loggingService: ILoggingService,
   ) {}
 
   async processFiles(
