@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Animation personnalisée pour les éléments qui apparaissent */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Amélioration des transitions pour le drag & drop */
+.drag-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Style pour éviter le clignotement lors du survol */
+.drag-overlay {
+  pointer-events: none;
+}
+
+/* Amélioration de l'accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fadeIn,
+  .drag-transition {
+    animation: none;
+    transition: none;
+  }
+}
