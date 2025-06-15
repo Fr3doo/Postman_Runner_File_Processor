@@ -118,6 +118,7 @@ Consultez [docs/guides/contributing.md](docs/guides/contributing.md) pour les é
 - [Schémas d'architecture](docs/reference/architecture.md)
 - [Changelog](docs/releases/changelog.md)
 - [Guide de configuration](docs/guides/configuration.md)
+- [Guide des agents](AGENTS.md)
 
 ## 📦 Publication sur npm
 
