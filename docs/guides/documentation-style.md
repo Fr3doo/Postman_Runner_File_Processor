@@ -15,3 +15,13 @@ Ce projet utilise les conventions suivantes pour toute la documentation :
 - **Longueur des phrases** : Préférer des phrases courtes et faciles à lire.
 
 La cohérence des fichiers facilite la navigation et la maintenance de la documentation. Lors de la mise à jour ou de l’ajout de documents, respecter ces règles et maintenir un ton concis.
+
+## Diagrammes Mermaid
+
+Pour créer un schéma à partir d'un fichier `.mmd`, utilise la commande suivante :
+
+```bash
+npm run gen:diagrams chemin/vers/diagram.mmd
+```
+
+Le fichier SVG généré se trouve ensuite dans `docs/reference/`.
