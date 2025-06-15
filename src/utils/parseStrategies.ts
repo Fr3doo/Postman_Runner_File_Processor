@@ -4,13 +4,7 @@ import { ParsingError } from './errors';
 
 export type ParseStrategy = (content: string) => FileData[];
 
-export const defaultParseStrategy: ParseStrategy = (
-  content: string,
-): FileData[] => {
-  const validation = validateAndSanitizeContent(content);
-  const sanitizedContent = validation.sanitizedContent || content;
-  const lines = sanitizedContent.split('\n').map((line) => line.trim());
-
+export const findSummaryStarts = (lines: string[]): number[] => {
   const starts: number[] = [];
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -33,7 +27,21 @@ export const defaultParseStrategy: ParseStrategy = (
       }
     }
   }
+  return starts;
+};
 
+export const parseBlock = (lines: string[]): FileData => {
+  return parseSummaryLines(lines.slice(0, 20));
+};
+
+export const defaultParseStrategy: ParseStrategy = (
+  content: string,
+): FileData[] => {
+  const validation = validateAndSanitizeContent(content);
+  const sanitizedContent = validation.sanitizedContent || content;
+  const lines = sanitizedContent.split('\n').map((line) => line.trim());
+
+  const starts = findSummaryStarts(lines);
   if (starts.length === 0) {
     throw new ParsingError(
       'No valid summary block found. Expected format with file count and télédémarche number.',
@@ -44,8 +52,8 @@ export const defaultParseStrategy: ParseStrategy = (
   for (let idx = 0; idx < starts.length; idx++) {
     const start = starts[idx];
     const end = idx + 1 < starts.length ? starts[idx + 1] : lines.length;
-    const summaryLines = lines.slice(start, Math.min(start + 20, end));
-    summaries.push(parseSummaryLines(summaryLines));
+    const blockLines = lines.slice(start, end);
+    summaries.push(parseBlock(blockLines));
   }
   return summaries;
 };
