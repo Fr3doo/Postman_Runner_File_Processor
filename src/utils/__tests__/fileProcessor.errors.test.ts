@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { FileProcessor } from '../../services/FileProcessor';
 import type { FileParserService } from '../../services/FileParserService';
 import type { FileValidationService } from '../../services/FileValidationService';
-import { FileReaderService } from '../../services/FileReaderService';
+import { FileReaderService, type IFileReaderService } from '../../services/FileReaderService';
 import { notificationService } from '../../services/NotificationService';
 import { type ILoggingService } from '../../services/LoggingService';
 import { ParsingError, ValidationError, RateLimitError } from '../errors';
@@ -16,7 +16,7 @@ describe('FileProcessor error handling', () => {
   let parseMock: ReturnType<typeof vi.fn>;
   let validateFilesMock: ReturnType<typeof vi.fn>;
   let validateRateLimitMock: ReturnType<typeof vi.fn>;
-  let fileReader: FileReaderService;
+  let fileReader: IFileReaderService;
   let processor: FileProcessor;
   let processedFiles: ProcessedFile[];
   let setProcessedFiles: Dispatch<SetStateAction<ProcessedFile[]>>;

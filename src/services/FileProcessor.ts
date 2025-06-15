@@ -6,7 +6,7 @@ import {
   notificationService,
   type INotificationService,
 } from './NotificationService';
-import { FileReaderService } from './FileReaderService';
+import { FileReaderService, type IFileReaderService } from './FileReaderService';
 import {
   loggingService as defaultLoggingService,
   type ILoggingService,
@@ -21,7 +21,7 @@ export class FileProcessor {
   constructor(
     private parserService: FileParserService,
     private validationService: FileValidationService,
-    private fileReaderService: FileReaderService = new FileReaderService(),
+    private fileReaderService: IFileReaderService = new FileReaderService(),
     private notifyService: INotificationService = notificationService,
     private errorHandler: ErrorHandler = new ErrorHandler(),
     private loggingService: ILoggingService = defaultLoggingService,
