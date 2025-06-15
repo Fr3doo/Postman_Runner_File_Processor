@@ -3,6 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { useFileProcessor } from '../../hooks/useFileProcessor';
 import { FileProcessor } from '../../services/FileProcessor';
 import { FileReaderService, type IFileReaderService } from '../../services/FileReaderService';
+import { ErrorHandler } from '../../services/ErrorHandler';
 import { type ILoggingService } from '../../services/LoggingService';
 import type { FileParserService } from '../../services/FileParserService';
 import type { FileValidationService } from '../../services/FileValidationService';
@@ -54,7 +55,7 @@ describe('useFileProcessor', () => {
       validator,
       reader,
       undefined,
-      undefined,
+      new ErrorHandler(),
       logService,
     );
     vi.spyOn(reader, 'readFileWithTimeout').mockResolvedValue('content');
@@ -111,7 +112,7 @@ describe('useFileProcessor', () => {
       validator,
       reader,
       undefined,
-      undefined,
+      new ErrorHandler(),
       logService,
     );
     vi.spyOn(reader, 'readFileWithTimeout').mockResolvedValue('content');
@@ -166,7 +167,7 @@ describe('useFileProcessor', () => {
       validator,
       reader,
       undefined,
-      undefined,
+      new ErrorHandler(),
       logService,
     );
     vi.spyOn(reader, 'readFileWithTimeout').mockResolvedValue('content');

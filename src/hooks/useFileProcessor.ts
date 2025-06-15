@@ -4,6 +4,7 @@ import { FileParserService } from '../services/FileParserService';
 import { FileValidationService } from '../services/FileValidationService';
 import { FileProcessor } from '../services/FileProcessor';
 import { FileReaderService } from '../services/FileReaderService';
+import { ErrorHandler } from '../services/ErrorHandler';
 import { loggingService } from '../services/LoggingService';
 
 export const useFileProcessor = (
@@ -12,7 +13,7 @@ export const useFileProcessor = (
     new FileValidationService(),
     new FileReaderService(),
     undefined,
-    undefined,
+    new ErrorHandler(),
     loggingService,
   ),
 ) => {

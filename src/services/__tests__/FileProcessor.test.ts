@@ -4,6 +4,7 @@ import { FileParserService } from '../FileParserService';
 import { FileValidationService } from '../FileValidationService';
 import { FileReaderService, type IFileReaderService } from '../FileReaderService';
 import { configService } from '../../services/ConfigService';
+import { ErrorHandler } from '../ErrorHandler';
 import { type ILoggingService } from '../LoggingService';
 import type { FileData, ProcessedFile } from '../../types';
 import { ParsingError, ValidationError, RateLimitError } from '../../utils/errors';
@@ -57,7 +58,7 @@ describe('FileProcessor', () => {
       validationService,
       fileReader,
       undefined,
-      undefined,
+      new ErrorHandler(),
       logService,
     );
 
