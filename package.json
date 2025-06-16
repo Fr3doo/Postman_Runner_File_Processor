@@ -14,7 +14,8 @@
     "prepare": "husky install",
     "test:unit": "vitest run --coverage --outputFile=coverage/unit/lcov.info",
     "test:e2e": "echo 'Add your e2e test runner here'",
-    "test": "npm run test:unit && npm run test:e2e"
+    "test": "npm run test:unit && npm run test:e2e",
+    "browserslist:update": "npx update-browserslist-db@latest && npm install"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",
