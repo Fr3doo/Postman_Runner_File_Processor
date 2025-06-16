@@ -1,11 +1,29 @@
 import React from 'react';
-import { FileText } from 'lucide-react';
+import { FileText, Zap } from 'lucide-react';
 
-export const Logo: React.FC = () => (
-  <a href="#" className="flex items-center space-x-2 focus-visible:outline-none">
-    <FileText className="w-6 h-6 text-blue-600" />
-    <span className="font-bold text-gray-900">PRFP</span>
-  </a>
-);
+interface LogoProps {
+  className?: string;
+}
 
-export default Logo;
+export const Logo: React.FC<LogoProps> = ({ className = '' }) => {
+  return (
+    <div className={`flex items-center space-x-3 ${className}`}>
+      <div className="flex items-center space-x-2">
+        <div className="p-2 bg-blue-600 rounded-lg shadow-lg">
+          <FileText className="text-white" size={24} />
+        </div>
+        <div className="p-2 bg-purple-600 rounded-lg shadow-lg">
+          <Zap className="text-white" size={24} />
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <h1 className="text-xl font-bold text-gray-900 leading-tight">
+          PostmanRunner
+        </h1>
+        <span className="text-sm text-gray-600 font-medium">
+          File Processor
+        </span>
+      </div>
+    </div>
+  );
+};
