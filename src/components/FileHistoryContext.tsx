@@ -31,13 +31,11 @@ export const FileHistoryProvider: React.FC<{
   const handleRemove = (id: string) => {
     service.removeFile(id);
     setHistory(service.getHistory());
-    service.save();
   };
 
   const handleClear = () => {
     service.clearHistory();
     setHistory(service.getHistory());
-    service.save();
   };
 
   return (

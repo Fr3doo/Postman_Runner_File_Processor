@@ -60,7 +60,7 @@ describe('FileHistoryProvider', () => {
     });
     expect(service.clearHistory).toHaveBeenCalled();
     expect(result.current.history.length).toBe(0);
-    expect(service.save).toHaveBeenCalledTimes(2);
+    expect(service.save).not.toHaveBeenCalled();
   });
 
   it('throws when used outside FileHistoryProvider', () => {

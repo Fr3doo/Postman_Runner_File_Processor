@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { fileHistoryService } from '../FileHistoryService';
+import { fileHistoryService, FileHistoryService } from '../FileHistoryService';
 import type { ProcessedFile } from '../../types';
 
 const createFile = (id: string): ProcessedFile => ({
@@ -51,11 +51,9 @@ describe('fileHistoryService', () => {
   it('saves and loads history from localStorage', () => {
     const f = createFile('p');
     fileHistoryService.addFile(f);
-    fileHistoryService.save();
-    fileHistoryService.clearHistory();
-    expect(fileHistoryService.getHistory().length).toBe(0);
-    fileHistoryService.load();
-    expect(fileHistoryService.getHistory()[0].id).toBe('p');
+    const newService = new FileHistoryService();
+    newService.load();
+    expect(newService.getHistory()[0].id).toBe('p');
   });
 
   it('handles localStorage errors gracefully', () => {
