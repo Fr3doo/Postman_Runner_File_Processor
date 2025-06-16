@@ -13,6 +13,7 @@ import { ErrorHandler } from './ErrorHandler';
 import { RateLimitError, ValidationError } from '../utils/errors';
 import { ValidationResult } from '../utils/securityValidator';
 import { ProcessFileCommand } from './ProcessFileCommand';
+import { fileHistoryService } from './FileHistoryService';
 
 export class FileProcessor {
   constructor(
@@ -98,6 +99,7 @@ export class FileProcessor {
         setProcessedFiles,
         this.errorHandler,
         this.loggingService,
+        fileHistoryService,
       );
       return () =>
         command.execute().then(() => new Promise((r) => setTimeout(r, 300)));

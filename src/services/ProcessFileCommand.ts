@@ -6,6 +6,10 @@ import {
   loggingService as defaultLoggingService,
   type ILoggingService,
 } from './LoggingService';
+import {
+  fileHistoryService as defaultFileHistoryService,
+  type IFileHistoryService,
+} from './FileHistoryService';
 
 export class ProcessFileCommand {
   constructor(
@@ -16,6 +20,7 @@ export class ProcessFileCommand {
     private setProcessedFiles: Dispatch<SetStateAction<ProcessedFile[]>>,
     private errorHandler: ErrorHandler = new ErrorHandler(),
     private loggingService: ILoggingService = defaultLoggingService,
+    private fileHistoryService: IFileHistoryService = defaultFileHistoryService,
   ) {}
 
   async execute(): Promise<void> {
@@ -26,21 +31,40 @@ export class ProcessFileCommand {
         throw new Error("Le fichier est vide ou n'a pas pu être lu.");
       }
       const summaries = this.parserService.parse(content);
+      let finalFile: ProcessedFile | undefined;
       this.setProcessedFiles((prev) =>
-        prev.map((f) =>
-          f.id === this.fileId
-            ? { ...f, status: 'success', summaries, originalContent: content }
-            : f,
-        ),
+        prev.map((f) => {
+          if (f.id === this.fileId) {
+            finalFile = {
+              ...f,
+              status: 'success',
+              summaries,
+              originalContent: content,
+            };
+            return finalFile;
+          }
+          return f;
+        }),
       );
+      if (finalFile) {
+        this.fileHistoryService.addFile(finalFile);
+      }
       this.loggingService.logInfo(`Processed ${this.file.name} successfully`);
     } catch (error) {
       const message = this.errorHandler.handle(error);
+      let finalFile: ProcessedFile | undefined;
       this.setProcessedFiles((prev) =>
-        prev.map((f) =>
-          f.id === this.fileId ? { ...f, status: 'error', error: message } : f,
-        ),
+        prev.map((f) => {
+          if (f.id === this.fileId) {
+            finalFile = { ...f, status: 'error', error: message };
+            return finalFile;
+          }
+          return f;
+        }),
       );
+      if (finalFile) {
+        this.fileHistoryService.addFile(finalFile);
+      }
       this.loggingService.logError(
         `Failed processing ${this.file.name}: ${message}`,
       );
