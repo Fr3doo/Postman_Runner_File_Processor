@@ -5,10 +5,13 @@ import type { NavItem } from './Navigation';
 import { UserActions } from './UserActions';
 
 interface MobileMenuProps {
+  /** Whether the menu is visible */
   open: boolean;
+  /** Close handler triggered on backdrop or button click */
   onClose: () => void;
+  /** Navigation items to display */
   items: NavItem[];
-  className?: string;
+  /** URLs for user actions */
   actions: {
     githubUrl: string;
     downloadUrl: string;
@@ -20,12 +23,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
   onClose,
   items,
   actions,
-  className = '',
 }) => {
   const menuItems = items.length ? items : DEFAULT_NAV_ITEMS;
 
   return (
-    <div className={`md:hidden ${className}`}>
+    <div className="md:hidden">
       {open && (
         <>
           <div
@@ -35,11 +37,13 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
           <div
             role="dialog"
             aria-hidden={open ? 'false' : 'true'}
+            aria-modal="true"
             className="absolute top-full right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden"
           >
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
               <h3 className="font-semibold text-gray-900">Navigation</h3>
-              <button aria-label="Close menu" onClick={onClose}>
+              <button aria-label="Close menu" onClick={onClose} className="flex items-center space-x-2">
+                <span className="sr-only">Close menu</span>
                 <X size={24} />
               </button>
             </div>
