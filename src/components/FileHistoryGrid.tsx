@@ -59,7 +59,10 @@ export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new F
 
   return (
     <div className="w-full max-w-6xl mx-auto">
-      <div className="flex justify-end mb-4">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold text-gray-800">
+          {t('historyTitle')}
+        </h2>
         <button
           onClick={clearHistory}
           className="text-red-600 hover:text-red-700 text-sm font-medium transition-colors"
@@ -143,7 +146,7 @@ export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new F
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
                       >
                         <Download size={16} />
-                        <span>{t('downloadJson')}</span>
+                        <span>{t('downloadAgain')}</span>
                       </button>
                     </div>
                   </div>

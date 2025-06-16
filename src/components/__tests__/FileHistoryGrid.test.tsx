@@ -60,7 +60,7 @@ describe('FileHistoryGrid', () => {
 
     render(<FileHistoryGrid parser={parser} />, { wrapper });
 
-    fireEvent.click(screen.getByText(/Télécharger le JSON/));
+    fireEvent.click(screen.getByText(/Télécharger à nouveau/));
     expect(downloadSpy).toHaveBeenCalledWith(file.summaries![0], 'a-1');
 
     fireEvent.click(screen.getByText('Supprimer'));
