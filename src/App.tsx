@@ -1,16 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { FileUpload } from './components/FileUpload';
 import { ResultsGrid } from './components/ResultsGrid';
 import { ProcessingStatsComponent } from './components/ProcessingStats';
 import { NotificationProvider } from './components/NotificationContext';
+import { FileHistoryPage } from './components/pages';
 import { useFileProcessor } from './hooks/useFileProcessor';
 import { FileText, Zap } from 'lucide-react';
 import { t } from './i18n';
+import { DEFAULT_NAV_ITEMS } from './components/header/defaultNavItems';
 
 function App() {
-  const { processedFiles, isProcessing, processFiles, clearResults, getStats } =
-    useFileProcessor();
+  const {
+    processedFiles,
+    isProcessing,
+    processFiles,
+    clearResults,
+    getStats,
+  } = useFileProcessor();
+
+  const [currentView, setCurrentView] = useState<'home' | 'files'>('home');
+
+  const navItems = DEFAULT_NAV_ITEMS.map((item) => ({
+    ...item,
+    active: currentView === item.id,
+    onClick: () => setCurrentView(item.id as 'home' | 'files'),
+  }));
 
   return (
     <NotificationProvider>
@@ -19,16 +34,18 @@ function App() {
         <Header
           githubUrl="https://github.com/Fr3doo/Postman_Runner_File_Processor"
           downloadUrl="https://github.com/Fr3doo/Postman_Runner_File_Processor/archive/refs/heads/main.zip"
+          items={navItems}
         />
 
         {/* Main Content */}
-        <main className="container mx-auto px-4 py-8">
-          {/* Hero Section */}
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center space-x-3 mb-6">
-              <div className="p-4 bg-blue-600 rounded-2xl shadow-lg">
-                <FileText className="text-white" size={40} />
-              </div>
+        {currentView === 'home' ? (
+          <main className="container mx-auto px-4 py-8">
+            {/* Hero Section */}
+            <div className="text-center mb-12">
+              <div className="flex items-center justify-center space-x-3 mb-6">
+                <div className="p-4 bg-blue-600 rounded-2xl shadow-lg">
+                  <FileText className="text-white" size={40} />
+                </div>
               <div className="p-4 bg-purple-600 rounded-2xl shadow-lg">
                 <Zap className="text-white" size={40} />
               </div>
@@ -70,7 +87,10 @@ function App() {
               </p>
             </div>
           )}
-        </main>
+          </main>
+        ) : (
+          <FileHistoryPage />
+        )}
 
         {/* Footer */}
         <footer className="bg-gray-50 border-t border-gray-200 mt-20">

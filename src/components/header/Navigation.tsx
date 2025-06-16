@@ -8,6 +8,7 @@ export interface NavItem {
   icon: React.ReactNode;
   href?: string;
   active?: boolean;
+  onClick?: () => void;
 }
 
 interface NavigationProps {
@@ -34,6 +35,10 @@ export const Navigation: React.FC<NavigationProps> = ({ className = '', items = 
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }
           `}
+          onClick={(e) => {
+            if (item.href === '#') e.preventDefault();
+            item.onClick?.();
+          }}
         >
           {item.icon}
           <span>{item.label}</span>
