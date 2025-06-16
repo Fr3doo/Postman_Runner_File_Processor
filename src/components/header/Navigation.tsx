@@ -12,12 +12,12 @@ export interface NavigationProps {
 }
 
 export const Navigation: React.FC<NavigationProps> = ({ items, className = '' }) => (
-  <nav className={`flex space-x-6 ${className}`}>
+  <nav className={`flex items-center space-x-4 ${className}`}>
     {items.map((item) => (
       <a
         key={item.href}
         href={item.href}
-        className={`text-sm transition-colors duration-300 ${
+        className={`px-2 py-1 text-sm transition-colors duration-300 ${
           item.current ? 'font-semibold underline' : 'text-gray-600 hover:text-gray-900'
         }`}
         aria-current={item.current ? 'page' : undefined}

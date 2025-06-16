@@ -21,7 +21,9 @@ export const Header: React.FC<HeaderProps> = ({
   const actions = { githubUrl, downloadUrl };
 
   return (
-    <header className="sticky top-0 z-50 w-full backdrop-blur bg-gradient-to-r from-white/70 to-white/40 shadow-md">
+    <header
+      className="sticky top-0 z-50 w-full backdrop-blur bg-gradient-to-r from-purple-600/70 via-pink-500/60 to-red-400/70 shadow-md drop-shadow-lg"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
         <Logo />
         <Navigation items={items} className="hidden md:flex" />
