@@ -16,7 +16,10 @@ function App() {
     <NotificationProvider>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         {/* Header */}
-        <Header />
+        <Header
+          githubUrl="https://github.com/Fr3doo/Postman_Runner_File_Processor"
+          downloadUrl="https://github.com/Fr3doo/Postman_Runner_File_Processor/archive/refs/heads/main.zip"
+        />
 
         {/* Main Content */}
         <main className="container mx-auto px-4 py-8">
