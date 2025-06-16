@@ -6,9 +6,17 @@ import { MobileMenu } from './MobileMenu';
 
 interface HeaderProps {
   className?: string;
+  githubUrl?: string;
+  downloadUrl?: string;
 }
 
-export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
+export const Header: React.FC<HeaderProps> = ({
+  className = '',
+  githubUrl = 'https://github.com/Fr3doo/Postman_Runner_File_Processor',
+  downloadUrl = '#',
+}) => {
+  const actions = { githubUrl, downloadUrl };
+
   return (
     <header className={`
       sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-gray-200
@@ -24,8 +32,8 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
 
           {/* User Actions */}
           <div className="flex items-center space-x-4">
-            <UserActions />
-            <MobileMenu />
+            <UserActions {...actions} />
+            <MobileMenu actions={actions} />
           </div>
         </div>
       </div>
