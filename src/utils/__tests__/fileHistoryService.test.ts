@@ -74,4 +74,14 @@ describe('fileHistoryService', () => {
     setSpy.mockRestore();
     getSpy.mockRestore();
   });
+
+  it('resets history when localStorage returns malformed data', () => {
+    fileHistoryService.addFile(createFile('a'));
+    const spy = vi
+      .spyOn(Object.getPrototypeOf(window.localStorage), 'getItem')
+      .mockReturnValue('not-json');
+    expect(() => fileHistoryService.load()).not.toThrow();
+    expect(fileHistoryService.getHistory()).toEqual([]);
+    spy.mockRestore();
+  });
 });
