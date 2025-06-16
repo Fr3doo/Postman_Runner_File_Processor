@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Menu } from 'lucide-react';
 import { Logo, Navigation, UserActions, MobileMenu } from './header';
 import type { NavItem } from './header';
+import { DEFAULT_NAV_ITEMS } from './header/defaultNavItems';
 
 export interface HeaderProps {
   title?: string;
@@ -14,12 +15,11 @@ export interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   title,
   subtitle,
-  items = [],
+  items = DEFAULT_NAV_ITEMS,
   githubUrl,
   downloadUrl,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const actions = { githubUrl, downloadUrl };
 
   return (
     <header
@@ -29,7 +29,7 @@ export const Header: React.FC<HeaderProps> = ({
         <Logo />
         <Navigation items={items} className="hidden md:flex" />
         <div className="hidden md:flex">
-          <UserActions {...actions} />
+          <UserActions githubUrl={githubUrl} downloadUrl={downloadUrl} />
         </div>
         <button
           className="md:hidden p-2 focus-visible:ring"
@@ -46,7 +46,12 @@ export const Header: React.FC<HeaderProps> = ({
           {subtitle && <p className="text-gray-600 mt-1">{subtitle}</p>}
         </div>
       )}
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} items={items} actions={actions} />
+      <MobileMenu
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        items={items}
+        actions={{ githubUrl, downloadUrl }}
+      />
     </header>
   );
 };
