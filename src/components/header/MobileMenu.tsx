@@ -1,5 +1,6 @@
 import React from 'react';
-import { X, Home, FileText, Settings, HelpCircle } from 'lucide-react';
+import { X } from 'lucide-react';
+import { DEFAULT_NAV_ITEMS } from './defaultNavItems';
 import type { NavItem } from './Navigation';
 import { UserActions } from './UserActions';
 
@@ -21,14 +22,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
   actions,
   className = '',
 }) => {
-  const menuItems = items.length
-    ? items
-    : [
-        { id: 'home', label: 'Accueil', icon: <Home size={20} />, active: true },
-        { id: 'files', label: 'Fichiers', icon: <FileText size={20} /> },
-        { id: 'settings', label: 'Param\u00e8tres', icon: <Settings size={20} /> },
-        { id: 'help', label: 'Aide', icon: <HelpCircle size={20} /> },
-      ];
+  const menuItems = items.length ? items : DEFAULT_NAV_ITEMS;
 
   return (
     <div className={`md:hidden ${className}`}>
