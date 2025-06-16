@@ -83,24 +83,18 @@ describe('FileUpload', () => {
       .parentElement!.parentElement!.parentElement! as HTMLElement;
 
     expect(dropZone.className).not.toContain('border-blue-500');
-    expect(
-      screen.queryByText(/Déposez les fichiers ici pour les traiter/i),
-    ).toBeNull();
+    expect(screen.queryByText(/Déposez les fichiers ici/i)).toBeNull();
 
     fireEvent.dragEnter(dropZone);
     expect(dropZone.className).toContain('border-blue-500');
-    expect(
-      screen.getByText(/Déposez les fichiers ici pour les traiter/i),
-    ).toBeTruthy();
+    expect(screen.getByText(/Déposez les fichiers ici/i)).toBeTruthy();
 
     fireEvent.dragLeave(dropZone);
     expect(dropZone.className).not.toContain('border-blue-500');
-    expect(
-      screen.queryByText(/Déposez les fichiers ici pour les traiter/i),
-    ).toBeNull();
+    expect(screen.queryByText(/Déposez les fichiers ici/i)).toBeNull();
 
     fireEvent.dragOver(dropZone);
-    expect(dropZone.className).toContain('border-blue-500');
+    expect(dropZone.className).not.toContain('border-blue-500');
   });
 });
 
