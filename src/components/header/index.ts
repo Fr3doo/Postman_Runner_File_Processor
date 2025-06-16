@@ -1,4 +1,5 @@
+export { Header } from './Header';
 export { Logo } from './Logo';
-export { Navigation, type NavItem } from './Navigation';
-export { UserActions, type UserActionsProps } from './UserActions';
-export { MobileMenu, type MobileMenuProps } from './MobileMenu';
+export { Navigation } from './Navigation';
+export { UserActions } from './UserActions';
+export { MobileMenu } from './MobileMenu';
