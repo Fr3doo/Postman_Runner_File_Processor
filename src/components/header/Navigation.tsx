@@ -1,7 +1,7 @@
 import React from 'react';
 import { Home, FileText, Settings, HelpCircle } from 'lucide-react';
 
-interface NavigationItem {
+export interface NavItem {
   id: string;
   label: string;
   icon: React.ReactNode;
@@ -14,7 +14,7 @@ interface NavigationProps {
 }
 
 export const Navigation: React.FC<NavigationProps> = ({ className = '' }) => {
-  const navigationItems: NavigationItem[] = [
+  const navigationItems: NavItem[] = [
     {
       id: 'home',
       label: 'Accueil',
