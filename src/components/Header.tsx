@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Menu } from 'lucide-react';
-import { Logo, Navigation, NavItem, UserActions, MobileMenu } from './header';
+import { Logo, Navigation, UserActions, MobileMenu } from './header';
+import type { NavItem } from './header';
 
 export interface HeaderProps {
   title?: string;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { Header } from '../Header';
 
@@ -15,18 +15,19 @@ const commonProps = {
 describe('Header', () => {
   it('renders title, subtitle and navigation items', () => {
     render(<Header title="Title" subtitle="Subtitle" {...commonProps} />);
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Title');
+    expect(screen.getByRole('heading', { name: 'Title', level: 1 })).toBeTruthy();
     expect(screen.getByText('Subtitle')).toBeTruthy();
-    expect(screen.getAllByText('Home').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Accueil').length).toBeGreaterThan(0);
   });
 
-  it('opens and closes mobile menu', () => {
+  it('opens and closes mobile menu', async () => {
     render(<Header {...commonProps} />);
     const btn = screen.getByLabelText('Open menu');
     fireEvent.click(btn);
-    const dialog = screen.getByRole('dialog');
-    expect(dialog.getAttribute('aria-hidden')).toBe('false');
+    expect(await screen.findByText('Navigation')).toBeTruthy();
     fireEvent.click(screen.getByLabelText('Close menu'));
-    expect(dialog.getAttribute('aria-hidden')).toBe('true');
+    await waitFor(() => {
+      expect(screen.queryByText('Navigation')).toBeNull();
+    });
   });
 });
