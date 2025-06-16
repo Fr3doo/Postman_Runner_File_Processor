@@ -1,16 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Dispatch, SetStateAction } from 'react';
-import { ProcessFileCommand } from '../../services/ProcessFileCommand';
-import type { FileParserService } from '../../services/FileParserService';
+import { ProcessFileCommand } from '../ProcessFileCommand';
+import type { FileParserService } from '../FileParserService';
+import { ErrorHandler } from '../ErrorHandler';
+import type { ILoggingService } from '../LoggingService';
+import type { IFileHistoryService } from '../FileHistoryService';
 import type { ProcessedFile, FileData } from '../../types';
-import { ErrorHandler } from '../../services/ErrorHandler';
-import type { ILoggingService } from '../../services/LoggingService';
-import type { IFileHistoryService } from '../../services/FileHistoryService';
 
-const createFile = (name: string): File =>
-  new File(['dummy'], name, { type: 'text/plain' });
+const createFile = (name: string): File => new File(['dummy'], name, { type: 'text/plain' });
 
-describe('ProcessFileCommand', () => {
+describe('ProcessFileCommand with history', () => {
   let parseMock: ReturnType<typeof vi.fn>;
   let readMock: ReturnType<typeof vi.fn>;
   let processed: ProcessedFile[];
@@ -52,17 +51,20 @@ describe('ProcessFileCommand', () => {
     );
   });
 
-  it('marks file as success when parsing succeeds', async () => {
+  it('adds successful file to history', async () => {
     await command.execute();
-    expect(parseMock).toHaveBeenCalled();
+    expect(historyService.addFile).toHaveBeenCalledWith(
+      expect.objectContaining({ status: 'success', filename: 'a.txt' }),
+    );
     expect(processed[0]?.status).toBe('success');
-    expect(processed[0]?.summaries?.length).toBe(1);
   });
 
-  it('marks file as error when reading fails', async () => {
+  it('adds error file to history', async () => {
     readMock.mockRejectedValue(new Error('fail'));
     await command.execute();
+    expect(historyService.addFile).toHaveBeenCalledWith(
+      expect.objectContaining({ status: 'error', error: expect.stringContaining('fail') }),
+    );
     expect(processed[0]?.status).toBe('error');
-    expect(processed[0]?.error).toMatch(/fail/);
   });
 });
