@@ -57,7 +57,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                       ? 'bg-blue-50 text-blue-700'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                   }`}
-                  onClick={onClose}
+                  onClick={(e) => {
+                    if (item.href === '#') e.preventDefault();
+                    item.onClick?.();
+                    onClose();
+                  }}
                 >
                   {item.icon}
                   <span>{item.label}</span>

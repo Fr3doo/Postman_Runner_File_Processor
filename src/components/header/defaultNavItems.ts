@@ -8,7 +8,6 @@ export const DEFAULT_NAV_ITEMS: NavItem[] = [
     label: 'Accueil',
     icon: React.createElement(Home, { size: 18 }),
     href: '#',
-    active: true,
   },
   {
     id: 'files',
