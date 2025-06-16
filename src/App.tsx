@@ -4,7 +4,8 @@ import { ResultsGrid } from './components/ResultsGrid';
 import { ProcessingStatsComponent } from './components/ProcessingStats';
 import { NotificationProvider } from './components/NotificationContext';
 import { useFileProcessor } from './hooks/useFileProcessor';
-import { FileText, Zap } from 'lucide-react';
+import { Header } from './components/Header';
+import { FileText } from 'lucide-react';
 import { t } from './i18n';
 
 function App() {
@@ -15,23 +16,8 @@ function App() {
     <NotificationProvider>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <div className="container mx-auto px-4 py-8">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center space-x-3 mb-4">
-              <div className="p-3 bg-blue-600 rounded-full">
-                <FileText className="text-white" size={32} />
-              </div>
-              <div className="p-3 bg-purple-600 rounded-full">
-                <Zap className="text-white" size={32} />
-              </div>
-            </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              {t('appTitle')}
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {t('appSubtitle')}
-            </p>
-          </div>
+        {/* Header */}
+        <Header title={t('appTitle')} subtitle={t('appSubtitle')} />
 
           {/* File Upload Section */}
           <FileUpload
