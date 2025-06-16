@@ -31,4 +31,17 @@ describe('Header', () => {
       expect(screen.queryByText('Navigation')).toBeNull();
     });
   });
+
+  it('renders default navigation links in both desktop and mobile menus', async () => {
+    render(<Header githubUrl="https://example.com/repo" downloadUrl="https://example.com/archive.zip" />);
+
+    // Desktop navigation contains default links
+    expect(screen.getAllByRole('link', { name: 'Accueil' })).toHaveLength(1);
+
+    // Open mobile menu and expect the same default link to appear there as well
+    fireEvent.click(screen.getByLabelText('Open menu'));
+    expect(await screen.findByText('Navigation')).toBeTruthy();
+    const accueilLinks = await screen.findAllByRole('link', { name: 'Accueil' });
+    expect(accueilLinks).toHaveLength(2);
+  });
 });
