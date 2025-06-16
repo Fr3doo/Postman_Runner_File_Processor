@@ -17,7 +17,16 @@ function App() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <Header title={t('appTitle')} subtitle={t('appSubtitle')} />
+        <Header
+          title={t('appTitle')}
+          subtitle={t('appSubtitle')}
+          githubUrl="https://github.com/Fr3doo/Postman_Runner_File_Processor"
+          downloadUrl="https://github.com/Fr3doo/Postman_Runner_File_Processor/archive/refs/heads/main.zip"
+          items={[
+            { label: 'Docs', href: '#docs' },
+            { label: 'Usage', href: '#usage' },
+          ]}
+        />
 
           {/* File Upload Section */}
           <FileUpload
