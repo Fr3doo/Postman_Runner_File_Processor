@@ -56,7 +56,6 @@ describe('ProcessFileCommand with history', () => {
     expect(historyService.addFile).toHaveBeenCalledWith(
       expect.objectContaining({ status: 'success', filename: 'a.txt' }),
     );
-    expect(historyService.save).toHaveBeenCalled();
     expect(processed[0]?.status).toBe('success');
   });
 
@@ -66,7 +65,6 @@ describe('ProcessFileCommand with history', () => {
     expect(historyService.addFile).toHaveBeenCalledWith(
       expect.objectContaining({ status: 'error', error: expect.stringContaining('fail') }),
     );
-    expect(historyService.save).toHaveBeenCalled();
     expect(processed[0]?.status).toBe('error');
   });
 });

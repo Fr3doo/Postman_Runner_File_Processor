@@ -19,6 +19,7 @@ class FileHistoryService implements IFileHistoryService {
 
   addFile(file: ProcessedFile): void {
     this.history.unshift(file);
+    this.save();
   }
 
   getHistory(): ProcessedFile[] {
@@ -27,10 +28,12 @@ class FileHistoryService implements IFileHistoryService {
 
   removeFile(id: string): void {
     this.history = this.history.filter((f) => f.id !== id);
+    this.save();
   }
 
   clearHistory(): void {
     this.history = [];
+    this.save();
   }
 
   load(): void {
