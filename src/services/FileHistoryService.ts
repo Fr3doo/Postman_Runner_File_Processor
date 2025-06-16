@@ -13,6 +13,10 @@ class FileHistoryService implements IFileHistoryService {
   private history: ProcessedFile[] = [];
   private readonly storageKey = 'fileHistory';
 
+  constructor() {
+    this.load();
+  }
+
   addFile(file: ProcessedFile): void {
     this.history.unshift(file);
   }
