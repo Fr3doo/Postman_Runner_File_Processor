@@ -48,6 +48,7 @@ export class ProcessFileCommand {
       );
       if (finalFile) {
         this.fileHistoryService.addFile(finalFile);
+        this.fileHistoryService.save();
       }
       this.loggingService.logInfo(`Processed ${this.file.name} successfully`);
     } catch (error) {
@@ -64,6 +65,7 @@ export class ProcessFileCommand {
       );
       if (finalFile) {
         this.fileHistoryService.addFile(finalFile);
+        this.fileHistoryService.save();
       }
       this.loggingService.logError(
         `Failed processing ${this.file.name}: ${message}`,
