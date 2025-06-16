@@ -2,15 +2,23 @@ import React from 'react';
 import { Github, Download, ExternalLink } from 'lucide-react';
 
 interface UserActionsProps {
+  /** GitHub repository URL */
+  githubUrl: string;
+  /** URL to download the application */
+  downloadUrl: string;
   className?: string;
 }
 
-export const UserActions: React.FC<UserActionsProps> = ({ className = '' }) => {
+export const UserActions: React.FC<UserActionsProps> = ({
+  githubUrl,
+  downloadUrl,
+  className = '',
+}) => {
   return (
     <div className={`flex items-center space-x-3 ${className}`}>
       {/* GitHub Link */}
       <a
-        href="https://github.com/Fr3doo/Postman_Runner_File_Processor"
+        href={githubUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="
@@ -25,7 +33,9 @@ export const UserActions: React.FC<UserActionsProps> = ({ className = '' }) => {
       </a>
 
       {/* Download Button */}
-      <button
+      <a
+        href={downloadUrl}
+        download
         className="
           flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600
           text-white rounded-lg hover:from-blue-700 hover:to-purple-700
@@ -36,7 +46,7 @@ export const UserActions: React.FC<UserActionsProps> = ({ className = '' }) => {
       >
         <Download size={18} />
         <span className="hidden sm:inline">Télécharger</span>
-      </button>
+      </a>
     </div>
   );
 };
