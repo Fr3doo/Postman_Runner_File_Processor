@@ -36,6 +36,8 @@ const fr: Dictionary = {
   folderNumber: 'Numéro de dossier',
   depositDate: 'Date de dépôt',
   downloadJson: 'Télécharger le JSON',
+  clearHistory: "Effacer l'historique",
+  removeFile: 'Supprimer',
   appTitle: 'Convertisseur de fichiers Postman Runner',
   appSubtitle:
     "Téléchargez et traitez vos fichiers .txt issus de Postman Runner afin d'extraire des données structurées et de générer des fichiers JSON téléchargeables avec une gestion complète des erreurs.",
@@ -73,6 +75,8 @@ const en: Dictionary = {
   folderNumber: 'Folder number',
   depositDate: 'Submission date',
   downloadJson: 'Download JSON',
+  clearHistory: 'Clear history',
+  removeFile: 'Remove',
   appTitle: 'Postman Runner File Converter',
   appSubtitle:
     'Upload and process your .txt files from Postman Runner to extract structured data and generate downloadable JSON files with full error management.',
