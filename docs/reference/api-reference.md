@@ -53,3 +53,17 @@ loggingService.logInfo('Début du traitement');
 loggingService.logError('Erreur de validation');
 const logs = loggingService.getLogs();
 ```
+
+## FileHistoryService
+
+`FileHistoryService` conserve la liste des fichiers déjà traités et peut la
+restaurer entre les sessions via `localStorage`.
+
+### Méthodes
+
+- `addFile(file: ProcessedFile)` – ajoute un fichier à l'historique.
+- `getHistory(): ProcessedFile[]` – renvoie la liste actuelle.
+- `removeFile(id: string)` – supprime l'entrée correspondante.
+- `clearHistory()` – vide entièrement la liste.
+- `load()` – recharge la liste depuis `localStorage`.
+- `save()` – enregistre la liste dans `localStorage`.
