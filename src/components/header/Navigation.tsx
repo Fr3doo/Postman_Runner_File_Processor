@@ -1,5 +1,6 @@
 import React from 'react';
-import { Home, FileText, Settings, HelpCircle } from 'lucide-react';
+
+import { DEFAULT_NAV_ITEMS } from './defaultNavItems';
 
 export interface NavItem {
   id: string;
@@ -14,36 +15,9 @@ interface NavigationProps {
   items?: NavItem[];
 }
 
-const defaultItems: NavItem[] = [
-    {
-      id: 'home',
-      label: 'Accueil',
-      icon: <Home size={18} />,
-      href: '#',
-      active: true,
-    },
-    {
-      id: 'files',
-      label: 'Fichiers',
-      icon: <FileText size={18} />,
-      href: '#',
-    },
-    {
-      id: 'settings',
-      label: 'Paramètres',
-      icon: <Settings size={18} />,
-      href: '#',
-    },
-    {
-      id: 'help',
-      label: 'Aide',
-      icon: <HelpCircle size={18} />,
-      href: '#',
-    },
-];
 
 export const Navigation: React.FC<NavigationProps> = ({ className = '', items = [] }) => {
-  const navigationItems = items.length ? items : defaultItems;
+  const navigationItems = items.length ? items : DEFAULT_NAV_ITEMS;
 
   return (
     <nav className={`hidden md:flex items-center space-x-1 ${className}`}>
