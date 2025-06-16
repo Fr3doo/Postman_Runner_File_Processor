@@ -88,6 +88,7 @@ Les interfaces utilisent React + TypeScript, avec Tailwind CSS et `lucide-react`
 | **FileReaderService**   | Lecture du fichier avec délai maximal                             | `src/services/FileReaderService.ts`     | `File`, durée de timeout               | Texte ou erreur                           |
 | **NotificationService** | Gestion des avertissements et abonnements                         | `src/services/NotificationService.ts`   | Messages d’avertissement               | Notifications via `NotificationContext`   |
 | **LoggingService**      | Journalisation des actions et erreurs ([cycle des logs](docs/reference/events.md)) | `src/services/LoggingService.ts`        | Chaînes de log                         | Liste de logs                             |
+| **FileHistoryService**  | Sauvegarde de l'historique des fichiers traités | `src/services/FileHistoryService.ts`    | `ProcessedFile`                        | Liste `ProcessedFile[]`                  |
 | **ErrorHandler**        | Normalisation des messages d’erreur pour l’utilisateur            | `src/services/ErrorHandler.ts`          | `Error`                                | Chaîne nettoyée                           |
 | **ProcessFileCommand**  | Traitement unitaire d’un fichier (command pattern)                | `src/services/ProcessFileCommand.ts`    | `File`, services de parsing/lecture    | Mise à jour de `ProcessedFile`            |
 
@@ -143,6 +144,13 @@ Les interfaces utilisent React + TypeScript, avec Tailwind CSS et `lucide-react`
 - **Sorties** : Liste `LogEntry[]`.
 - **Dépendances** : aucune (utilise `localStorage` si disponible).
 - **Tests** : `src/services/__tests__/LoggingService.test.ts`.
+
+### FileHistoryService
+- **Rôle** : Stocke les fichiers traités et peut les sauvegarder dans `localStorage`.
+- **Entrées** : `ProcessedFile` pour l’ajout, identifiant pour la suppression.
+- **Sorties** : Historique `ProcessedFile[]`.
+- **Dépendances** : `localStorage`.
+- **Tests** : `src/utils/__tests__/fileHistoryService.test.ts`.
 
 ### ErrorHandler
 - **Rôle** : Transforme toute exception en message utilisateur clair.
