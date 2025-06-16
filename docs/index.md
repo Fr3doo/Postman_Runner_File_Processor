@@ -39,6 +39,7 @@ La documentation est organisée dans les dossiers suivants :
 - [`reference/tests-overview.md`](reference/tests-overview.md) – Aperçu des tests et instructions d’exécution.
 - [`reference/security-config.md`](reference/security-config.md) – Explication des constantes de sécurité.
 - [`reference/events.md`](reference/events.md) – Cycle des logs et des messages.
+- [`reference/header-api.md`](reference/header-api.md) – Propriétés des composants d’en-tête.
 
 ### Releases
 
