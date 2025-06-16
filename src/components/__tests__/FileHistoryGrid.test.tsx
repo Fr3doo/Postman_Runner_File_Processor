@@ -76,4 +76,39 @@ describe('FileHistoryGrid', () => {
     fireEvent.click(screen.getByText("Effacer l'historique"));
     expect(service.clearHistory).toHaveBeenCalled();
   });
+
+  it("displays error icon, badge and message when file status is 'error'", () => {
+    const file: ProcessedFile = {
+      id: 'err',
+      filename: 'err.txt',
+      status: 'error',
+      error: 'boom',
+    };
+    const service = createMockService([file]);
+    const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+      <FileHistoryProvider service={service}>{children}</FileHistoryProvider>
+    );
+    const { container } = render(<FileHistoryGrid />, { wrapper });
+
+    expect(screen.getByText('⛔️ Erreur')).toBeTruthy();
+    expect(container.querySelector('svg.text-red-500')).toBeTruthy();
+    expect(screen.getByText('Erreur de traitement')).toBeTruthy();
+    expect(screen.getByText('boom')).toBeTruthy();
+  });
+
+  it("displays processing icon and badge when file status is 'processing'", () => {
+    const file: ProcessedFile = {
+      id: 'proc',
+      filename: 'proc.txt',
+      status: 'processing',
+    };
+    const service = createMockService([file]);
+    const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+      <FileHistoryProvider service={service}>{children}</FileHistoryProvider>
+    );
+    const { container } = render(<FileHistoryGrid />, { wrapper });
+
+    expect(screen.getByText('🔄 Traitement')).toBeTruthy();
+    expect(container.querySelector('svg.text-blue-500')).toBeTruthy();
+  });
 });
