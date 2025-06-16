@@ -11,10 +11,10 @@ export interface NavItem {
 
 interface NavigationProps {
   className?: string;
+  items?: NavItem[];
 }
 
-export const Navigation: React.FC<NavigationProps> = ({ className = '' }) => {
-  const navigationItems: NavItem[] = [
+const defaultItems: NavItem[] = [
     {
       id: 'home',
       label: 'Accueil',
@@ -40,7 +40,10 @@ export const Navigation: React.FC<NavigationProps> = ({ className = '' }) => {
       icon: <HelpCircle size={18} />,
       href: '#',
     },
-  ];
+];
+
+export const Navigation: React.FC<NavigationProps> = ({ className = '', items = [] }) => {
+  const navigationItems = items.length ? items : defaultItems;
 
   return (
     <nav className={`hidden md:flex items-center space-x-1 ${className}`}>
