@@ -72,6 +72,12 @@ Glissez-déposez vos fichiers dans l'interface ou cliquez sur **Choisir des fich
 
 Vous pouvez ajuster les limites de traitement dans un fichier `.env`. Le guide [docs/guides/configuration.md](docs/guides/configuration.md) liste les variables disponibles.
 
+## 🧭 Navigation personnalisée
+
+Les composants `Header` et `Navigation` exposent la prop `items?: NavItem[]`.
+Passez-lui une liste `{ id, label, icon, href }` pour définir vos liens.
+Si aucun tableau n'est fourni, la constante `DEFAULT_NAV_ITEMS` sert de menu par défaut.
+
 ## 🧠 Architecture
 
 ```mermaid
