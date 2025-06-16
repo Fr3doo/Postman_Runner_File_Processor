@@ -7,8 +7,8 @@ const commonProps = {
   githubUrl: 'https://example.com/repo',
   downloadUrl: 'https://example.com/archive.zip',
   items: [
-    { label: 'Home', href: '#home' },
-    { label: 'Docs', href: '#docs' },
+    { id: 'home', label: 'Home', href: '#home' },
+    { id: 'docs', label: 'Docs', href: '#docs' },
   ],
 };
 
@@ -17,7 +17,8 @@ describe('Header', () => {
     render(<Header title="Title" subtitle="Subtitle" {...commonProps} />);
     expect(screen.getByRole('heading', { name: 'Title', level: 1 })).toBeTruthy();
     expect(screen.getByText('Subtitle')).toBeTruthy();
-    expect(screen.getAllByText('Accueil').length).toBeGreaterThan(0);
+    expect(screen.getByRole('link', { name: 'Home' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Docs' })).toBeTruthy();
   });
 
   it('opens and closes mobile menu', async () => {
