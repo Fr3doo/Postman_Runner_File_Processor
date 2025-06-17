@@ -9,15 +9,15 @@ export interface ILocalFileService {
 
 export class LocalFileService implements ILocalFileService {
   constructor(private directory: string = process.cwd()) {}
-
   async listJSONFiles(): Promise<string[]> {
     try {
       const files = await fs.readdir(this.directory);
       return files.filter((f) => f.toLowerCase().endsWith('.json'));
     } catch (err) {
       console.error('Failed to list files', err);
-      return [];
+      throw err; // Re-throw to maintain consistency with other methods
     }
+  }
   }
   async deleteFile(filename: string): Promise<void> {
     if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
