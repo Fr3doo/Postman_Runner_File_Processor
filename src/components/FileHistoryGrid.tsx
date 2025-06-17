@@ -155,13 +155,13 @@ const handleRemove = (id: string) => {
             <Card key={file.id} className="border border-gray-200 hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
-                <input
-                  type="checkbox"
-                  aria-label={t('selectFile')}
-                  className="form-checkbox h-4 w-4 text-blue-600"
-                  checked={selected.has(file.id)}
-                  onChange={() => toggleSelect(file.id)}
-                />
+<input
+  type="checkbox"
+  aria-label={`${t('selectFile')} ${file.filename}`}
+  className="form-checkbox h-4 w-4 text-blue-600"
+  checked={selected.has(file.id)}
+  onChange={() => toggleSelect(file.id)}
+/>
                 {getStatusIcon(file)}
                 <h3 className="text-lg font-semibold text-gray-800 truncate">{file.filename}</h3>
               </div>
