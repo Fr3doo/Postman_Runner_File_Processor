@@ -11,18 +11,22 @@ export interface IFileHistoryService {
 }
 
 import type { ProcessedFile } from '../types';
+import { configService } from './ConfigService';
 
 class FileHistoryService implements IFileHistoryService {
   private history: ProcessedFile[] = [];
   private readonly storageKey = 'fileHistory';
   private listeners: HistoryListener[] = [];
-
-  constructor() {
+  constructor(
+    private readonly maxEntries = configService.security.FILE_HISTORY_MAX_ENTRIES,
+  ) {
     this.load();
   }
-
   addFile(file: ProcessedFile): void {
     this.history.unshift(file);
+    if (this.history.length > this.maxEntries) {
+      this.history = this.history.slice(0, this.maxEntries);
+    }
     this.save();
     this.notify();
   }
@@ -58,6 +62,9 @@ class FileHistoryService implements IFileHistoryService {
     } catch {
       this.history = [];
     }
+    if (this.history.length > this.maxEntries) {
+      this.history = this.history.slice(0, this.maxEntries);
+    }
     this.notify();
   }
 
@@ -84,5 +91,7 @@ class FileHistoryService implements IFileHistoryService {
   }
 }
 
-export const fileHistoryService: IFileHistoryService = new FileHistoryService();
+export const fileHistoryService: IFileHistoryService = new FileHistoryService(
+  configService.security.FILE_HISTORY_MAX_ENTRIES,
+);
 export { FileHistoryService };

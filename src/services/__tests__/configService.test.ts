@@ -23,6 +23,7 @@ describe('ConfigService env overrides', () => {
     process.env.VITE_ALLOWED_MIME_TYPES = 'text/plain,text/log';
     process.env.VITE_RATE_LIMIT_WINDOW = '60';
     process.env.VITE_RATE_LIMIT_MAX_FILES = '5';
+    process.env.VITE_FILE_HISTORY_MAX_ENTRIES = '2';
 
     const svc = new ConfigService(process.env);
     expect(svc.concurrencyLimit).toBe(10);
@@ -38,6 +39,7 @@ describe('ConfigService env overrides', () => {
       DANGEROUS_PATTERNS: SECURITY_CONFIG.DANGEROUS_PATTERNS,
       RATE_LIMIT_WINDOW: 60,
       RATE_LIMIT_MAX_FILES: 5,
+      FILE_HISTORY_MAX_ENTRIES: 2,
     });
   });
 });

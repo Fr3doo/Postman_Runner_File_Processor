@@ -26,3 +26,4 @@ La constante `SECURITY_CONFIG` dans `src/config/security.ts` définit les règle
 
 - `RATE_LIMIT_WINDOW` – fenêtre temporelle en millisecondes utilisée pour limiter les téléversements (60 000 ms).
 - `RATE_LIMIT_MAX_FILES` – nombre de fichiers autorisés par fenêtre (100).
+- `FILE_HISTORY_MAX_ENTRIES` – nombre maximal d’éléments conservés dans l’historique (50).

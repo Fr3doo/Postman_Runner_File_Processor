@@ -32,6 +32,15 @@ describe('fileHistoryService', () => {
     expect(fileHistoryService.getHistory().length).toBe(1);
   });
 
+  it('trims history to the maximum size', () => {
+    const svc = new FileHistoryService(2);
+    svc.addFile(createFile('a'));
+    svc.addFile(createFile('b'));
+    svc.addFile(createFile('c'));
+    const ids = svc.getHistory().map((f) => f.id);
+    expect(ids).toEqual(['c', 'b']);
+  });
+
   it('removes files by id', () => {
     const a = createFile('a');
     const b = createFile('b');
