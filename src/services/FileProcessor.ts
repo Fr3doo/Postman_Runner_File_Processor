@@ -69,10 +69,10 @@ export class FileProcessor {
     }
 
     if (validation.warnings.length > 0) {
-      validation.warnings.forEach((w) => this.notifyService.addWarning(w));
-      validation.warnings.forEach((w) =>
-        this.loggingService.logInfo(`Warning: ${w}`),
-      );
+      for (const w of validation.warnings) {
+        this.notifyService.addWarning(w);
+        this.loggingService.logInfo(`Warning: ${w}`);
+      }
     }
 
     setIsProcessing(true);
