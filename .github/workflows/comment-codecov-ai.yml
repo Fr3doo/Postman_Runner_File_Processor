@@ -17,15 +17,14 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            // On prépare le corps du commentaire dans une variable pour gérer proprement
-            // les backticks JavaScript
+            // On prépare le corps du commentaire
             const commentBody = `**Utilisation de Codecov AI**
 
-- **Revue de PR** : ajoutez \`@codecov-ai-reviewer review\`.
-- **Génération de tests** : ajoutez \`@codecov-ai-reviewer test\`.`;
+            - **Revue de PR** : ajoutez \`@codecov-ai-reviewer review\`.
+            - **Génération de tests** : ajoutez \`@codecov-ai-reviewer test\`.
+            `;
 
-            // On poste le commentaire sur la PR
-            github.issues.createComment({
+            github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
