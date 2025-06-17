@@ -9,6 +9,7 @@ export interface SecurityConfig {
   DANGEROUS_PATTERNS: RegExp[];
   RATE_LIMIT_WINDOW: number;
   RATE_LIMIT_MAX_FILES: number;
+  FILE_HISTORY_MAX_ENTRIES: number;
 }
 
 import { SECURITY_CONFIG } from '../config/security';
@@ -84,6 +85,10 @@ class ConfigService {
       RATE_LIMIT_MAX_FILES: this.getNumber(
         'RATE_LIMIT_MAX_FILES',
         SECURITY_CONFIG.RATE_LIMIT_MAX_FILES,
+      ),
+      FILE_HISTORY_MAX_ENTRIES: this.getNumber(
+        'FILE_HISTORY_MAX_ENTRIES',
+        SECURITY_CONFIG.FILE_HISTORY_MAX_ENTRIES,
       ),
     };
   }

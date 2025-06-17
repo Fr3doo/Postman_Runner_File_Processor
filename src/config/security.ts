@@ -27,4 +27,7 @@ export const SECURITY_CONFIG = {
   // Rate limiting (files per minute)
   RATE_LIMIT_WINDOW: 60 * 1000, // 1 minute
   RATE_LIMIT_MAX_FILES: 100,
+
+  // File history
+  FILE_HISTORY_MAX_ENTRIES: 50,
 } as const;
