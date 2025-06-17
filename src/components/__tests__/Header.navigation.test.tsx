@@ -5,11 +5,11 @@ import { Header } from '../Header';
 import { DEFAULT_NAV_ITEMS } from '../header/defaultNavItems';
 
 const Wrapper: React.FC = () => {
-  const [currentView, setCurrentView] = React.useState<'home' | 'files'>('home');
+  const [currentView, setCurrentView] = React.useState<'home' | 'files' | 'local'>('home');
   const items = DEFAULT_NAV_ITEMS.map((item) => ({
     ...item,
     active: currentView === item.id,
-    onClick: () => setCurrentView(item.id as 'home' | 'files'),
+    onClick: () => setCurrentView(item.id as 'home' | 'files' | 'local'),
   }));
   return (
     <Header

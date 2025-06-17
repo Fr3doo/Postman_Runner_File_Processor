@@ -16,7 +16,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: 
+          script: |
             const branch = context.payload.pull_request.head.ref;
             console.log(`Suppression de la branche ${branch}…`);
             await github.git.deleteRef({
