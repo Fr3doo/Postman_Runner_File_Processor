@@ -4,7 +4,7 @@ import { FileUpload } from './components/FileUpload';
 import { ResultsGrid } from './components/ResultsGrid';
 import { ProcessingStatsComponent } from './components/ProcessingStats';
 import { NotificationProvider } from './components/NotificationContext';
-import { FileHistoryPage } from './components/pages';
+import { FileHistoryPage, LocalFilesPage } from './components/pages';
 import { useFileProcessor } from './hooks/useFileProcessor';
 import { FileText, Zap } from 'lucide-react';
 import { t } from './i18n';
@@ -19,12 +19,12 @@ function App() {
     getStats,
   } = useFileProcessor();
 
-  const [currentView, setCurrentView] = useState<'home' | 'files'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'files' | 'local'>('home');
 
   const navItems = DEFAULT_NAV_ITEMS.map((item) => ({
     ...item,
     active: currentView === item.id,
-    onClick: () => setCurrentView(item.id as 'home' | 'files'),
+    onClick: () => setCurrentView(item.id as 'home' | 'files' | 'local'),
   }));
 
   return (
@@ -88,8 +88,10 @@ function App() {
             </div>
           )}
           </main>
-        ) : (
+        ) : currentView === 'files' ? (
           <FileHistoryPage />
+        ) : (
+          <LocalFilesPage />
         )}
 
         {/* Footer */}
