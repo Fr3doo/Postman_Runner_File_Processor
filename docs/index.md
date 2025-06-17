@@ -37,6 +37,7 @@ La documentation est organisée dans les dossiers suivants :
 
 - [`reference/api-reference.md`](reference/api-reference.md) – Documentation des fonctions utilitaires et modules.
 - [`reference/architecture.md`](reference/architecture.md) – Détails sur la structure des dossiers et l’architecture.
+- [`reference/project-structure.md`](reference/project-structure.md) – Aperçu complet de l'organisation du projet.
 - [`reference/tests-overview.md`](reference/tests-overview.md) – Aperçu des tests et instructions d’exécution.
 - [`reference/security-config.md`](reference/security-config.md) – Explication des constantes de sécurité.
 - [`reference/events.md`](reference/events.md) – Cycle des logs et des messages.
