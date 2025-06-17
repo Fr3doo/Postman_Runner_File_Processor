@@ -19,13 +19,17 @@ export class LocalFileService implements ILocalFileService {
       return [];
     }
   }
-
   async deleteFile(filename: string): Promise<void> {
+    if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+      throw new Error('Invalid filename provided');
+    }
     try {
       await fs.unlink(join(this.directory, filename));
     } catch (err) {
       console.error(`Failed to delete file ${filename}`, err);
+      throw err; // Re-throw to allow caller to handle the error
     }
+  }
   }
 
   async downloadFile(filename: string): Promise<string> {
