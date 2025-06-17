@@ -1,5 +1,11 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import {
+  render,
+  fireEvent,
+  screen,
+  act,
+  waitFor,
+} from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { FileHistoryProvider } from '../FileHistoryContext';
 import { FileHistoryGrid } from '../FileHistoryGrid';
@@ -61,16 +67,28 @@ describe('FileHistoryGrid', () => {
       <FileHistoryProvider service={service}>{children}</FileHistoryProvider>
     );
     render(<FileHistoryGrid />, { wrapper });
-    expect(
-      screen.getByText("Aucun fichier dans l'historique.")
-    ).toBeTruthy();
+    expect(screen.getByText("Aucun fichier dans l'historique.")).toBeTruthy();
+  });
+
+  it('shows empty state when service initially has no items', () => {
+    const service = createMockService([]);
+    const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+      <FileHistoryProvider service={service}>{children}</FileHistoryProvider>
+    );
+
+    render(<FileHistoryGrid />, { wrapper });
+
+    expect(screen.getByText("Aucun fichier dans l'historique.")).toBeTruthy();
+    expect((service.load as vi.Mock).mock.calls.length).toBe(1);
   });
 
   it('downloads and removes file from history', () => {
     const file = createFile('a');
     const service = createMockService([file]);
     const parser = new FileParserService();
-    const downloadSpy = vi.spyOn(parser, 'download').mockImplementation(() => {});
+    const downloadSpy = vi
+      .spyOn(parser, 'download')
+      .mockImplementation(() => {});
 
     const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
       <FileHistoryProvider service={service}>{children}</FileHistoryProvider>
@@ -128,5 +146,23 @@ describe('FileHistoryGrid', () => {
 
     expect(screen.getByText('🔄 Traitement')).toBeTruthy();
     expect(container.querySelector('svg.text-blue-500')).toBeTruthy();
+  });
+
+  it('updates grid when history changes via the service', async () => {
+    const service = createMockService([]);
+    const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+      <FileHistoryProvider service={service}>{children}</FileHistoryProvider>
+    );
+    render(<FileHistoryGrid />, { wrapper });
+    expect(screen.getByText("Aucun fichier dans l'historique.")).toBeTruthy();
+
+    act(() => {
+      service.addFile(createFile('new'));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('new.txt')).toBeTruthy();
+    });
+    expect(screen.queryByText("Aucun fichier dans l'historique.")).toBeNull();
   });
 });
