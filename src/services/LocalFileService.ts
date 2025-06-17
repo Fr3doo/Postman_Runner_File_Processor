@@ -31,27 +31,38 @@ export class LocalFileService implements ILocalFileService {
     }
   }
   }
-
   async downloadFile(filename: string): Promise<string> {
-    const filePath = join(this.directory, filename);
-    const data = await fs.readFile(filePath, 'utf8');
-    if (
-      typeof document !== 'undefined' &&
-      typeof URL !== 'undefined' &&
-      typeof URL.createObjectURL === 'function'
-    ) {
-      const blob = new Blob([data], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      link.rel = 'noopener noreferrer';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+    if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+      throw new Error('Invalid filename provided');
     }
-    return data;
+    
+    const filePath = join(this.directory, filename);
+    
+    try {
+      const data = await fs.readFile(filePath, 'utf8');
+      
+      if (
+        typeof document !== 'undefined' &&
+        typeof URL !== 'undefined' &&
+        typeof URL.createObjectURL === 'function'
+      ) {
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+      
+      return data;
+    } catch (err) {
+      console.error(`Failed to read file ${filename}`, err);
+      throw err;
+    }
   }
 }
 
