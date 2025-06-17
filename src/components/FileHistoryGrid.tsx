@@ -64,15 +64,15 @@ const handleDownloadSelected = () => {
     parser.download(summary, `${file.filename.replace(/\.txt$/i, '')}-${idx + 1}`);
   };
 
-  const handleRemove = (id: string) => {
-    removeFile(id);
-    setSelected((prev) => {
-      const next = new Set(prev);
-      next.delete(id);
-      return next;
-    });
-  };
-
+const handleRemove = (id: string) => {
+  removeFile(id);
+  setSelected((prev) => {
+    if (!prev.has(id)) return prev;
+    const next = new Set(prev);
+    next.delete(id);
+    return next;
+  });
+};
   const handleClear = () => {
     clearHistory();
     setSelected(new Set());
