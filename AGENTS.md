@@ -67,6 +67,8 @@ Les interfaces utilisent React + TypeScript, avec Tailwind CSS et `lucide-react`
 - 🛠️ Attention : Toujours ajouter à la fin de votre commentaire PR les lignes suivantes pour le bot Codecov AI :
   - @codecov-ai-reviewer review
   - @codecov-ai-reviewer test
+  - review = analyse et feedback sur la qualité et la sûreté du code.
+  - test = génération automatique de tests pour améliorer la couverture.
 ---
 
 ## 4. Codex/ChatGPT Usage Tips
