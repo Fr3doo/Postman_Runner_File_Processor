@@ -14,6 +14,14 @@ interface FileHistoryGridProps {
 
 export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new FileParserService() }) => {
   const { history, removeFile, clearHistory } = useFileHistory();
+  const [filter, setFilter] = React.useState('');
+
+  const filteredHistory = React.useMemo(() => {
+    if (!filter.trim()) return history;
+    return history.filter((f) =>
+      f.filename.toLowerCase().includes(filter.toLowerCase()),
+    );
+  }, [history, filter]);
 
   if (history.length === 0)
     return (
@@ -75,9 +83,21 @@ export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new F
           {t('clearHistory')}
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {history.map((file) => (
-          <Card key={file.id} className="border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder={t('filterPlaceholder')}
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          className="w-full border border-gray-300 rounded px-3 py-2"
+        />
+      </div>
+      {filteredHistory.length === 0 ? (
+        <div className="text-center py-10 text-gray-500">{t('historyEmpty')}</div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredHistory.map((file) => (
+            <Card key={file.id} className="border border-gray-200 hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
                 {getStatusIcon(file)}
@@ -144,8 +164,9 @@ export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new F
               </button>
             </div>
           </Card>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
