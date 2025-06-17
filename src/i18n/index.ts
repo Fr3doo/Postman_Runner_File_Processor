@@ -44,6 +44,7 @@ const fr: Dictionary = {
   downloadAgain: 'Télécharger à nouveau',
   downloadJson: 'Télécharger le JSON',
   clearHistory: "Effacer l'historique",
+  filterPlaceholder: 'Filtrer par nom',
   removeFile: 'Supprimer',
   appTitle: 'Convertisseur de fichiers Postman Runner',
   appSubtitle:
@@ -90,6 +91,7 @@ const en: Dictionary = {
   downloadAgain: 'Download again',
   downloadJson: 'Download JSON',
   clearHistory: 'Clear history',
+  filterPlaceholder: 'Filter by filename',
   removeFile: 'Remove',
   appTitle: 'Postman Runner File Converter',
   appSubtitle:

@@ -165,4 +165,22 @@ describe('FileHistoryGrid', () => {
     });
     expect(screen.queryByText("Aucun fichier dans l'historique.")).toBeNull();
   });
+
+  it('filters history by filename', () => {
+    const files = [createFile('alpha'), createFile('beta')];
+    const service = createMockService(files);
+    const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+      <FileHistoryProvider service={service}>{children}</FileHistoryProvider>
+    );
+    render(<FileHistoryGrid />, { wrapper });
+
+    expect(screen.getByText('alpha.txt')).toBeTruthy();
+    expect(screen.getByText('beta.txt')).toBeTruthy();
+
+    const input = screen.getByPlaceholderText('Filtrer par nom') as HTMLInputElement;
+    fireEvent.change(input, { target: { value: 'alp' } });
+
+    expect(screen.getByText('alpha.txt')).toBeTruthy();
+    expect(screen.queryByText('beta.txt')).toBeNull();
+  });
 });
