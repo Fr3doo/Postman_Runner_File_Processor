@@ -183,4 +183,29 @@ describe('FileHistoryGrid', () => {
     expect(screen.getByText('alpha.txt')).toBeTruthy();
     expect(screen.queryByText('beta.txt')).toBeNull();
   });
+
+  it('downloads all selected files', () => {
+    const files = [createFile('a'), createFile('b')];
+    const service = createMockService(files);
+    const parser = new FileParserService();
+    const spy = vi.spyOn(parser, 'download').mockImplementation(() => {});
+    const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+      <FileHistoryProvider service={service}>{children}</FileHistoryProvider>
+    );
+
+    render(<FileHistoryGrid parser={parser} />, { wrapper });
+
+    const checkboxes = screen.getAllByRole('checkbox');
+    const dlButton = screen.getByText('Télécharger la sélection') as HTMLButtonElement;
+    expect(dlButton.disabled).toBe(true);
+
+    fireEvent.click(checkboxes[0]);
+    fireEvent.click(checkboxes[1]);
+
+    expect(dlButton.disabled).toBe(false);
+    fireEvent.click(dlButton);
+
+    expect(spy).toHaveBeenCalledWith(files[0].summaries![0], 'a-1');
+    expect(spy).toHaveBeenCalledWith(files[1].summaries![0], 'b-1');
+  });
 });

@@ -15,6 +15,7 @@ interface FileHistoryGridProps {
 export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new FileParserService() }) => {
   const { history, removeFile, clearHistory } = useFileHistory();
   const [filter, setFilter] = React.useState('');
+  const [selected, setSelected] = React.useState<Set<string>>(new Set());
 
   const filteredHistory = React.useMemo(() => {
     if (!filter.trim()) return history;
@@ -23,6 +24,28 @@ export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new F
     );
   }, [history, filter]);
 
+  const toggleSelect = (id: string) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const handleDownloadSelected = () => {
+    filteredHistory.forEach((file) => {
+      if (selected.has(file.id) && file.status === 'success' && file.summaries) {
+        file.summaries.forEach((summary, idx) =>
+          parser.download(
+            summary,
+            `${file.filename.replace(/\.txt$/i, '')}-${idx + 1}`,
+          ),
+        );
+      }
+    });
+  };
+
   if (history.length === 0)
     return (
       <div className="text-center py-10 text-gray-500">{t('historyEmpty')}</div>
@@ -30,6 +53,20 @@ export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new F
 
   const handleDownload = (file: ProcessedFile, summary: FileData, idx: number) => {
     parser.download(summary, `${file.filename.replace(/\.txt$/i, '')}-${idx + 1}`);
+  };
+
+  const handleRemove = (id: string) => {
+    removeFile(id);
+    setSelected((prev) => {
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+  };
+
+  const handleClear = () => {
+    clearHistory();
+    setSelected(new Set());
   };
 
   const getStatusIcon = (file: ProcessedFile) => {
@@ -76,12 +113,21 @@ export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new F
         <h2 className="text-xl font-semibold text-gray-800">
           {t('historyTitle')}
         </h2>
-        <button
-          onClick={clearHistory}
-          className="text-red-600 hover:text-red-700 text-sm font-medium transition-colors"
-        >
-          {t('clearHistory')}
-        </button>
+        <div className="space-x-4">
+          <button
+            onClick={handleDownloadSelected}
+            disabled={selected.size === 0}
+            className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors disabled:text-gray-400"
+          >
+            {t('downloadSelected')}
+          </button>
+          <button
+            onClick={handleClear}
+            className="text-red-600 hover:text-red-700 text-sm font-medium transition-colors"
+          >
+            {t('clearHistory')}
+          </button>
+        </div>
       </div>
       <div className="mb-4">
         <input
@@ -100,6 +146,13 @@ export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new F
             <Card key={file.id} className="border border-gray-200 hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  aria-label={t('selectFile')}
+                  className="form-checkbox h-4 w-4 text-blue-600"
+                  checked={selected.has(file.id)}
+                  onChange={() => toggleSelect(file.id)}
+                />
                 {getStatusIcon(file)}
                 <h3 className="text-lg font-semibold text-gray-800 truncate">{file.filename}</h3>
               </div>
@@ -156,7 +209,7 @@ export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new F
 
             <div className="pt-4">
               <button
-                onClick={() => removeFile(file.id)}
+                onClick={() => handleRemove(file.id)}
                 className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
               >
                 <Trash2 size={16} />
