@@ -64,7 +64,7 @@ jobs:
       # ☁️ Upload couverture unitaire vers Codecov
       - name: Upload unit test coverage to Codecov
         if: success()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v4
         with:
           files: ./coverage/unit/lcov.info
           flags: unit
@@ -75,7 +75,7 @@ jobs:
       # ☁️ Upload couverture e2e vers Codecov
       - name: Upload e2e test coverage to Codecov
         if: success()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v4
         with:
           files: ./coverage/e2e/lcov.info
           flags: e2e
