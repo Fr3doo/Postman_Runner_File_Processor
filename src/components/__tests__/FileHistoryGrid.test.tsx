@@ -214,3 +214,4 @@ it('downloads all selected files', () => {
   expect(spy).toHaveBeenCalledWith(files[1].summaries![0], 'b-1');
   expect(spy).toHaveBeenCalledTimes(2);
 });
+});

@@ -91,4 +91,39 @@ Ce projet utilise :
 
 ---
 
+## 📂 Tests du LocalFileService et des métriques d’historique
+
+### LocalFileService
+
+1. Lance l’application en mode développement :
+
+   ```bash
+   npm run dev
+   ```
+
+2. Ouvre l’onglet **Locaux** pour voir la liste des fichiers `.json` présents dans le dossier courant.
+3. Les tests unitaires du service se trouvent dans `src/services/__tests__/LocalFileService.test.ts` :
+
+   ```bash
+   npm test -- src/services/__tests__/LocalFileService.test.ts
+   ```
+
+### Métriques de l’historique
+
+Les fichiers traités sont stockés dans `FileHistoryService`. Les métriques affichées (taille, nombre d’enregistrements, durée et date de traitement) sont vérifiées dans :
+
+- `src/services/__tests__/FileHistoryService.test.ts`
+- `src/services/__tests__/ProcessFileCommand.test.ts`
+
+Pour exécuter ces tests uniquement :
+
+```bash
+npm test -- src/services/__tests__/FileHistoryService.test.ts
+npm test -- src/services/__tests__/ProcessFileCommand.test.ts
+```
+
+La taille maximale de l’historique peut être ajustée via la variable d’environnement `VITE_FILE_HISTORY_MAX_ENTRIES` (ou `FILE_HISTORY_MAX_ENTRIES` pour l’outil CLI).
+
+---
+
 Merci pour ta contribution ! 🚀
