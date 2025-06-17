@@ -73,7 +73,6 @@ Les interfaces utilisent React + TypeScript, avec Tailwind CSS et `lucide-react`
     - Vérifiez que `npm run lint` et `npm test` passent.
     - Respectez les préfixes de branches indiqués dans [docs/guides/contributing.md](docs/guides/contributing.md) (`feature/`, `bugfix/`, `docs/`, etc.).
     - Les messages de commit doivent être clairs et en anglais.
-- 
 ---
 
 ## 4. Codex/ChatGPT Usage Tips
