@@ -9,13 +9,16 @@ interface LocalFilesPageProps {
 
 export const LocalFilesPage: React.FC<LocalFilesPageProps> = ({ service = localFileService }) => {
   const [files, setFiles] = React.useState<string[]>([]);
+  const [error, setError] = React.useState<string | null>(null);
 
   const loadFiles = React.useCallback(async () => {
     try {
       const list = await service.listJSONFiles();
       setFiles(list);
+      setError(null);
     } catch (err) {
       console.error(err);
+      setError((err as Error).message);
     }
   }, [service]);
 
@@ -44,7 +47,11 @@ export const LocalFilesPage: React.FC<LocalFilesPageProps> = ({ service = localF
   return (
     <main className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Fichiers locaux</h1>
-      {files.length === 0 ? (
+      {error ? (
+        <div className="text-center py-10 text-red-500" data-testid="error">
+          {error}
+        </div>
+      ) : files.length === 0 ? (
         <div className="text-center py-10 text-gray-500">Aucun fichier dans le dossier.</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

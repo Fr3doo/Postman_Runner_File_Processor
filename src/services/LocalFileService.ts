@@ -1,5 +1,6 @@
-import { promises as fs } from 'fs';
-import { join } from 'path';
+
+export const isNode = (): boolean =>
+  typeof process !== 'undefined' && !!process.versions?.node;
 
 export interface ILocalFileService {
   listJSONFiles(): Promise<string[]>;
@@ -11,7 +12,13 @@ export class LocalFileService implements ILocalFileService {
   constructor(private directory: string = process.cwd()) {}
 
   async listJSONFiles(): Promise<string[]> {
+    if (!isNode()) {
+      throw new Error(
+        "La lecture des fichiers locaux n'est pas disponible dans ce navigateur."
+      );
+    }
     try {
+      const { promises: fs } = await import('fs');
       const files = await fs.readdir(this.directory);
       return files.filter((f) => f.toLowerCase().endsWith('.json'));
     } catch (err) {
@@ -24,7 +31,14 @@ export class LocalFileService implements ILocalFileService {
     if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
       throw new Error('Invalid filename provided');
     }
+    if (!isNode()) {
+      throw new Error(
+        "La suppression de fichiers locaux n'est pas disponible dans ce navigateur."
+      );
+    }
     try {
+      const { promises: fs } = await import('fs');
+      const { join } = await import('path');
       await fs.unlink(join(this.directory, filename));
     } catch (err) {
       console.error(`Failed to delete file ${filename}`, err);
@@ -36,7 +50,14 @@ export class LocalFileService implements ILocalFileService {
     if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
       throw new Error('Invalid filename provided');
     }
+    if (!isNode()) {
+      throw new Error(
+        "Le t\xE9l\xE9chargement de fichiers locaux n'est pas disponible dans ce navigateur."
+      );
+    }
 
+    const { promises: fs } = await import('fs');
+    const { join } = await import('path');
     const filePath = join(this.directory, filename);
     const data = await fs.readFile(filePath, 'utf8');
     if (

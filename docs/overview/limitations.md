@@ -1,6 +1,7 @@
 # Limitations connues
 
 Cette application fonctionne uniquement dans le navigateur et ne possède pas de composant serveur. Les fichiers chargés ne sont jamais envoyés sur un backend.
+La page **Locaux** nécessite cependant l'environnement Node.js pour accéder au système de fichiers local.
 
 ## Limites de débit
 

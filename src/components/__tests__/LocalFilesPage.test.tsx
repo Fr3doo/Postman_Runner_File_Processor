@@ -42,4 +42,20 @@ describe('LocalFilesPage', () => {
       expect(screen.getByText(/Aucun fichier/)).toBeTruthy();
     });
   });
+
+  it('displays an error when service fails', async () => {
+    const service = {
+      listJSONFiles: vi.fn(async () => {
+        throw new Error('unsupported');
+      }),
+      deleteFile: vi.fn(),
+      downloadFile: vi.fn(),
+    } as LocalFileServiceClass;
+
+    render(<LocalFilesPage service={service} />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error').textContent).toContain('unsupported');
+    });
+  });
 });

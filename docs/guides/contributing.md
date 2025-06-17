@@ -102,6 +102,7 @@ Ce projet utilise :
    ```
 
 2. Ouvre l’onglet **Locaux** pour voir la liste des fichiers `.json` présents dans le dossier courant.
+   Cette page utilise l'API `fs` de Node.js et ne fonctionne pas dans un build navigateur standard.
 3. Les tests unitaires du service se trouvent dans `src/services/__tests__/LocalFileService.test.ts` :
 
    ```bash
