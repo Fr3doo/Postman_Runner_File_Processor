@@ -1,3 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
+# Vous pouvez lancer plusieurs vérifications : format + lint + tests unitaires
 npm run format
+npm run lint
+npm test
