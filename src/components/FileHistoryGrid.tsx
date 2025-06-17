@@ -5,6 +5,7 @@ import { FileParserService } from '../services/FileParserService';
 import type { FileData, ProcessedFile } from '../types';
 import { Card } from './ui/Card';
 import { SummaryDetails } from './SummaryDetails';
+import { formatFileSize } from '../utils/format';
 import { t } from '../i18n';
 
 interface FileHistoryGridProps {
@@ -84,6 +85,31 @@ export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new F
               </div>
               {getStatusBadge(file)}
             </div>
+
+            {(file.size || file.processedAt || file.recordCount || file.durationMs) && (
+              <div className="text-sm text-gray-600 space-y-1 mb-4">
+                {file.size !== undefined && (
+                  <div>
+                    <span className="font-medium">{t('fileSize')}:</span> {formatFileSize(file.size)}
+                  </div>
+                )}
+                {file.recordCount !== undefined && (
+                  <div>
+                    <span className="font-medium">{t('recordCount')}:</span> {file.recordCount}
+                  </div>
+                )}
+                {file.durationMs !== undefined && (
+                  <div>
+                    <span className="font-medium">{t('durationMs')}:</span> {file.durationMs} ms
+                  </div>
+                )}
+                {file.processedAt !== undefined && (
+                  <div>
+                    <span className="font-medium">{t('processedAt')}:</span> {new Date(file.processedAt).toLocaleString()}
+                  </div>
+                )}
+              </div>
+            )}
 
             {file.status === 'error' && file.error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
