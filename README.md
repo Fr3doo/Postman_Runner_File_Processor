@@ -97,15 +97,19 @@ graph TD
 ## 📁 Structure du projet
 
 ```
-├─ src/            # Code source React/TypeScript
-│  ├─ components/  # Composants UI
-│  ├─ services/    # Services et logique métier
-│  ├─ utils/       # Fonctions de parsing et validation
-│  └─ config/      # Constantes de configuration
-├─ docs/           # Documentation détaillée
-├─ .github/        # Workflows CI
-└─ README.md
+├─ src/             # Code source TypeScript
+│  ├─ cli/          # Script de conversion en ligne de commande
+│  ├─ components/   # Composants et contextes React
+│  ├─ hooks/        # Hooks personnalisés
+│  ├─ services/     # Couche métier
+│  ├─ utils/        # Fonctions de parsing et tests
+│  └─ config/       # Valeurs de configuration
+├─ docs/            # Documentation
+├─ .github/         # Workflows CI
+└─ index.html      # Entrée de l'application
 ```
+
+La vue complète de l'arborescence se trouve dans [docs/reference/project-structure.md](docs/reference/project-structure.md).
 
 ## 🧪 Tests
 
