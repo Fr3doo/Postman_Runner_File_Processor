@@ -1,12 +1,41 @@
 #!/usr/bin/env ts-node
 import { promises as fs } from 'fs';
-import { basename, extname, resolve } from 'path';
+import { basename, extname, resolve, dirname } from 'path';
 import {
   parseAllSummaryBlocks,
   generateJSONContent,
   sanitizeFileData,
 } from '../utils/fileParser';
 import { validateAndSanitizeContent } from '../utils/securityValidator';
+
+interface IndexEntry {
+  path: string;
+  timestamp: string;
+  recordCount: number;
+}
+
+async function appendIndex(filePath: string, recordCount: number): Promise<void> {
+  const dir = dirname(filePath);
+  const indexPath = resolve(dir, 'convert-index.json');
+  const entry: IndexEntry = {
+    path: filePath,
+    timestamp: new Date().toISOString(),
+    recordCount,
+  };
+
+  try {
+    const data = await fs.readFile(indexPath, 'utf8');
+    const index = JSON.parse(data) as IndexEntry[];
+    index.push(entry);
+    await fs.writeFile(indexPath, JSON.stringify(index, null, 2), 'utf8');
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+      await fs.writeFile(indexPath, JSON.stringify([entry], null, 2), 'utf8');
+    } else {
+      throw err;
+    }
+  }
+}
 
 async function convertFile(filePath: string): Promise<number> {
   const absPath = resolve(process.cwd(), filePath);
@@ -19,15 +48,14 @@ async function convertFile(filePath: string): Promise<number> {
   }
   const base = basename(filePath, extname(filePath));
 
-  await Promise.all(
-    summaries.map((summary, idx) => {
-      const sanitized = sanitizeFileData(summary);
-      const json = generateJSONContent(sanitized);
-      const suffix = summaries.length === 1 ? '' : `-${idx + 1}`;
-      const outPath = resolve(process.cwd(), `${base}${suffix}.json`);
-      return fs.writeFile(outPath, json, 'utf8');
-    }),
-  );
+  for (const [idx, summary] of summaries.entries()) {
+    const sanitized = sanitizeFileData(summary);
+    const json = generateJSONContent(sanitized);
+    const suffix = summaries.length === 1 ? '' : `-${idx + 1}`;
+    const outPath = resolve(process.cwd(), `${base}${suffix}.json`);
+    await fs.writeFile(outPath, json, 'utf8');
+    await appendIndex(outPath, 1);
+  }
   return summaries.length;
 }
 

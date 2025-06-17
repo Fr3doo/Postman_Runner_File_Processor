@@ -55,6 +55,14 @@ describe('run', () => {
       numero_dossier: '1',
       date_depot: '2024-01-01',
     });
+
+    const index = JSON.parse(await fs.readFile('convert-index.json', 'utf8'));
+    expect(index.length).toBe(1);
+    expect(index[0]).toMatchObject({
+      path: join(tempDir, 'input.json'),
+      recordCount: 1,
+    });
+    expect(typeof index[0].timestamp).toBe('string');
   });
 
   it('creates multiple JSON files when multiple summaries found', async () => {
@@ -90,6 +98,17 @@ describe('run', () => {
     const files = await fs.readdir('.');
     expect(files).toContain('multi-1.json');
     expect(files).toContain('multi-2.json');
+
+    const index = JSON.parse(await fs.readFile('convert-index.json', 'utf8'));
+    expect(index.length).toBe(2);
+    expect(index[0]).toMatchObject({
+      path: join(tempDir, 'multi-1.json'),
+      recordCount: 1,
+    });
+    expect(index[1]).toMatchObject({
+      path: join(tempDir, 'multi-2.json'),
+      recordCount: 1,
+    });
   });
 
   it('creates JSON files for each provided input', async () => {
@@ -119,6 +138,17 @@ describe('run', () => {
     };
     expect(JSON.parse(out1)).toEqual(expected);
     expect(JSON.parse(out2)).toEqual(expected);
+
+    const index = JSON.parse(await fs.readFile('convert-index.json', 'utf8'));
+    expect(index.length).toBe(2);
+    expect(index[0]).toMatchObject({
+      path: join(tempDir, 'first.json'),
+      recordCount: 1,
+    });
+    expect(index[1]).toMatchObject({
+      path: join(tempDir, 'second.json'),
+      recordCount: 1,
+    });
   });
 
   it('logs error when readFile fails', async () => {

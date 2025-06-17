@@ -40,7 +40,6 @@ export const LocalFilesPage: React.FC<LocalFilesPageProps> = ({ service = localF
       // Consider showing a user notification here
     }
   };
-  };
 
   return (
     <main className="container mx-auto px-4 py-8">
