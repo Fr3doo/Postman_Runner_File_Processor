@@ -13,7 +13,10 @@ interface FileHistoryGridProps {
 export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new FileParserService() }) => {
   const { history, removeFile, clearHistory } = useFileHistory();
 
-  if (history.length === 0) return null;
+  if (history.length === 0)
+    return (
+      <div className="text-center py-10 text-gray-500">{t('historyEmpty')}</div>
+    );
 
   const handleDownload = (file: ProcessedFile, summary: FileData, idx: number) => {
     parser.download(summary, `${file.filename.replace(/\.txt$/i, '')}-${idx + 1}`);

@@ -55,13 +55,15 @@ const createMockService = (initial: ProcessedFile[]): IFileHistoryService => {
 };
 
 describe('FileHistoryGrid', () => {
-  it('renders nothing when history is empty', () => {
+  it('renders info message when history is empty', () => {
     const service = createMockService([]);
     const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
       <FileHistoryProvider service={service}>{children}</FileHistoryProvider>
     );
-    const { container } = render(<FileHistoryGrid />, { wrapper });
-    expect(container.firstChild).toBeNull();
+    render(<FileHistoryGrid />, { wrapper });
+    expect(
+      screen.getByText("Aucun fichier dans l'historique.")
+    ).toBeTruthy();
   });
 
   it('downloads and removes file from history', () => {
