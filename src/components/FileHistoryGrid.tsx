@@ -36,17 +36,24 @@ const toggleSelect = (id: string) => {
   });
 };
   const handleDownloadSelected = () => {
-    filteredHistory.forEach((file) => {
-      if (selected.has(file.id) && file.status === 'success' && file.summaries) {
-        file.summaries.forEach((summary, idx) =>
-          parser.download(
+const handleDownloadSelected = () => {
+  const promises = filteredHistory
+    .filter((file) => selected.has(file.id) && file.status === 'success' && file.summaries)
+    .flatMap((file) => 
+      file.summaries!.map((summary, idx) => {
+        try {
+          return parser.download(
             summary,
             `${file.filename.replace(/\.txt$/i, '')}-${idx + 1}`,
-          ),
-        );
-      }
-    });
-  };
+          );
+        } catch (error) {
+          console.error(`Failed to download ${file.filename}:`, error);
+          return null;
+        }
+      })
+    )
+    .filter(Boolean);
+};
 
   if (history.length === 0)
     return (
