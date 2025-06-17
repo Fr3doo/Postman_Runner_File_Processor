@@ -5,16 +5,14 @@ import { tmpdir } from 'os';
 import { LocalFileService } from '../LocalFileService';
 
 let dir: string;
-let service: LocalFileService;
+// Add this test case:
 
-beforeEach(async () => {
-  dir = await fs.mkdtemp(join(tmpdir(), 'local-file-'));
-  service = new LocalFileService(dir);
+describe('Constructor validation', () => {
+  it('throws error for invalid directory parameter', () => {
+    expect(() => new LocalFileService('')).toThrow('Invalid directory path');
+    expect(() => new LocalFileService(null as any)).toThrow('Invalid directory path');
+  });
 });
-
-afterEach(async () => {
-  await fs.rm(dir, { recursive: true, force: true });
-  vi.restoreAllMocks();
 });
 // Add these test cases:
 
