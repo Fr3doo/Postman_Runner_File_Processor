@@ -1,6 +1,8 @@
 
 export const isNode = (): boolean =>
-  typeof process !== 'undefined' && !!process.versions?.node;
+  typeof process !== 'undefined' && 
+  !!process.versions?.node && 
+  typeof require !== 'undefined';
 
 export interface ILocalFileService {
   listJSONFiles(): Promise<string[]>;
