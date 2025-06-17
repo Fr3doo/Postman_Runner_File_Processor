@@ -11,6 +11,14 @@ export interface ProcessedFile {
   id: string;
   filename: string;
   status: 'processing' | 'success' | 'error';
+  /** Size of the original file in bytes */
+  size?: number;
+  /** Epoch timestamp when processing completed */
+  processedAt?: number;
+  /** Number of summary records parsed from the file */
+  recordCount?: number;
+  /** Total processing duration in milliseconds */
+  durationMs?: number;
   summaries?: FileData[];
   error?: string;
   originalContent?: string;
