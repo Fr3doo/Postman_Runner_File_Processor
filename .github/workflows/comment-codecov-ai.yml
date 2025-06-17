@@ -15,7 +15,7 @@ jobs:
       - name: Comment Codecov AI Instructions
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.CODECOV_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             // On prépare le corps du commentaire dans une variable pour gérer proprement
             // les backticks JavaScript
