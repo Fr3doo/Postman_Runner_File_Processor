@@ -20,8 +20,22 @@ export const LocalFilesPage: React.FC<LocalFilesPageProps> = ({ service = localF
   }, [service]);
 
   React.useEffect(() => {
-    loadFiles();
-  }, [loadFiles]);
+    const init = async () => {
+      if (typeof window !== 'undefined' && 'showDirectoryPicker' in window) {
+        if ('hasDirectoryHandle' in service && !service.hasDirectoryHandle()) {
+          try {
+            // @ts-expect-error method existence checked above
+            await service.requestDirectoryAccess();
+          } catch (err) {
+            console.error(err);
+            return;
+          }
+        }
+      }
+      await loadFiles();
+    };
+    void init();
+  }, [loadFiles, service]);
   const handleDownload = async (filename: string) => {
     try {
       await service.downloadFile(filename);

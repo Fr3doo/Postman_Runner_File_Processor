@@ -79,3 +79,10 @@ setLanguage('en');
 ```
 
 Toutes les étiquettes et messages s'afficheront alors en anglais.
+
+## 8. Utilisation dans le navigateur
+
+La page **Fichiers locaux** peut accéder directement à un dossier sur votre ordinateur.
+Lors de la première ouverture, l'application demande l'autorisation via une fenêtre de sélection.
+Après validation, le dossier choisi est réutilisé pour lister, télécharger ou supprimer les fichiers JSON.
+Si vous videz les permissions ou changez d'onglet, la demande sera affichée de nouveau.
