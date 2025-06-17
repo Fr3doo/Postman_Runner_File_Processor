@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
-import { join } from 'path';
+// Node modules are loaded lazily to avoid bundling them in the browser
+
 
 export interface ILocalFileService {
   listJSONFiles(): Promise<string[]>;
@@ -10,8 +10,32 @@ export interface ILocalFileService {
 export class LocalFileService implements ILocalFileService {
   constructor(private directory: string = process.cwd()) {}
 
+  private isNode(): boolean {
+    return (
+      typeof process !== 'undefined' &&
+      !!(process.versions && process.versions.node)
+    );
+  }
+
+  private async fs() {
+    if (!this.isNode()) {
+      throw new Error('Local filesystem not accessible in the browser');
+    }
+    const { promises } = await import('fs');
+    return promises;
+  }
+
+  private async joinPath(filename: string): Promise<string> {
+    if (!this.isNode()) {
+      throw new Error('Local filesystem not accessible in the browser');
+    }
+    const { join } = await import('path');
+    return join(this.directory, filename);
+  }
+
   async listJSONFiles(): Promise<string[]> {
     try {
+      const fs = await this.fs();
       const files = await fs.readdir(this.directory);
       return files.filter((f) => f.toLowerCase().endsWith('.json'));
     } catch (err) {
@@ -25,7 +49,9 @@ export class LocalFileService implements ILocalFileService {
       throw new Error('Invalid filename provided');
     }
     try {
-      await fs.unlink(join(this.directory, filename));
+      const fs = await this.fs();
+      const filePath = await this.joinPath(filename);
+      await fs.unlink(filePath);
     } catch (err) {
       console.error(`Failed to delete file ${filename}`, err);
       throw err;
@@ -37,7 +63,8 @@ export class LocalFileService implements ILocalFileService {
       throw new Error('Invalid filename provided');
     }
 
-    const filePath = join(this.directory, filename);
+    const fs = await this.fs();
+    const filePath = await this.joinPath(filename);
     const data = await fs.readFile(filePath, 'utf8');
     if (
       typeof document !== 'undefined' &&
