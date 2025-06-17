@@ -1,23 +1,33 @@
 # .github/workflows/comment-codecov-ai.yml
+name: Commenter les instructions Codecov AI
+
 on:
   pull_request:
-    types: [opened, reopened, synchronize]  # PR ouverte, réouverte ou mise à jour :contentReference[oaicite:7]{index=7}
+    types:
+      - opened
+      - reopened
+      - synchronize
 
 jobs:
   comment-codecov-ai:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v6
+      - name: Comment Codecov AI Instructions
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            // On prépare le corps du commentaire dans une variable pour gérer proprement
+            // les backticks JavaScript
+            const commentBody = `**Utilisation de Codecov AI**
+
+- **Revue de PR** : ajoutez \`@codecov-ai-reviewer review\`.
+- **Génération de tests** : ajoutez \`@codecov-ai-reviewer test\`.`;
+
+            // On poste le commentaire sur la PR
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `
-**Utilisation de Codecov AI**
-
-- **Revue de PR** : ajoutez \`@codecov-ai-reviewer review\`.  
-- **Génération de tests** : ajoutez \`@codecov-ai-reviewer test\`.`
-            })
+              body: commentBody
+            });
