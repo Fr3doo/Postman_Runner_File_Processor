@@ -22,14 +22,24 @@ export const LocalFilesPage: React.FC<LocalFilesPageProps> = ({ service = localF
   React.useEffect(() => {
     loadFiles();
   }, [loadFiles]);
-
   const handleDownload = async (filename: string) => {
-    await service.downloadFile(filename);
+    try {
+      await service.downloadFile(filename);
+    } catch (err) {
+      console.error('Download failed:', err);
+      // Consider showing a user notification here
+    }
   };
 
   const handleDelete = async (filename: string) => {
-    await service.deleteFile(filename);
-    await loadFiles();
+    try {
+      await service.deleteFile(filename);
+      await loadFiles();
+    } catch (err) {
+      console.error('Delete failed:', err);
+      // Consider showing a user notification here
+    }
+  };
   };
 
   return (
