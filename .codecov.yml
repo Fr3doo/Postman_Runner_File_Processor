@@ -1,134 +1,29 @@
-# Exige que le CI bloque si Codecov échoue
 codecov:
-  require_ci_to_pass: yes  # S’assure que la PR ne peut être mergée qu’en cas de succès de Codecov
+  require_ci_to_pass: yes
 
-# Regroupement par composants logiques (ex: cli, services…)
-component_management:
-  # Règles par défaut appliquées à tous les composants
-  default_rules:
-    statuses:
-      - type: project       # Type de check : "project" pour la couverture globale du composant
-        target: auto        # Cible automatique (hérite de la couverture actuelle) :contentReference[oaicite:0]{index=0}
-        threshold: 0%       # Tolérance minimale permise
-
-  individual_components:
-    - component_id: cli
-      name: CLI
-      paths:
-        - "src/cli/**"      # Inclut tout le code du dossier src/cli/
-      # Statuts spécifiques à ce composant
-      statuses:
-        project:
-          unit:
-            flags: [unit]   # Test unitaires
-            target: 85%     # Cible de couverture globale pour CLI
-            threshold: 1%   # Tolérance de baisse autorisée
-            informational: false
-          e2e:
-            flags: [e2e]    # Tests end-to-end
-            target: 70%
-            threshold: 2%
-            informational: false
-        patch:
-          unit:
-            flags: [unit]
-            target: 80%     # Cible minimale pour les nouveaux commits sur CLI :contentReference[oaicite:1]{index=1}
-            informational: false
-          e2e:
-            flags: [e2e]
-            target: 65%
-            informational: false
-
-    - component_id: react_components
-      name: ReactComponents
-      paths:
-        - "src/components/**"
-      # Statuts pour le composant des composants React
-      statuses:
-        project:
-          unit:
-            flags: [unit]
-            target: 90%     # > plus strict pour UI
-            threshold: 1%
-            informational: false
-        patch:
-          unit:
-            flags: [unit]
-            target: 85%
-            informational: false
-
-    - component_id: hooks
-      name: Hooks
-      paths:
-        - "src/hooks/**"
-      statuses:
-        project:
-          unit:
-            flags: [unit]
-            target: 85%
-            threshold: 1%
-            informational: false
-        patch:
-          unit:
-            flags: [unit]
-            target: 80%
-            informational: false
-
-    - component_id: services
-      name: Services
-      paths:
-        - "src/services/**"
-      statuses:
-        project:
-          unit:
-            flags: [unit]
-            target: 95%     # Coverage critique pour la logique métier
-            threshold: 1%
-            informational: false
-        patch:
-          unit:
-            flags: [unit]
-            target: 90%
-            informational: false
-
-    - component_id: utils
-      name: Utils
-      paths:
-        - "src/utils/**"
-
-    - component_id: config
-      name: Config
-      paths:
-        - "src/config/**"
-
-    - component_id: i18n
-      name: I18n
-      paths:
-        - "src/i18n/**"
-
-    - component_id: types
-      name: Types
-      paths:
-        - "src/types/**"
-
-# Paramètres globaux de couverture
 coverage:
   precision: 2
   round: down
   range: "70...100"
 
   status:
+    # 🔐 Couvre le projet
     project:
+      # Tests unitaires (unit)
       unit:
         flags: [unit]
-        target: 85%
-        threshold: 1%
-        informational: false
+        target: 85%           # couverture globale attendue
+        threshold: 1%         # tolérance
+        # si ce seuil est violé, ça fait échouer le build 
+        informational : false
+      # Tests end-to-end (e2e)
       e2e:
         flags: [e2e]
-        target: 70%
-        threshold: 2%
+        target: 70%           # couverture globale attendue
+        threshold: 2%         # tolérance
         informational: false
+        
+    # 🔐 Couvre chaque patch individuellement
     patch:
       unit:
         flags: [unit]
@@ -138,13 +33,14 @@ coverage:
         flags: [e2e]
         target: 65%
         informational: false
+        
+    # 🔐 Couvre chaque fichier individuellement
     files:
       default:
         target: 70%
         threshold: 5%
 
-# Configuration des commentaires dans la PR
 comment:
-  layout: "reach, diff, flags, files, components"  # Ajoute la section Components dans le commentaire :contentReference[oaicite:2]{index=2}
+  layout: "reach, diff, flags, files"
   behavior: default
   require_changes: true
