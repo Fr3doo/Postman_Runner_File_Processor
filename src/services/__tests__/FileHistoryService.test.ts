@@ -56,6 +56,20 @@ describe('fileHistoryService', () => {
     expect(newService.getHistory()[0].id).toBe('p');
   });
 
+  it('preserves existing localStorage items when instantiated', () => {
+    const oldFile = createFile('old');
+    window.localStorage.setItem('fileHistory', JSON.stringify([oldFile]));
+
+    const newService = new FileHistoryService();
+    const newFile = createFile('new');
+    newService.addFile(newFile);
+
+    const ids = newService.getHistory().map((f) => f.id);
+    expect(ids).toContain('old');
+    expect(ids).toContain('new');
+    expect(ids[0]).toBe('new');
+  });
+
   it('handles localStorage errors gracefully', () => {
     const setSpy = vi
       .spyOn(window.localStorage, 'setItem')
