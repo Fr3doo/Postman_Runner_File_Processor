@@ -8,7 +8,16 @@ export interface ILocalFileService {
 }
 
 export class LocalFileService implements ILocalFileService {
-  constructor(private directory: string = process.cwd()) {}
+  private directory: string;
+  constructor(directory?: string) {
+    if (directory) {
+      this.directory = directory;
+    } else if (typeof process !== 'undefined' && process.cwd) {
+      this.directory = process.cwd();
+    } else {
+      this.directory = '';
+    }
+  }
 
   private isNode(): boolean {
     return (
