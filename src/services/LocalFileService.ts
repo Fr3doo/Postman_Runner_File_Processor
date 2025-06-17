@@ -23,6 +23,16 @@ export class LocalFileService implements ILocalFileService {
       const { promises: fs } = await import('fs');
       const files = await fs.readdir(this.directory);
       return files.filter((f) => f.toLowerCase().endsWith('.json'));
+    } catch (importErr) {
+      if (!isNode()) {
+        throw new Error(
+          "La lecture des fichiers locaux n'est pas disponible dans ce navigateur."
+        );
+      }
+      throw importErr;
+    }
+      const files = await fs.readdir(this.directory);
+      return files.filter((f) => f.toLowerCase().endsWith('.json'));
     } catch (err) {
       console.error('Failed to list files', err);
       return [];
