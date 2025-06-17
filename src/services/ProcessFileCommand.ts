@@ -25,6 +25,7 @@ export class ProcessFileCommand {
 
   async execute(): Promise<void> {
     this.loggingService.logInfo(`Processing file: ${this.file.name}`);
+    const startTime = Date.now();
     try {
       const content = await this.readFile(this.file);
       if (!content || content.trim().length === 0) {
@@ -40,6 +41,10 @@ export class ProcessFileCommand {
               status: 'success',
               summaries,
               originalContent: content,
+              size: this.file.size,
+              processedAt: Date.now(),
+              recordCount: summaries.length,
+              durationMs: Date.now() - startTime,
             };
             return finalFile;
           }
@@ -56,7 +61,14 @@ export class ProcessFileCommand {
       this.setProcessedFiles((prev) =>
         prev.map((f) => {
           if (f.id === this.fileId) {
-            finalFile = { ...f, status: 'error', error: message };
+            finalFile = {
+              ...f,
+              status: 'error',
+              error: message,
+              size: this.file.size,
+              processedAt: Date.now(),
+              durationMs: Date.now() - startTime,
+            };
             return finalFile;
           }
           return f;

@@ -54,19 +54,47 @@ describe('ProcessFileCommand with history', () => {
   it('adds successful file to history', async () => {
     await command.execute();
     expect(historyService.addFile).toHaveBeenCalledWith(
-      expect.objectContaining({ status: 'success', filename: 'a.txt' }),
+      expect.objectContaining({
+        status: 'success',
+        filename: 'a.txt',
+        size: 5,
+        processedAt: expect.any(Number),
+        recordCount: 1,
+        durationMs: expect.any(Number),
+      }),
     );
     expect(historyService.save).not.toHaveBeenCalled();
-    expect(processed[0]?.status).toBe('success');
+    expect(processed[0]).toEqual(
+      expect.objectContaining({
+        status: 'success',
+        size: 5,
+        processedAt: expect.any(Number),
+        recordCount: 1,
+        durationMs: expect.any(Number),
+      }),
+    );
   });
 
   it('adds error file to history', async () => {
     readMock.mockRejectedValue(new Error('fail'));
     await command.execute();
     expect(historyService.addFile).toHaveBeenCalledWith(
-      expect.objectContaining({ status: 'error', error: expect.stringContaining('fail') }),
+      expect.objectContaining({
+        status: 'error',
+        error: expect.stringContaining('fail'),
+        size: 5,
+        processedAt: expect.any(Number),
+        durationMs: expect.any(Number),
+      }),
     );
     expect(historyService.save).not.toHaveBeenCalled();
-    expect(processed[0]?.status).toBe('error');
+    expect(processed[0]).toEqual(
+      expect.objectContaining({
+        status: 'error',
+        size: 5,
+        processedAt: expect.any(Number),
+        durationMs: expect.any(Number),
+      }),
+    );
   });
 });

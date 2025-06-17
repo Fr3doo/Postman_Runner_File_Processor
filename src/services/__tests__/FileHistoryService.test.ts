@@ -6,6 +6,10 @@ const createFile = (id: string): ProcessedFile => ({
   id,
   filename: `${id}.txt`,
   status: 'success',
+  size: 10,
+  processedAt: 123,
+  recordCount: 2,
+  durationMs: 5,
 });
 
 describe('fileHistoryService', () => {
@@ -53,7 +57,11 @@ describe('fileHistoryService', () => {
     fileHistoryService.addFile(f);
     const newService = new FileHistoryService();
     newService.load();
-    expect(newService.getHistory()[0].id).toBe('p');
+    const loaded = newService.getHistory()[0];
+    expect(loaded.id).toBe('p');
+    expect(loaded.size).toBe(10);
+    expect(loaded.recordCount).toBe(2);
+    expect(loaded.durationMs).toBe(5);
   });
 
   it('preserves existing localStorage items when instantiated', () => {
