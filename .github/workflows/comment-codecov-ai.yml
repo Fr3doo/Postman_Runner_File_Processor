@@ -1,32 +1,31 @@
-# .github/workflows/comment-codecov-ai.yml
 name: Commenter les instructions Codecov AI
+
+# 1. Permissions explicites
+permissions:
+  contents: read           # pour checkout
+  issues: write            # pour createComment
+  pull-requests: write     # si nécessaire
 
 on:
   pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
+    types: [opened, reopened, synchronize]
 
 jobs:
   comment-codecov-ai:
     runs-on: ubuntu-latest
     steps:
-      - name: Comment Codecov AI Instructions
+      - name: Poster les instructions Codecov AI
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            // On prépare le corps du commentaire
-            const commentBody = `**Utilisation de Codecov AI**
+            const body = `**Utilisation de Codecov AI**
 
             - **Revue de PR** : ajoutez \`@codecov-ai-reviewer review\`.
-            - **Génération de tests** : ajoutez \`@codecov-ai-reviewer test\`.
-            `;
-
-            github.rest.issues.createComment({
+            - **Génération de tests** : ajoutez \`@codecov-ai-reviewer test\`.`;
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: commentBody
+              body
             });
