@@ -55,20 +55,25 @@ Les interfaces utilisent React + TypeScript, avec Tailwind CSS et `lucide-react`
 ---
 
 ## 3. Pull Request (PR) Instructions
-- **Titre de PR** : `[nom_agent] Résumé concis`
-- **Description** :
-  1. Contexte et objectif
-  2. Étapes pour tester (commande, options…)
-  3. Impact éventuel sur les autres agents
-- Avant d’ouvrir la PR :
-  - Vérifiez que `npm run lint` et `npm test` passent.
-  - Respectez les préfixes de branches indiqués dans [docs/guides/contributing.md](docs/guides/contributing.md) (`feature/`, `bugfix/`, `docs/`, etc.).
-  - Les messages de commit doivent être clairs et en anglais.
-- 🛠️ Attention : Toujours ajouter à la fin de votre commentaire PR les lignes suivantes pour le bot Codecov AI :
-  - @codecov-ai-reviewer review
-  - @codecov-ai-reviewer test
-  - review = analyse et feedback sur la qualité et la sûreté du code.
-  - test = génération automatique de tests pour améliorer la couverture.
+  1. **Titre de PR** : `[nom_agent] Résumé concis`
+  2. **Description** :
+    - Contexte et objectif ecrit en français
+  3. **Test** :
+    - Étapes pour tester (commande, options…)
+  4. **Agent** :
+    - Impact éventuel sur les autres agents
+  5. **Codecov IA** :
+    - 🛠️ Attention : Toujours ajouter à la fin de votre commentaire PR les lignes suivantes pour le bot Codecov AI :
+      - Commentaire à ajouter :
+        - @codecov-ai-reviewer review
+        - @codecov-ai-reviewer test
+        - review = analyse et feedback sur la qualité et la sûreté du code.
+        - test = génération automatique de tests pour améliorer la couverture.
+  6. **Avant d’ouvrir la PR** :
+    - Vérifiez que `npm run lint` et `npm test` passent.
+    - Respectez les préfixes de branches indiqués dans [docs/guides/contributing.md](docs/guides/contributing.md) (`feature/`, `bugfix/`, `docs/`, etc.).
+    - Les messages de commit doivent être clairs et en anglais.
+- 
 ---
 
 ## 4. Codex/ChatGPT Usage Tips
