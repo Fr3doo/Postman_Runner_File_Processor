@@ -28,7 +28,7 @@ La documentation est organisée dans les dossiers suivants :
 - [`guides/usage-example.md`](guides/usage-example.md) – Exemple de workflow pour téléverser des fichiers et obtenir les résultats.
 - [`guides/configuration.md`](guides/configuration.md) – Comment ajuster les paramètres de sécurité et d’exécution.
 - [`guides/logging-and-errors.md`](guides/logging-and-errors.md) – Journaliser les actions et afficher des messages d’erreur sûrs.
-- [`guides/file-history.md`](guides/file-history.md) – Gérer l’historique et re-télécharger les fichiers.
+- [`guides/file-history.md`](guides/file-history.md) – Gérer l’historique, suivre les métriques et re-télécharger les fichiers.
 - [`guides/cli-tests.md`](guides/cli-tests.md) – Exécuter les tests du convertisseur en ligne de commande.
 - [`guides/advanced-testing.md`](guides/advanced-testing.md) – Mocker la configuration et simuler le DOM dans les tests.
   D’autres guides avancés sont les bienvenus.

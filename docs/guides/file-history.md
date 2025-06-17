@@ -26,3 +26,14 @@ Aucune donnée n’est envoyée sur un serveur. Vous pouvez inspecter ou vider c
 ## 4. Chargement automatique et état vide
 
 L'historique se charge dès l'ouverture de l'application et se sauvegarde après chaque action. Lorsque la liste est vide, une phrase *Aucun fichier dans l'historique.* s'affiche pour indiquer l'état actuel.
+
+## 5. Métriques affichées
+
+Chaque carte peut afficher quatre informations supplémentaires :
+
+1. **Taille** – issue de la propriété `File.size` lue lors du traitement.
+2. **Enregistrements** – nombre de résumés générés par `FileParserService.parse`.
+3. **Durée (ms)** – calculée par `ProcessFileCommand` entre le début et la fin du traitement.
+4. **Traité le** – horodatage `Date.now()` enregistré à la fin du traitement.
+
+Ces valeurs sont ajoutées au `ProcessedFile` par `ProcessFileCommand` puis conservées dans `FileHistoryService`.
