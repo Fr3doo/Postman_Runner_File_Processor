@@ -125,6 +125,7 @@ Consultez [docs/guides/contributing.md](docs/guides/contributing.md) pour les é
 - [Changelog](docs/releases/changelog.md)
 - [Guide de configuration](docs/guides/configuration.md)
 - [Historique des fichiers](docs/guides/file-history.md)
+- [Chargement automatique et état vide](docs/guides/file-history.md#chargement-automatique-et-etat-vide)
 - [Guide des agents](AGENTS.md)
 
 ## 📦 Publication sur npm
