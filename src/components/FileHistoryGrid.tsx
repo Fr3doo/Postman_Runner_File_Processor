@@ -24,15 +24,17 @@ export const FileHistoryGrid: React.FC<FileHistoryGridProps> = ({ parser = new F
     );
   }, [history, filter]);
 
-  const toggleSelect = (id: string) => {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
+const toggleSelect = (id: string) => {
+  setSelected((prev) => {
+    const next = new Set(prev);
+    if (prev.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
+    return next;
+  });
+};
   const handleDownloadSelected = () => {
     filteredHistory.forEach((file) => {
       if (selected.has(file.id) && file.status === 'success' && file.summaries) {
