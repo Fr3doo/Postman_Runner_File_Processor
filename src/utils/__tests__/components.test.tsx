@@ -5,6 +5,7 @@ import { FileUpload } from '../../components/FileUpload';
 import { ResultCard } from '../../components/ResultCard';
 import { ResultsGrid } from '../../components/ResultsGrid';
 import { ProcessingStatsComponent } from '../../components/ProcessingStats';
+import { SummaryDetails } from '../../components/SummaryDetails';
 import { FileValidationService } from '../../services/FileValidationService';
 import { ValidationError } from '../errors';
 
@@ -95,6 +96,33 @@ describe('FileUpload', () => {
 
     fireEvent.dragOver(dropZone);
     expect(dropZone.className).not.toContain('border-blue-500');
+  });
+});
+
+describe('SummaryDetails', () => {
+  const summary = {
+    nombre_fichiers_restants: 2,
+    numero_teledemarche: 'TD',
+    nom_projet: 'Proj',
+    numero_dossier: 'D1',
+    date_depot: '2024-01-01',
+  };
+
+  it('renders fields and triggers download', () => {
+    const onDownload = vi.fn();
+    render(
+      <SummaryDetails
+        summary={summary}
+        onDownload={onDownload}
+        downloadLabel="DL"
+      />,
+    );
+
+    expect(screen.getByText('Proj')).toBeTruthy();
+    expect(screen.getByText('AUTO-TD')).toBeTruthy();
+
+    fireEvent.click(screen.getByText('DL'));
+    expect(onDownload).toHaveBeenCalled();
   });
 });
 
