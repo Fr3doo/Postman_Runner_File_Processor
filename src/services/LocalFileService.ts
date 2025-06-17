@@ -21,14 +21,22 @@ export class LocalFileService implements ILocalFileService {
   }
 
   async deleteFile(filename: string): Promise<void> {
+    if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+      throw new Error('Invalid filename provided');
+    }
     try {
       await fs.unlink(join(this.directory, filename));
     } catch (err) {
       console.error(`Failed to delete file ${filename}`, err);
+      throw err;
     }
   }
 
   async downloadFile(filename: string): Promise<string> {
+    if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+      throw new Error('Invalid filename provided');
+    }
+
     const filePath = join(this.directory, filename);
     const data = await fs.readFile(filePath, 'utf8');
     if (

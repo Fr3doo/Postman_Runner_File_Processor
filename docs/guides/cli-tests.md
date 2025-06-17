@@ -27,3 +27,9 @@ Quand le module est importé par Vitest, `import.meta.main` vaut `false`.
 Le CLI démarre donc grâce à cet appel direct.
 
 Consultez la section [Exclusions de couverture](../reference/tests-overview.md#exclusions-de-couverture) pour connaître les fichiers ignorés lors des tests.
+
+## 3. Index des fichiers générés
+
+Chaque conversion ajoute une entrée dans `convert-index.json`.
+Ce fichier placé dans le dossier de sortie liste le chemin du JSON,
+l'horodatage de la création et le nombre d'enregistrements convertis.

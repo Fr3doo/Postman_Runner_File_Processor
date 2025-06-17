@@ -62,7 +62,13 @@ describe('LocalFileService', () => {
     expect(createObjectURLSpy).toHaveBeenCalled();
     expect(revokeObjectURLSpy).toHaveBeenCalled();
     expect(appendChildSpy).toHaveBeenCalledWith(anchor);
-  // Add these security test cases:
+    expect(removeChildSpy).toHaveBeenCalledWith(anchor);
+
+    createElementSpy.mockRestore();
+    createObjectURLSpy.mockRestore();
+    clickSpy.mockRestore();
+  });
+
   it('rejects invalid filenames in deleteFile', async () => {
     await expect(service.deleteFile('../invalid')).rejects.toThrow('Invalid filename');
     await expect(service.deleteFile('')).rejects.toThrow('Invalid filename');
@@ -72,10 +78,6 @@ describe('LocalFileService', () => {
   it('rejects invalid filenames in downloadFile', async () => {
     await expect(service.downloadFile('../invalid')).rejects.toThrow('Invalid filename');
     await expect(service.downloadFile('path\\traversal')).rejects.toThrow('Invalid filename');
-  });
-    createElementSpy.mockRestore();
-    createObjectURLSpy.mockRestore();
-    clickSpy.mockRestore();
   });
 });
 
