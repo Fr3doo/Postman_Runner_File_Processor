@@ -184,28 +184,33 @@ describe('FileHistoryGrid', () => {
     expect(screen.queryByText('beta.txt')).toBeNull();
   });
 
-  it('downloads all selected files', () => {
-    const files = [createFile('a'), createFile('b')];
-    const service = createMockService(files);
-    const parser = new FileParserService();
-    const spy = vi.spyOn(parser, 'download').mockImplementation(() => {});
-    const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-      <FileHistoryProvider service={service}>{children}</FileHistoryProvider>
-    );
+it('downloads all selected files', () => {
+  const files = [createFile('a'), createFile('b')];
+  const service = createMockService(files);
+  const parser = new FileParserService();
+  const spy = vi.spyOn(parser, 'download').mockImplementation(() => {});
+  const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <FileHistoryProvider service={service}>{children}</FileHistoryProvider>
+  );
 
-    render(<FileHistoryGrid parser={parser} />, { wrapper });
+  render(<FileHistoryGrid parser={parser} />, { wrapper });
 
-    const checkboxes = screen.getAllByRole('checkbox');
-    const dlButton = screen.getByText('Télécharger la sélection') as HTMLButtonElement;
-    expect(dlButton.disabled).toBe(true);
+  const checkboxes = screen.getAllByRole('checkbox');
+  const dlButton = screen.getByText('Télécharger la sélection') as HTMLButtonElement;
+  
+  // Initially disabled
+  expect(dlButton.disabled).toBe(true);
 
-    fireEvent.click(checkboxes[0]);
-    fireEvent.click(checkboxes[1]);
+  // Select files
+  fireEvent.click(checkboxes[0]);
+  fireEvent.click(checkboxes[1]);
 
-    expect(dlButton.disabled).toBe(false);
-    fireEvent.click(dlButton);
+  // Should be enabled after selection
+  expect(dlButton.disabled).toBe(false);
+  fireEvent.click(dlButton);
 
-    expect(spy).toHaveBeenCalledWith(files[0].summaries![0], 'a-1');
-    expect(spy).toHaveBeenCalledWith(files[1].summaries![0], 'b-1');
-  });
+  // Verify downloads were called
+  expect(spy).toHaveBeenCalledWith(files[0].summaries![0], 'a-1');
+  expect(spy).toHaveBeenCalledWith(files[1].summaries![0], 'b-1');
+  expect(spy).toHaveBeenCalledTimes(2);
 });
