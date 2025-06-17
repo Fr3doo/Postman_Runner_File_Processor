@@ -1,3 +1,5 @@
+export type HistoryListener = (history: ProcessedFile[]) => void;
+
 export interface IFileHistoryService {
   addFile(file: ProcessedFile): void;
   getHistory(): ProcessedFile[];
@@ -5,6 +7,7 @@ export interface IFileHistoryService {
   clearHistory(): void;
   load(): void;
   save(): void;
+  subscribe(listener: HistoryListener): () => void;
 }
 
 import type { ProcessedFile } from '../types';
@@ -12,6 +15,7 @@ import type { ProcessedFile } from '../types';
 class FileHistoryService implements IFileHistoryService {
   private history: ProcessedFile[] = [];
   private readonly storageKey = 'fileHistory';
+  private listeners: HistoryListener[] = [];
 
   constructor() {
     this.load();
@@ -20,6 +24,7 @@ class FileHistoryService implements IFileHistoryService {
   addFile(file: ProcessedFile): void {
     this.history.unshift(file);
     this.save();
+    this.notify();
   }
 
   getHistory(): ProcessedFile[] {
@@ -29,11 +34,13 @@ class FileHistoryService implements IFileHistoryService {
   removeFile(id: string): void {
     this.history = this.history.filter((f) => f.id !== id);
     this.save();
+    this.notify();
   }
 
   clearHistory(): void {
     this.history = [];
     this.save();
+    this.notify();
   }
 
   load(): void {
@@ -51,6 +58,7 @@ class FileHistoryService implements IFileHistoryService {
     } catch {
       this.history = [];
     }
+    this.notify();
   }
 
   save(): void {
@@ -60,6 +68,19 @@ class FileHistoryService implements IFileHistoryService {
     } catch (err) {
       console.error('Failed to save file history to localStorage', err);
     }
+  }
+
+  subscribe(listener: HistoryListener): () => void {
+    this.listeners.push(listener);
+    listener(this.getHistory());
+    return () => {
+      this.listeners = this.listeners.filter((l) => l !== listener);
+    };
+  }
+
+  private notify(): void {
+    const histCopy = this.getHistory();
+    this.listeners.forEach((l) => l(histCopy));
   }
 }
 

@@ -24,17 +24,33 @@ const createFile = (id: string): ProcessedFile => ({
 
 const createMockService = (initial: ProcessedFile[]): IFileHistoryService => {
   let history = [...initial];
+  let listeners: ((h: ProcessedFile[]) => void)[] = [];
+  const notify = () => listeners.forEach((l) => l([...history]));
   return {
-    addFile: vi.fn(),
+    addFile: vi.fn((f: ProcessedFile) => {
+      history.unshift(f);
+      notify();
+    }),
     getHistory: () => [...history],
     removeFile: vi.fn((id: string) => {
       history = history.filter((f) => f.id !== id);
+      notify();
     }),
     clearHistory: vi.fn(() => {
       history = [];
+      notify();
     }),
-    load: vi.fn(),
+    load: vi.fn(() => {
+      notify();
+    }),
     save: vi.fn(),
+    subscribe: (listener: (h: ProcessedFile[]) => void) => {
+      listeners.push(listener);
+      listener([...history]);
+      return () => {
+        listeners = listeners.filter((l) => l !== listener);
+      };
+    },
   };
 };
 

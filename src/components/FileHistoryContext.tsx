@@ -25,17 +25,16 @@ export const FileHistoryProvider: React.FC<{
 
   useEffect(() => {
     service.load();
-    setHistory(service.getHistory());
+    const unsubscribe = service.subscribe(setHistory);
+    return () => unsubscribe();
   }, [service]);
 
   const handleRemove = (id: string) => {
     service.removeFile(id);
-    setHistory(service.getHistory());
   };
 
   const handleClear = () => {
     service.clearHistory();
-    setHistory(service.getHistory());
   };
 
   return (
