@@ -36,4 +36,27 @@ describe('FileHistoryPage via App navigation', () => {
       expect(screen.queryByText('Résumé du traitement')).toBeNull();
     });
   });
+
+  it('displays metrics when present', () => {
+    const metricsItem = {
+      ...historyItem,
+      size: 2048,
+      processedAt: 1700000000000,
+      recordCount: 3,
+      durationMs: 150,
+    };
+    window.localStorage.setItem('fileHistory', JSON.stringify([metricsItem]));
+
+    render(<App />);
+
+    const filesLink = screen.getByRole('link', { name: 'Fichiers' });
+    fireEvent.click(filesLink);
+
+    expect(screen.getByText(/^Taille/)).toBeTruthy();
+    expect(screen.getByText('2.0 KB')).toBeTruthy();
+    expect(screen.getByText('3')).toBeTruthy();
+    expect(screen.getByText(/150 ms/)).toBeTruthy();
+    const dateLabel = new Date(1700000000000).toLocaleString();
+    expect(screen.getByText(dateLabel)).toBeTruthy();
+  });
 });
